@@ -123,9 +123,6 @@ function Index() {
             );
           })}
         </nav>
-        <div className="ad-pattern hidden h-[600px] w-[160px] shrink-0 place-items-center self-center border border-dashed border-muted-foreground/40 bg-muted text-center text-[10px] uppercase tracking-[0.2em] text-muted-foreground xl:grid">
-          <span>Ad Slot<br />160 × 600</span>
-        </div>
       </aside>
 
       <main className="ml-20 min-w-0 md:ml-48">
@@ -156,9 +153,6 @@ function Index() {
         )}
 
         <section aria-label="Interactive Math Labs" className="p-3 md:p-4">
-          <div className="ad-pattern mx-auto mb-4 grid h-[90px] w-full max-w-[728px] place-items-center border border-dashed border-muted-foreground/40 bg-muted text-xs uppercase tracking-[0.22em] text-muted-foreground">
-            Ad Slot · 728 × 90
-          </div>
           <div className="mb-3 grid grid-cols-[minmax(0,1fr)_auto] items-end gap-3">
             <div className="min-w-0">
               <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-primary">
