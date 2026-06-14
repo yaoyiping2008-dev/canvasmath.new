@@ -148,7 +148,7 @@
   }
 }
 
-@utility game-glow {
+@utility lab-glow {
   &:hover {
     box-shadow: 0 0 14px color-mix(in oklab, var(--primary) 72%, transparent);
   }

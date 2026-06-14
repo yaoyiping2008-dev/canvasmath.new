@@ -74,16 +74,34 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "CanvasMath — Instant H5 Games" },
-      { name: "description", content: "Play fast, free H5 arcade, puzzle, action and casual games instantly in your browser." },
+      { title: "CanvasMath - Interactive Mathematics Workspace & Simulations for K-12" },
+      {
+        name: "description",
+        content:
+          "An advanced interactive mathematical workspace and visual simulation platform designed for K-12 student engagement and STEM training.",
+      },
       { name: "author", content: "CanvasMath" },
-      { property: "og:title", content: "CanvasMath — Instant H5 Games" },
-      { property: "og:description", content: "Play fast, free H5 arcade, puzzle, action and casual games instantly in your browser." },
+      {
+        property: "og:title",
+        content: "CanvasMath - Interactive Mathematics Workspace & Simulations for K-12",
+      },
+      {
+        property: "og:description",
+        content:
+          "An advanced interactive mathematical workspace and visual simulation platform designed for K-12 student engagement and STEM training.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "theme-color", content: "#0b0f19" },
-      { name: "twitter:title", content: "CanvasMath — Instant H5 Games" },
-      { name: "twitter:description", content: "Play fast, free H5 arcade, puzzle, action and casual games instantly in your browser." },
+      {
+        name: "twitter:title",
+        content: "CanvasMath - Interactive Mathematics Workspace & Simulations for K-12",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "An advanced interactive mathematical workspace and visual simulation platform designed for K-12 student engagement and STEM training.",
+      },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/9f3117b9-6687-43c0-a36e-7be966fda60a/id-preview-fa57ffde--5b182b6e-8d99-430b-b931-c4cde31faec9.lovable.app-1781348633471.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/9f3117b9-6687-43c0-a36e-7be966fda60a/id-preview-fa57ffde--5b182b6e-8d99-430b-b931-c4cde31faec9.lovable.app-1781348633471.png" },
     ],
