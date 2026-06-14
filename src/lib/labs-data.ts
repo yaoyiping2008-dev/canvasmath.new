@@ -9,7 +9,7 @@ export interface LabModule {
 }
 
 // 补全缺失的分类常量，契合重构后的学术化文案
-export const LAB_CATEGORIES = ["Matrix", "Logic", "Applied", "Interactive"] as const;
+export const LAB_CATEGORIES = ["All","Matrix", "Logic", "Applied", "Interactive"] as const;
 
 export const labsData: LabModule[] = [
   {
