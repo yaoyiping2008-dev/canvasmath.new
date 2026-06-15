@@ -166,7 +166,7 @@ export const labsData: LabModule[] = [
     seoDescription: "Interactive tool designed for school Chromebooks to master fraction concepts visually."
   },
   {
-    id: "9",
+    id: "18",
     title: "2048 Number Logic",
     slug: "2048-number-logic",
     moduleEndpoint: "https://gabrielecirulli.github.io/2048/",
@@ -175,7 +175,7 @@ export const labsData: LabModule[] = [
     seoDescription: "Train your mathematical foresight and number sense by combining exponential tiles."
   },
   {
-    id: "18",
+    id: "19",
     title: "Sudoku Logic Master",
     slug: "sudoku-logic-master",
     moduleEndpoint: "https://pocketjoso.github.io/sudokuJS/",
@@ -184,7 +184,7 @@ export const labsData: LabModule[] = [
     seoDescription: "Classic matrix sudoku to enhance logical deduction and deductive reasoning skills."
   },
   {
-    id: "11",
+    id: "20",
     title: "Discrete Linear Systems",
     slug: "discrete-linear-systems",
     moduleEndpoint: "https://example.com/modules/discrete-linear-systems",
@@ -193,7 +193,7 @@ export const labsData: LabModule[] = [
     seoDescription: "Investigate discrete equations, coordinate matrices,"
   }, // 💡 注意：第 59 行原本的结束大括号后面，必须补上这个英文逗号（,）
   {
-    id: "19",
+    id: "21",
     title: "Capybara Meow: Math Adventure",
     slug: "capybara-meow-math",
     moduleEndpoint: "https://chinhnt2k3.github.io/capybara-meow-game/",
@@ -202,7 +202,7 @@ export const labsData: LabModule[] = [
     seoDescription: "An endless runner educational game helping kids aged 6-12 train mental math skills."
   },
   {
-    id: "20",
+    id: "22",
     title: "PhET Arithmetic Challenge",
     slug: "phet-arithmetic",
     moduleEndpoint: "https://phet.colorado.edu/sims/html/arithmetic/latest/arithmetic_all.html",
@@ -211,7 +211,7 @@ export const labsData: LabModule[] = [
     seoDescription: "Master multiplication, division, and factoring through standard interactive visual models."
   },
   {
-    id: "21",
+    id: "23",
     title: "Fractions Matcher",
     slug: "fractions-matcher",
     moduleEndpoint: "https://phet.colorado.edu/sims/html/fractions-intro/latest/fractions-intro_all.html",
@@ -220,7 +220,7 @@ export const labsData: LabModule[] = [
     seoDescription: "Interactive tool designed for school Chromebooks to master fraction concepts visually."
   },
   {
-    id: "22",
+    id: "24",
     title: "2048 Number Logic",
     slug: "2048-number-logic",
     moduleEndpoint: "https://gabrielecirulli.github.io/2048/",
@@ -229,7 +229,7 @@ export const labsData: LabModule[] = [
     seoDescription: "Train your mathematical foresight and number sense by combining exponential tiles."
   },
   {
-    id: "23",
+    id: "25",
     title: "Sudoku Logic Master",
     slug: "sudoku-logic-master",
     moduleEndpoint: "https://pocketjoso.github.io/sudokuJS/",
@@ -238,7 +238,7 @@ export const labsData: LabModule[] = [
     seoDescription: "Classic matrix sudoku to enhance logical deduction and deductive reasoning skills."
   },
   {
-    id: "24",
+    id: "26",
     title: "Sudoku Logic Master",
     slug: "sudoku-logic-master",
     moduleEndpoint: "https://pocketjoso.github.io/sudokuJS/",
