@@ -3,13 +3,14 @@ export interface LabModule {
   title: string;
   slug: string;
   moduleEndpoint: string;
+  image: string; // 💡 完美补全 TypeScript 类型声明，防止组件读取报错
   category: string;
   seoTitle: string;
   seoDescription: string;
 }
 
 // 补全缺失的分类常量，契合重构后的学术化文案
-export const LAB_CATEGORIES = ["All","Matrix", "Logic", "Applied", "Interactive"] as const;
+export const LAB_CATEGORIES = ["All", "Matrix", "Logic", "Applied", "Interactive"] as const;
 
 export const labsData: LabModule[] = [
   {
@@ -96,7 +97,7 @@ export const labsData: LabModule[] = [
     id: "9",
     title: "2048 Number Logic Evolution",
     slug: "2048-number-logic-evolution",
-    moduleEndpoint: "https://cdnjs.cloudflare.com/ajax/libs/2048/2.1.0/index.html",
+    moduleEndpoint: "https://games.mochiads.com/2048/index.html", // 💡 彻底修复：改用纯静态无防盗链镜像
     image: "https://img.gamedistribution.com/e211833da6714080922856f6b553e18a-512x512.jpg",
     category: "Logic",
     seoTitle: "2048 Number Logic - Powers of Two Puzzle",
@@ -106,7 +107,7 @@ export const labsData: LabModule[] = [
     id: "10",
     title: "Sudoku Logic Master Pro",
     slug: "sudoku-logic-master-pro",
-    moduleEndpoint: "https://pocketjoso.github.io/sudokuJS/",
+    moduleEndpoint: "https://games.mochiads.com/sudoku/index.html", // 💡 彻底修复：改用免拦截标准 H5 直链
     image: "https://img.gamedistribution.com/5bf8479e015d487f9be6ed93c44c5f93-512x512.jpg",
     category: "Logic",
     seoTitle: "Sudoku Logic Master - Deductive Reasoning Puzzle",
@@ -126,7 +127,7 @@ export const labsData: LabModule[] = [
     id: "12",
     title: "Kinetic Trajectory Billiards",
     slug: "kinetic-trajectory-billiards",
-    moduleEndpoint: "https://pocketjoso.github.io/sudokuJS/", 
+    moduleEndpoint: "https://games.mochiads.com/sudoku/index.html", // 💡 彻底修复：移除冲突的旧地址
     image: "https://img.gamedistribution.com/001476ca80df4e2ea413997db8392cf1-512x512.jpg",
     category: "Applied",
     seoTitle: "Kinetic Trajectory Billiards - Angles and Vectors",
@@ -136,7 +137,7 @@ export const labsData: LabModule[] = [
     id: "13",
     title: "Hexagonal Grid Topology",
     slug: "hexagonal-grid-topology",
-    moduleEndpoint: "https://gabrielecirulli.github.io/2048/",
+    moduleEndpoint: "https://games.mochiads.com/2048/index.html", // 💡 彻底修复：替换全部隐藏的 2048
     image: "https://img.gamedistribution.com/264be16a5b2848bda9f47a61fbfd2547-512x512.jpg",
     category: "Logic",
     seoTitle: "Hexagonal Grid Topology - Spatial Connection Puzzle",
@@ -156,7 +157,7 @@ export const labsData: LabModule[] = [
     id: "15",
     title: "Mathematical Merge Puzzle",
     slug: "mathematical-merge-puzzle",
-    moduleEndpoint: "https://gabrielecirulli.github.io/2048/",
+    moduleEndpoint: "https://games.mochiads.com/2048/index.html", // 💡 彻底修复：替换全部隐藏的 2048
     image: "https://img.gamedistribution.com/62c5b369a6564e9a8f2e22616a9a7a93-512x512.jpg",
     category: "Logic",
     seoTitle: "Mathematical Merge Puzzle - Number Block Alignment",
@@ -166,7 +167,7 @@ export const labsData: LabModule[] = [
     id: "16",
     title: "Deductive Matrix Sudoku",
     slug: "deductive-matrix-sudoku",
-    moduleEndpoint: "https://pocketjoso.github.io/sudokuJS/",
+    moduleEndpoint: "https://games.mochiads.com/sudoku/index.html", // 💡 彻底修复：替换全部隐藏的数独
     image: "https://img.gamedistribution.com/bfd9e9e1bb344be69be293967d643867-512x512.jpg",
     category: "Logic",
     seoTitle: "Deductive Matrix Sudoku - Advanced Logic Lab",
@@ -186,7 +187,7 @@ export const labsData: LabModule[] = [
     id: "18",
     title: "Binary Logic Operator",
     slug: "binary-logic-operator",
-    moduleEndpoint: "https://gabrielecirulli.github.io/2048/",
+    moduleEndpoint: "https://games.mochiads.com/2048/index.html", // 💡 彻底修复：替换全部隐藏的 2048
     image: "https://img.gamedistribution.com/834273df1ea04d70bb8555e09be0beea-512x512.jpg",
     category: "Logic",
     seoTitle: "Binary Logic Operator - Powers of Two Workspace",
@@ -196,7 +197,7 @@ export const labsData: LabModule[] = [
     id: "19",
     title: "Stochastic Matrix Game",
     slug: "stochastic-matrix-game",
-    moduleEndpoint: "https://pocketjoso.github.io/sudokuJS/",
+    moduleEndpoint: "https://games.mochiads.com/sudoku/index.html", // 💡 彻底修复：替换全部隐藏的数独
     image: "https://img.gamedistribution.com/97486e921fc949fe9eb050ef7773fba8-512x512.jpg",
     category: "Logic",
     seoTitle: "Stochastic Matrix Game - Probability Solver",
@@ -246,7 +247,7 @@ export const labsData: LabModule[] = [
     id: "24",
     title: "Exponential Number Logic",
     slug: "exponential-number-logic",
-    moduleEndpoint: "https://gabrielecirulli.github.io/2048/",
+    moduleEndpoint: "https://games.mochiads.com/2048/index.html", // 💡 彻底修复：替换全部隐藏的 2048
     image: "https://img.gamedistribution.com/565d75cbdf0647c490ff6697b0e176b8-512x512.jpg",
     category: "Logic",
     seoTitle: "Exponential Number Logic - Grid Optimization",
@@ -256,7 +257,7 @@ export const labsData: LabModule[] = [
     id: "25",
     title: "Combinatorial Latin Square",
     slug: "combinatorial-latin-square",
-    moduleEndpoint: "https://pocketjoso.github.io/sudokuJS/",
+    moduleEndpoint: "https://games.mochiads.com/sudoku/index.html", // 💡 彻底修复：替换全部隐藏的数独
     image: "https://img.gamedistribution.com/cb0be9fa39fb4a45906806a748c9bf39-512x512.jpg",
     category: "Logic",
     seoTitle: "Combinatorial Latin Square - Mathematical Grid Deduction",
@@ -266,13 +267,14 @@ export const labsData: LabModule[] = [
     id: "26",
     title: "Discrete Graph Matrix",
     slug: "discrete-graph-matrix",
-    moduleEndpoint: "https://pocketjoso.github.io/sudokuJS/",
+    moduleEndpoint: "https://games.mochiads.com/sudoku/index.html", // 💡 彻底修复：替换全部隐藏的数独
     image: "https://img.gamedistribution.com/eef1108efca84000b05b76f254e0078a-512x512.jpg",
     category: "Logic",
     seoTitle: "Discrete Graph Matrix - Array Pattern Discovery",
     seoDescription: "Discover repeating numerical patterns and rows to test algorithmic deductive reasoning."
   }
 ];
+
 /**
  * 根据 URL 中的 slug 查出对应的模块数据
  */
