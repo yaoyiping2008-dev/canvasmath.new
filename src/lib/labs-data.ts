@@ -3,275 +3,283 @@ export interface LabModule {
   title: string;
   slug: string;
   moduleEndpoint: string;
-  image: string; // 💡 补全 TypeScript 类型声明
+  image: string;
   category: string;
   seoTitle: string;
   seoDescription: string;
 }
 
-// 补全缺失的分类常量，契合重构后的学术化文案
 export const LAB_CATEGORIES = ["All", "Matrix", "Logic", "Applied", "Interactive"] as const;
 
 export const labsData: LabModule[] = [
   {
     id: "1",
-    title: "Sudoku Classic Logic",
-    slug: "sudoku-classic-logic",
-    moduleEndpoint: "https://html5games.com/game/Sudoku/",
-    image: "https://img.gamedistribution.com/5bf8479e015d487f9be6ed93c44c5f93-512x512.jpg",
-    category: "Logic",
-    seoTitle: "Sudoku Classic Logic - Deductive Reasoning | CanvasMath",
-    seoDescription: "Challenge your brain with classic grid matrix deduction and improve algebraic logical sequencing skills."
+    title: "Vector Motion Simulator",
+    slug: "vector-motion-lab",
+    moduleEndpoint: "https://phet.colorado.edu/sims/html/equality-explorer/latest/equality-explorer_all.html",
+    image: "https://img.gamedistribution.com/5f7957774bb94e6399bd66c7eb07b9eb-512x512.jpg",
+    category: "Matrix",
+    seoTitle: "Vector Motion Lab - Interactive Mathematics Simulation | CanvasMath",
+    seoDescription: "Explore vector mathematics and motion dynamics through visual simulations."
   },
   {
     id: "2",
-    title: "Block Matrix Merge",
-    slug: "block-matrix-merge",
-    moduleEndpoint: "https://html5games.com/game/Merge-the-Numbers/",
+    title: "Block Matrix Explorer",
+    slug: "block-matrix-explorer",
+    moduleEndpoint: "https://phet.colorado.edu/sims/html/area-model-algebra/latest/area-model-algebra_all.html",
     image: "https://img.gamedistribution.com/f947bf970cc5482fa816cb03d2b0e6df-512x512.jpg",
     category: "Matrix",
-    seoTitle: "Block Matrix Merge - Number Alignment Tool | CanvasMath",
-    seoDescription: "An advanced visual exploration workspace for matrix block operations, alignment, and algebraic transformations."
+    seoTitle: "Block Matrix Explorer - Linear Algebra Visual Tool | CanvasMath",
+    seoDescription: "An advanced visual exploration workspace for matrix block operations."
   },
   {
     id: "3",
-    title: "Probability Pipe Flow",
-    slug: "probability-pipe-flow",
-    moduleEndpoint: "https://html5games.com/game/Plumber-Soda/",
+    title: "Probability Logic Simulator",
+    slug: "probability-logic-simulator",
+    moduleEndpoint: "https://phet.colorado.edu/sims/html/plinko-probability/latest/plinko-probability_all.html",
     image: "https://img.gamedistribution.com/495fbf51be0d4c828062092c47864c3c-512x512.jpg",
     category: "Logic",
-    seoTitle: "Probability Pipe Flow - Network Logic Modeling | CanvasMath",
-    seoDescription: "Analyze flow connectivity and spatial logical networks using discrete topological pathfinding mechanics."
+    seoTitle: "Probability Logic Simulator - Interactive Math Labs | CanvasMath",
+    seoDescription: "Analyze statistical mathematical models and probability distributions."
   },
   {
     id: "4",
-    title: "Applied Spatial Tangram",
-    slug: "applied-spatial-tangram",
-    moduleEndpoint: "https://html5games.com/game/Kids-Tangram/",
+    title: "Applied Geometry Workspace",
+    slug: "applied-geometry-workspace",
+    moduleEndpoint: "https://phet.colorado.edu/sims/html/area-builder/latest/area-builder_all.html",
     image: "https://img.gamedistribution.com/9796ff0b6fa54cf5b292e9dbb186b24d-512x512.jpg",
     category: "Applied",
-    seoTitle: "Applied Spatial Tangram - Geometric Assembly | CanvasMath",
-    seoDescription: "Interactive coordinate shapes and spatial geometric rotation labs for K-12 math foundations."
+    seoTitle: "Applied Geometry Workspace - Visual Geometric Processing | CanvasMath",
+    seoDescription: "Interactive coordinate systems and spatial geometric projection labs."
   },
   {
     id: "5",
-    title: "Discrete Hexa Topology",
-    slug: "discrete-hexa-topology",
-    moduleEndpoint: "https://html5games.com/game/Make-Hexa-Puzzle/",
+    title: "Discrete Linear Systems",
+    slug: "discrete-linear-systems",
+    moduleEndpoint: "https://phet.colorado.edu/sims/html/expression-exchange/latest/expression-exchange_all.html",
     image: "https://img.gamedistribution.com/8db632d4323c4a2db7fa3c1c4b75eb75-512x512.jpg",
-    category: "Matrix",
-    seoTitle: "Discrete Hexa Topology - Hexagonal Grid Logic",
-    seoDescription: "Investigate hexagonal cell equations, coordinate matrices, and space optimization constraints."
+    category: "Logic",
+    seoTitle: "Discrete Linear Systems Simulator – Advanced Mathematics",
+    seoDescription: "Investigate discrete equations, coordinate matrices, and variables."
   },
   {
     id: "6",
-    title: "Arithmetic Tower Defense",
-    slug: "arithmetic-tower-defense",
-    moduleEndpoint: "https://html5games.com/game/King-Soldiers/",
+    title: "Capybara Meow: Math Adventure",
+    slug: "capybara-meow-math",
+    moduleEndpoint: "https://chinhnt2k3.github.io/capybara-meow-game/",
     image: "https://img.gamedistribution.com/79ee55b2591642c6b45396590b561c27-512x512.jpeg",
     category: "Applied",
-    seoTitle: "Arithmetic Tower Defense - Kinematic Trajectory Game",
-    seoDescription: "Calculate projection angles and velocity paths to solve physics-based tactical equation simulations."
+    seoTitle: "Capybara Meow: Math Adventure - K-12 Mental Math Game",
+    seoDescription: "An endless runner educational game helping kids aged 6-12 train mental math."
   },
   {
     id: "7",
-    title: "Calculus Path Tracer",
-    slug: "calculus-path-tracer",
-    moduleEndpoint: "https://html5games.com/game/Draw-Line/",
+    title: "PhET Arithmetic Challenge",
+    slug: "phet-arithmetic",
+    moduleEndpoint: "https://phet.colorado.edu/sims/html/arithmetic/latest/arithmetic_all.html",
     image: "https://img.gamedistribution.com/95fb77e5d5904d999052b6507c577014-512x512.jpg",
     category: "Interactive",
-    seoTitle: "Calculus Path Tracer - Continuous Coordinate Lines",
-    seoDescription: "Master functional graphing and geometric limits through standard vector tracking visual models."
+    seoTitle: "PhET Arithmetic Challenge - Interactive Math Simulation",
+    seoDescription: "Master multiplication, division, and factoring through standard visual models."
   },
   {
     id: "8",
-    title: "Fraction Sorting Logic",
-    slug: "fraction-sorting-logic",
-    moduleEndpoint: "https://html5games.com/game/Sort-It-Water-Sort-Puzzle/",
+    title: "Fractions Matcher Visual",
+    slug: "fractions-matcher-visual",
+    moduleEndpoint: "https://phet.colorado.edu/sims/html/fractions-intro/latest/fractions-intro_all.html",
     image: "https://img.gamedistribution.com/be8c6171f11c4228965f3d4ef684b06f-512x512.jpg",
     category: "Interactive",
-    seoTitle: "Fraction Sorting Logic - Volumetric Classification",
-    seoDescription: "Interactive classification tool designed to master density, volume division, and fractional sorting concepts."
+    seoTitle: "Fractions Matcher - Visual Fraction Learning",
+    seoDescription: "Interactive tool designed for school Chromebooks to master fraction concepts."
   },
   {
     id: "9",
-    title: "Mathematical Flow Connector",
-    slug: "mathematical-flow-connector",
-    moduleEndpoint: "https://html5games.com/game/Flow-Lines/",
+    title: "2048 Number Logic Evolution",
+    slug: "2048-number-logic-evolution",
+    moduleEndpoint: "https://sc940.github.io/2048/",
     image: "https://img.gamedistribution.com/e211833da6714080922856f6b553e18a-512x512.jpg",
     category: "Logic",
-    seoTitle: "Mathematical Flow Connector - Non-crossing Graph Networks",
-    seoDescription: "Train your mathematical graph theory and spatial topology sense by connecting discrete multi-colored matrix endpoints."
+    seoTitle: "2048 Number Logic - Powers of Two Puzzle",
+    seoDescription: "Train your mathematical foresight and number sense by combining tiles."
   },
   {
     id: "10",
-    title: "Geometric Cut Master",
-    slug: "geometric-cut-master",
-    moduleEndpoint: "https://html5games.com/game/Slice-Food/",
+    title: "Sudoku Logic Master Pro",
+    slug: "sudoku-logic-master-pro",
+    moduleEndpoint: "https://pocketjoso.github.io/sudokuJS/",
     image: "https://img.gamedistribution.com/5bf8479e015d487f9be6ed93c44c5f93-512x512.jpg",
-    category: "Applied",
-    seoTitle: "Geometric Cut Master - Fractional Area Division",
-    seoDescription: "Calculate precise slice percentages and ratio cuts to master visual geometric geometry distributions."
+    category: "Logic",
+    seoTitle: "Sudoku Logic Master - Deductive Reasoning Puzzle",
+    seoDescription: "Classic matrix sudoku to enhance logical deduction and reasoning skills."
   },
   {
     id: "11",
-    title: "Algorithmic Block Fill",
-    slug: "algorithmic-block-fill",
-    moduleEndpoint: "https://html5games.com/game/Elements-Blocks/",
+    title: "Spatial Geometry Tangram",
+    slug: "spatial-geometry-tangram",
+    moduleEndpoint: "https://phet.colorado.edu/sims/html/area-builder/latest/area-builder_all.html",
     image: "https://img.gamedistribution.com/4666cf4049fc496da998592318ef18f7-512x512.jpg",
     category: "Matrix",
-    seoTitle: "Algorithmic Block Fill - Bin Packing Space optimization",
-    seoDescription: "Interactive combinatorial block layout system to study 2D array packing optimization rules."
+    seoTitle: "Spatial Geometry Tangram - Area and Perimeter Lab",
+    seoDescription: "Interactive building blocks to study area, perimeter, and grid mapping."
   },
   {
     id: "12",
-    title: "Vector Physics Trajectory",
-    slug: "vector-physics-trajectory",
-    moduleEndpoint: "https://html5games.com/game/Knife-Rain/",
+    title: "Function Quadrant Grapher",
+    slug: "kinetic-trajectory-billiards",
+    // 💡 替换独立新链：PhET 坐标系象限与函数图像打靶器
+    moduleEndpoint: "https://phet.colorado.edu/sims/html/graphing-lines/latest/graphing-lines_all.html",
     image: "https://img.gamedistribution.com/001476ca80df4e2ea413997db8392cf1-512x512.jpg",
     category: "Applied",
-    seoTitle: "Vector Physics Trajectory - Velocity Intersections",
-    seoDescription: "Simulate physics-based angular frequency calculation and temporal collision prediction variables."
+    seoTitle: "Function Quadrant Grapher - Linear Trajectories",
+    seoDescription: "Plot linear functions and predict intersection slope coordinates in real time."
   },
   {
     id: "13",
-    title: "Binary Match Simulator",
-    slug: "binary-match-simulator",
-    moduleEndpoint: "https://html5games.com/game/10x10-Blocks-Match/",
+    title: "Hexagonal Fraction Sandbox",
+    slug: "hexagonal-grid-topology",
+    // 💡 替换独立新链：PhET 空间多边形分数切片平衡
+    moduleEndpoint: "https://phet.colorado.edu/sims/html/fractions-equality/latest/fractions-equality_all.html",
     image: "https://img.gamedistribution.com/264be16a5b2848bda9f47a61fbfd2547-512x512.jpg",
-    category: "Matrix",
-    seoTitle: "Binary Match Simulator - 10x10 Matrix Array Blocks",
-    seoDescription: "Deploy coordinate matrix reduction strategies on standard grid allocation rows and columns."
+    category: "Logic",
+    seoTitle: "Hexagonal Fraction Sandbox - Spatial Connection",
+    seoDescription: "Examine ratio constraints across complex polygonal spatial layouts."
   },
   {
     id: "14",
-    title: "Combinatorial Word Tree",
-    slug: "combinatorial-word-tree",
-    moduleEndpoint: "https://html5games.com/game/Word-Connect/",
+    title: "Function Balance Scales",
+    slug: "function-balance-scales",
+    moduleEndpoint: "https://phet.colorado.edu/sims/html/equality-explorer/latest/equality-explorer_all.html",
     image: "https://img.gamedistribution.com/5df16a7eb2694e9f90cf9fa4c7b80145-512x512.jpg",
     category: "Interactive",
-    seoTitle: "Combinatorial Word Tree - Permutations and Strings",
-    seoDescription: "Visual permutations mapping tool to discover discrete string combinations and mathematical arrangements."
+    seoTitle: "Function Balance Scales - Algebraic Equality",
+    seoDescription: "Visual interactive scale system to master equations and algebra basics."
   },
   {
     id: "15",
-    title: "Loop Network Operator",
-    slug: "loop-network-operator",
-    moduleEndpoint: "https://html5games.com/game/Loop-Hexa/",
+    title: "Hexagonal Number Puzzle",
+    slug: "mathematical-merge-puzzle",
+    // 💡 替换独立新链：GitHub 开源纯净六边形数字连线
+    moduleEndpoint: "https://michaelfbastos.github.io/hex puzzle/",
     image: "https://img.gamedistribution.com/62c5b369a6564e9a8f2e22616a9a7a93-512x512.jpg",
     category: "Logic",
-    seoTitle: "Loop Network Operator - Closed Loop Topologies",
-    seoDescription: "Calculate rotation vectors and angles to create endless closed logic structures across hexagonal coordinates."
+    seoTitle: "Hexagonal Number Puzzle - Dynamic Alignment",
+    seoDescription: "Calculate steps and space constraints to link hexagonal numeric sequences."
   },
   {
     id: "16",
-    title: "Stochastic Bubble Path",
-    slug: "stochastic-bubble-path",
-    moduleEndpoint: "https://html5games.com/game/Smarty-Bubbles/",
+    title: "HTML5 Hextris Operator",
+    slug: "deductive-matrix-sudoku",
+    // 💡 替换独立新链：经典 GitHub 开源纯净六边形俄罗斯方块 Hextris
+    moduleEndpoint: "https://hextris.github.io/hextris/",
     image: "https://img.gamedistribution.com/bfd9e9e1bb344be69be293967d643867-512x512.jpg",
     category: "Logic",
-    seoTitle: "Stochastic Bubble Path - Color Code Matching Labs",
-    seoDescription: "Examine random reflection angles, trajectories and cluster matching logic mechanics."
+    seoTitle: "Hextris Operator - Algorithmic Rotation Matrix",
+    seoDescription: "Examine discrete spatial rotation limits through logical constraints."
   },
   {
     id: "17",
-    title: "Topological Bridge Builder",
-    slug: "topological-bridge-builder",
-    moduleEndpoint: "https://html5games.com/game/Bridge-Legends/",
+    title: "Ratio and Proportion Labs",
+    slug: "ratio-proportion-labs",
+    moduleEndpoint: "https://phet.colorado.edu/sims/html/proportions-3d/latest/proportions-3d_all.html",
     image: "https://img.gamedistribution.com/f04c601db5fa43bba1bcfec64299b9cf-512x512.jpg",
-    category: "Applied",
-    seoTitle: "Topological Bridge Builder - Physics Tension Constants",
-    seoDescription: "Engage with variable-length linear structural ratio models to master bridge gap spans and physical vector forces."
+    category: "Interactive",
+    seoTitle: "Ratio and Proportion Labs - 3D Visual Constants",
+    seoDescription: "Engage with dynamic 3D linear ratios to grasp scaling constants."
   },
   {
     id: "18",
-    title: "Recursive Merge Board",
-    slug: "recursive-merge-board",
-    moduleEndpoint: "https://html5games.com/game/Get-10/",
+    title: "Grid Optimization Matrix",
+    slug: "binary-logic-operator",
+    // 💡 替换独立新链：GitHub 开源高赞矩阵网格填充路线
+    moduleEndpoint: "https://stared.github.io/matrix-game/",
     image: "https://img.gamedistribution.com/834273df1ea04d70bb8555e09be0beea-512x512.jpg",
     category: "Logic",
-    seoTitle: "Recursive Merge Board - Number Grid Evolution",
-    seoDescription: "Combine adjacent equivalent integers to optimize matrix score limits and track exponential sequences."
+    seoTitle: "Grid Optimization Matrix - Discrete Array Game",
+    seoDescription: "Optimize grid transformation steps to calculate target numerical patterns."
   },
   {
     id: "19",
-    title: "Arithmetic Math Runner",
-    slug: "arithmetic-math-runner",
-    moduleEndpoint: "https://html5games.com/game/Math-Whiz/",
+    title: "Calculus Derivative Grapher",
+    slug: "stochastic-matrix-game",
+    // 💡 替换独立新链：PhET 微积分导数与切线变化模拟器
+    moduleEndpoint: "https://phet.colorado.edu/sims/html/calculus-grapher/latest/calculus-grapher_all.html",
     image: "https://img.gamedistribution.com/97486e921fc949fe9eb050ef7773fba8-512x512.jpg",
-    category: "Interactive",
-    seoTitle: "Arithmetic Math Runner - Real-time Formula Calculation",
-    seoDescription: "Calculate arithmetic outputs under strict time constraints to develop rapid mental equation calculation skills."
+    category: "Logic",
+    seoTitle: "Calculus Derivative Grapher - Continuous Functions",
+    seoDescription: "Calculate mathematical derivative transformations and slope integrals dynamically."
   },
   {
     id: "20",
-    title: "Geometric Stack Architect",
-    slug: "geometric-stack-architect",
-    moduleEndpoint: "https://html5games.com/game/Stack-Tower/",
+    title: "Dynamic Fluid Simulation",
+    slug: "dynamic-fluid-simulation",
+    moduleEndpoint: "https://phet.colorado.edu/sims/html/states-of-matter-basics/latest/states-of-matter-basics_all.html",
     image: "https://img.gamedistribution.com/c994dfbf3bbf4ee4b868ef61f89311fe-512x512.jpg",
     category: "Applied",
-    seoTitle: "Geometric Stack Architect - Center of Mass Optimization",
-    seoDescription: "Simulate solid block truncation, misalignment tolerances, and visual equilibrium vectors in real-time."
+    seoTitle: "Dynamic Fluid Simulation - Hydrodynamic Trajectories",
+    seoDescription: "Simulate particle physics, vectors, and temperature constraints in real time."
   },
   {
     id: "21",
-    title: "Dynamic Jelly Physics",
-    slug: "dynamic-jelly-physics",
-    moduleEndpoint: "https://html5games.com/game/Jelly-Collapse/",
+    title: "Velocity Runner Calculus",
+    slug: "velocity-runner-calculus",
+    moduleEndpoint: "https://chinhnt2k3.github.io/capybara-meow-game/",
     image: "https://img.gamedistribution.com/109c95b060fa41a995db304dfdf12a58-512x512.jpg",
     category: "Applied",
-    seoTitle: "Dynamic Jelly Physics - Deformable Entity Clusters",
-    seoDescription: "Analyze adjacent cluster removal mechanics and gravity tracking using deformable grid physics models."
+    seoTitle: "Velocity Runner Calculus - Kinematics and Speed",
+    seoDescription: "An endless velocity challenge testing real-time operational math calculation."
   },
   {
     id: "22",
-    title: "Pattern Induction Memory",
-    slug: "pattern-induction-memory",
-    moduleEndpoint: "https://html5games.com/game/Memory-Match-Animals/",
+    title: "Statistical Data Grapher",
+    slug: "statistical-data-grapher",
+    moduleEndpoint: "https://phet.colorado.edu/sims/html/plinko-probability/latest/plinko-probability_all.html",
     image: "https://img.gamedistribution.com/4cc1da1430034a2e87c07da196df5886-512x512.jpg",
     category: "Interactive",
-    seoTitle: "Pattern Induction Memory - Matrix Pair Matching",
-    seoDescription: "Develop visual matrix indices mapping, pattern identification, and grid positioning records."
+    seoTitle: "Statistical Data Grapher - Plinko Probability Lab",
+    seoDescription: "Master bell curves and binomial distributions with falling grid arrays."
   },
   {
     id: "23",
-    title: "Kinematic Target Practice",
-    slug: "kinematic-target-practice",
-    moduleEndpoint: "https://html5games.com/game/Defend-the-Tank/",
+    title: "Fraction Segment Matcher",
+    slug: "fraction-segment-matcher",
+    moduleEndpoint: "https://phet.colorado.edu/sims/html/fractions-intro/latest/fractions-intro_all.html",
     image: "https://img.gamedistribution.com/791c107e3a394fb288d672dfb704fb36-512x512.jpg",
-    category: "Applied",
-    seoTitle: "Kinematic Target Practice - Dynamic Intercept Curves",
-    seoDescription: "A real-time coordinate defense sandbox demonstrating intercept calculation and collision mechanics."
+    category: "Interactive",
+    seoTitle: "Fraction Segment Matcher - Geometry Division",
+    seoDescription: "A visual sandbox demonstrating fractional area mapping and matching."
   },
   {
     id: "24",
-    title: "Linear Link Puzzle",
-    slug: "linear-link-puzzle",
-    moduleEndpoint: "https://html5games.com/game/Hexa-Blocks-Puzzle/",
+    title: "Algebraic Graphing Workspace",
+    slug: "exponential-number-logic",
+    // 💡 替换独立新链：PhET 代数方程式图像与斜率截距变幻器
+    moduleEndpoint: "https://phet.colorado.edu/sims/html/graphing-quadratics/latest/graphing-quadratics_all.html",
     image: "https://img.gamedistribution.com/565d75cbdf0647c490ff6697b0e176b8-512x512.jpg",
-    category: "Matrix",
-    seoTitle: "Linear Link Puzzle - Hexagonal Coordinate Tiling",
-    seoDescription: "Fit non-overlapping geometric blocks into continuous rows on complex mathematical hexagonal matrix arrays."
+    category: "Logic",
+    seoTitle: "Algebraic Graphing Workspace - Coordinate Curves",
+    seoDescription: "Explore quadratic equations, exponential variations, and parabola constants."
   },
   {
     id: "25",
-    title: "Discrete Jewel Combinatorics",
-    slug: "discrete-jewel-combinatorics",
-    moduleEndpoint: "https://html5games.com/game/Jewel-Crunch/",
+    title: "Number Line Integers Lab",
+    slug: "combinatorial-latin-square",
+    // 💡 替换独立新链：PhET 离散正负数绝对值数轴实验室
+    moduleEndpoint: "https://phet.colorado.edu/sims/html/number-line-integers/latest/number-line-integers_all.html",
     image: "https://img.gamedistribution.com/cb0be9fa39fb4a45906806a748c9bf39-512x512.jpg",
     category: "Logic",
-    seoTitle: "Discrete Jewel Combinatorics - Array Index Displacement",
-    seoDescription: "Solve linear shift grid configurations based on structural combinatorial matrix search trees."
+    seoTitle: "Number Line Integers Lab - Absolute Vector Values",
+    seoDescription: "Solve integer placement and scale operations on an interactive vector number line."
   },
   {
     id: "26",
-    title: "Optimal Path Connector",
-    slug: "optimal-path-connector",
-    moduleEndpoint: "https://html5games.com/game/Onet-Connect-Classic/",
+    title: "Vector Addition Matrix",
+    slug: "discrete-graph-matrix",
+    // 💡 替换独立新链：PhET 二维向量加减法与矩阵力学合成实验室
+    moduleEndpoint: "https://phet.colorado.edu/sims/html/vector-addition/latest/vector-addition_all.html",
     image: "https://img.gamedistribution.com/eef1108efca84000b05b76f254e0078a-512x512.jpg",
     category: "Logic",
-    seoTitle: "Optimal Path Connector - Double-Turn Grid Routing",
-    seoDescription: "Discover cell pathways restricted to maximum orthogonal turns to train graph pathfinding constraints."
+    seoTitle: "Vector Addition Matrix - Coordinate Intersections",
+    seoDescription: "Discover array coordinate outputs and force composition laws visually."
   }
 ];
 
