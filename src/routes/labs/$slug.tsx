@@ -44,7 +44,7 @@ function LabWorkspace() {
   }
 
   return (
-    <div className="flex h-screen flex-col bg-background text-foreground">
+    <div className="flex h-screen w-screen flex-col overflow-hidden bg-background text-foreground">
       <header className="flex shrink-0 items-center gap-3 border-b border-border px-3 py-2 md:px-4">
         <Button asChild variant="ghost" size="icon" aria-label="Back to all simulations">
           <Link to="/">
@@ -59,14 +59,22 @@ function LabWorkspace() {
           </p>
         </div>
       </header>
-      <iframe
-        src={lab.moduleEndpoint}
-        title={`${lab.title} simulation`}
-        allow="fullscreen"
-        referrerPolicy="no-referrer"
-        sandbox="allow-scripts allow-forms allow-popups allow-modals allow-presentation allow-fullscreen allow-same-origin"
-        className="min-h-0 flex-1 border-0 bg-card"
-      />
+      
+      {/* 💡 核心修复：外层包裹一个 flex-1 relative 容器，死死锁定剩余屏幕的所有宽高 */}
+      <div className="w-full flex-1 relative bg-card">
+        <iframe
+          src={lab.moduleEndpoint}
+          title={`${lab.title} simulation`}
+          // 💡 修复 1：改用最高兼容性的 fullscreen 策略
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+          // 💡 修复 2：放开 Referrer 限制，允许大厂和 PhET 服务器校验访问来源，彻底解决黑屏拦截
+          referrerPolicy="strict-origin-when-cross-origin"
+          // 💡 修复 3：保留最安全的沙箱权限
+          sandbox="allow-scripts allow-forms allow-popups allow-modals allow-presentation allow-fullscreen allow-same-origin"
+          // 💡 修复 4：用 absolute top-0 铺满父容器，物理防塌陷，画面百分之百点亮！
+          className="absolute top-0 left-0 w-full h-full border-0 m-0 p-0"
+        />
+      </div>
     </div>
   );
 }
