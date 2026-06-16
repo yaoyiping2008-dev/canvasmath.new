@@ -24,7 +24,7 @@ export function LabTaskCard({ lab, index }: LabTaskCardProps) {
       className="lab-glow group relative h-auto aspect-square cursor-pointer overflow-hidden rounded-md bg-card p-0 text-left transition duration-200 hover:scale-[1.02] hover:bg-card focus-visible:ring-2"
     >
       <img
-        src={lab.coverUrl}
+        src={lab.image}  // ✅ 改为 lab.image
         alt={`${lab.title} simulation preview`}
         width={768}
         height={768}
