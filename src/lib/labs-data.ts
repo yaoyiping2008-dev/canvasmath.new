@@ -83,7 +83,7 @@ export const labsData: LabModule[] = [
     id: "9",
     title: "2048 Number Logic Evolution",
     slug: "2048-number-logic-evolution",
-    moduleEndpoint: "https://js13kgames.com/entries/2048",
+    moduleEndpoint: "https://play2048.co/",
     image: "/thumbnails/lab-9.png",
     category: "Logic",
     seoTitle: "2048 Number Logic - Powers of Two Puzzle",
