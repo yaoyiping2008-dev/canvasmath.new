@@ -3,7 +3,7 @@ export interface LabModule {
   title: string;
   slug: string;
   moduleEndpoint: string;
-  image: string; // 💡 已全部切换为 PhET 官方及 GitHub 原生免拦截高清图
+  image: string;
   category: string;
   seoTitle: string;
   seoDescription: string;
@@ -67,7 +67,7 @@ export const labsData: LabModule[] = [
     title: "Capybara Meow: Math Adventure",
     slug: "capybara-meow-math",
     moduleEndpoint: "https://chinhnt2k3.github.io/capybara-meow-game/",
-    image: "https://images.unsplash.com/photo-1598128558393-70ff21433be0?w=600&auto=format&fit=crop&q=80", // 替换为精美正方形学前数学封面
+    image: "https://images.unsplash.com/photo-1598128558393-70ff21433be0?w=600&auto=format&fit=crop&q=80",
     category: "Applied",
     seoTitle: "Capybara Meow: Math Adventure - K-12 Mental Math Game",
     seoDescription: "An endless runner educational game helping kids aged 6-12 train mental math."
@@ -96,8 +96,8 @@ export const labsData: LabModule[] = [
     id: "9",
     title: "2048 Number Logic Evolution",
     slug: "2048-number-logic-evolution",
-    moduleEndpoint: "https://sc940.github.io/2048/",
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/2048_logo.svg/600px-2048_logo.svg.png", // 2048官方高清矢量图
+    moduleEndpoint: "https://gabrielecirulli.github.io/2048/",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/2048_logo.svg/600px-2048_logo.svg.png",
     category: "Logic",
     seoTitle: "2048 Number Logic - Powers of Two Puzzle",
     seoDescription: "Train your mathematical foresight and number sense by combining tiles."
@@ -107,7 +107,7 @@ export const labsData: LabModule[] = [
     title: "Sudoku Logic Master Pro",
     slug: "sudoku-logic-master-pro",
     moduleEndpoint: "https://pocketjoso.github.io/sudokuJS/",
-    image: "https://images.unsplash.com/photo-1603139771144-8025b306b38c?w=600&auto=format&fit=crop&q=80", // 经典九宫格数独背景
+    image: "https://images.unsplash.com/photo-1603139771144-8025b306b38c?w=600&auto=format&fit=crop&q=80",
     category: "Logic",
     seoTitle: "Sudoku Logic Master - Deductive Reasoning Puzzle",
     seoDescription: "Classic matrix sudoku to enhance logical deduction and reasoning skills."
@@ -156,8 +156,8 @@ export const labsData: LabModule[] = [
     id: "15",
     title: "Hexagonal Number Puzzle",
     slug: "mathematical-merge-puzzle",
-    moduleEndpoint: "https://michaelfbastos.github.io/hex puzzle/",
-    image: "https://images.unsplash.com/photo-1611195974226-a6a9be9dd763?w=600&auto=format&fit=crop&q=80", // 抽象蜂巢六边形矩阵图
+    moduleEndpoint: "https://michaelfbastos.github.io/hex%20puzzle/",
+    image: "https://images.unsplash.com/photo-1611195974226-a6a9be9dd763?w=600&auto=format&fit=crop&q=80",
     category: "Logic",
     seoTitle: "Hexagonal Number Puzzle - Dynamic Alignment",
     seoDescription: "Calculate steps and space constraints to link hexagonal numeric sequences."
@@ -167,7 +167,7 @@ export const labsData: LabModule[] = [
     title: "HTML5 Hextris Operator",
     slug: "deductive-matrix-sudoku",
     moduleEndpoint: "https://hextris.github.io/hextris/",
-    image: "https://hextris.github.io/hextris/images/logo.png", // Hextris 官方极简 Logo 直链
+    image: "https://hextris.github.io/hextris/images/logo.png",
     category: "Logic",
     seoTitle: "Hextris Operator - Algorithmic Rotation Matrix",
     seoDescription: "Examine discrete spatial rotation limits through logical constraints."
@@ -187,7 +187,7 @@ export const labsData: LabModule[] = [
     title: "Grid Optimization Matrix",
     slug: "binary-logic-operator",
     moduleEndpoint: "https://stared.github.io/matrix-game/",
-    image: "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=600&auto=format&fit=crop&q=80", // 现代数学坐标网格封面
+    image: "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=600&auto=format&fit=crop&q=80",
     category: "Logic",
     seoTitle: "Grid Optimization Matrix - Discrete Array Game",
     seoDescription: "Optimize grid transformation steps to calculate target numerical patterns."
@@ -217,7 +217,7 @@ export const labsData: LabModule[] = [
     title: "Velocity Runner Calculus",
     slug: "velocity-runner-calculus",
     moduleEndpoint: "https://chinhnt2k3.github.io/capybara-meow-game/",
-    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&auto=format&fit=crop&q=80", // 学院风动力学与算力卡片
+    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&auto=format&fit=crop&q=80",
     category: "Applied",
     seoTitle: "Velocity Runner Calculus - Kinematics and Speed",
     seoDescription: "An endless velocity challenge testing real-time operational math calculation."
