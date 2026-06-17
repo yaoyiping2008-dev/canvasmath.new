@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import {
-  FlaskConical, Grid2X2, Search, Sigma, Puzzle, Sparkles,
+  Grid2X2, Search, Sigma, Puzzle, Sparkles,
   Layers, X, Mail, UserRound,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,9 @@ import {
 } from "@/components/ui/dialog";
 import { SimulationGrid } from "@/components/SimulationGrid";
 import { LAB_CATEGORIES, labsData, type LabCategory } from "@/lib/labs-data";
+
+// 💡 1. 引入重命名为全大写的全站动态 LOGO.gif
+import logoGif from "@/assets/LOGO.gif";
 
 const SITE_TITLE = "CanvasMath - Interactive Mathematics Workspace & Simulations for K-12";
 const SITE_DESCRIPTION =
@@ -95,10 +98,18 @@ function Index() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <aside className="fixed inset-y-0 left-0 z-30 flex w-20 flex-col overflow-x-hidden overflow-y-auto border-r border-border bg-card px-2 py-3 md:w-48 md:px-3">
-        <div className="mb-3 flex items-center justify-center gap-2 px-1 md:justify-start">
-          <FlaskConical className="size-6 shrink-0 text-primary" />
-          <span className="hidden font-display text-xl font-bold tracking-tight text-primary md:block">CanvasMath</span>
+        
+        {/* 💡 2. 左上角 LOGO 区域：一刀切换成我们引入的专属动态图 */}
+        <div className="mb-3 flex items-center justify-center px-1 md:justify-start">
+          <a href="/" className="block hover:opacity-90 transition">
+            <img 
+              src={logoGif} 
+              alt="Logo" 
+              className="h-7 md:h-8 w-auto object-contain block mx-auto md:mx-0"
+            />
+          </a>
         </div>
+
         <div className="grid grid-cols-2 gap-2 border-b border-border pb-3">
           <Button
             aria-label="Search simulations"
