@@ -8,6 +8,11 @@ import {
 } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { LayoutGrid, Layers, Lightbulb, Compass, HelpCircle } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+// 💡 1. 精准引入全站总母体的动态 LOGO.gif
+import logoGif from "@/assets/LOGO.gif";
 
 function NotFoundComponent() {
   return (
@@ -114,10 +119,68 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
+  // 全局侧边栏菜单项配置
+  const navItems = [
+    { to: "/", label: "All Simulations", icon: LayoutGrid },
+    { to: "/matrix", label: "Matrix", icon: Layers },
+    { to: "/logic", label: "Logic", icon: Lightbulb },
+    { to: "/applied", label: "Applied", icon: Compass },
+    { to: "/interactive", label: "Interactive", icon: HelpCircle },
+  ];
+
   return (
     <QueryClientProvider client={queryClient}>
       <HeadContent />
-      <Outlet />
+      {/* 💡 2. 全局基础弹性外壳：保证左侧侧边栏固定，右侧内容区自适应滚动 */}
+      <div className="flex h-screen w-screen overflow-hidden bg-background text-foreground font-sans">
+        
+        {/* 全局固定左侧侧边栏 */}
+        <aside className="w-64 border-r border-border bg-card flex flex-col justify-between shrink-0">
+          <div className="flex flex-col">
+            
+            {/* 💡 3. 左上角专属 LOGO 容器：点击返回首页 */}
+            <Link to="/" className="flex items-center gap-2 px-6 py-5 border-b border-border/50 hover:opacity-90 transition">
+              {/* 一次性渲染动态 LOGO 替代旧文字，限制高度 h-8 (32px) */}
+              <img 
+                src={logoGif} 
+                alt="CanvasMath Logo" 
+                className="h-8 w-auto object-contain block" 
+              />
+            </Link>
+
+            {/* 导航菜单列表 */}
+            <nav className="flex flex-col gap-1 p-4">
+              {navItems.map((item) => (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  activeProps={{ className: "bg-primary text-primary-foreground font-medium" }}
+                  inactiveProps={{ className: "text-muted-foreground hover:bg-muted hover:text-foreground" }}
+                  className={cn(
+                    "flex items-center gap-3 px-4 py-2.5 rounded-md text-sm transition duration-150"
+                  )}
+                >
+                  <item.icon className="h-4 w-auto shrink-0" />
+                  <span>{item.label}</span>
+                </Link>
+              ))}
+            </nav>
+          </div>
+
+          {/* 侧边栏底部版权区 */}
+          <div className="p-4 border-t border-border/50 text-center">
+            <p className="text-[10px] text-muted-foreground/60">
+              © 2026 CanvasMath Lab Collection
+            </p>
+          </div>
+        </aside>
+
+        {/* 右侧动态业务渲染核心区（游戏和网格列表在这里自适应变化） */}
+        <main className="flex-1 h-full overflow-y-auto bg-background">
+          <Outlet />
+        </main>
+
+      </div>
     </QueryClientProvider>
   );
 }
