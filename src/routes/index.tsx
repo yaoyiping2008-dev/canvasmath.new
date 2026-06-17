@@ -32,7 +32,7 @@ const legalContent = {
         <p><strong>1. Data Collection & Analytics:</strong> We do not require user registration. We use industry-standard, privacy-compliant essential and analytics cookies (such as Google Analytics) solely to measure site performance. These tools collect non-personally identifiable technical telemetry (browser type, anonymous usage vectors).</p>
         <p><strong>2. Google Ads & Third-Party Vendors:</strong> Google and third-party vendors use cookies to serve ads based on prior visits. Users may completely opt out of personalized advertising by visiting the <a href="https://tools.google.com/dlpage/gaoptout/" target="_blank" rel="noreferrer" className="text-primary underline">Google Analytics Opt-out Browser Add-on</a> and managing settings via <a href="https://adssettings.google.com" target="_blank" rel="noreferrer" className="text-primary underline">Google Ads Settings</a>.</p>
         <p><strong>3. K-12 Student Protection (COPPA & GDPR):</strong> We strictly adhere to COPPA and GDPR frameworks. CanvasMath does NOT knowingly or intentionally collect, track, or harvest personal identifiable information (PII) from children under the age of 13. Interactive modules are safely sandbox-embedded from verified independent educational publishers. If you believe any child data has been inadvertently processed, contact us immediately for permanent deletion.</p>
-        <p><strong>4. Data Rights:</strong> GDPR/CCPA users retain absolute rights to access, restrict, or delete telemetry caches. For inquiries, email: <span className="text-primary font-semibold">privacy@canvasmath.edu</span>.</p>
+        <p><strong>4. Data Rights:</strong> GDPR/CCPA users retain absolute rights to access, restrict, or delete telemetry caches. For inquiries, email: <span className="text-primary font-semibold">privacy@canvasmath.org</span>.</p>
       </div>
     ),
   },
@@ -54,7 +54,7 @@ const legalContent = {
         <p><strong>About CanvasMath:</strong> CanvasMath is an open, premium curated interactive mathematics workspace dedicated to K-12 learners and STEM curriculum enhancement. We focus on visual execution, geometric processing, and zero-download accessibility for Chromebooks and classroom infrastructure.</p>
         <p><strong>Publisher & Content Partnership:</strong> We highly respect intellectual property. If you are a publisher looking to integrate or audit the license of any simulation module showcased in our catalog, please contact our curriculum clearing desk.</p>
         <p className="flex items-center gap-2 font-medium bg-muted p-2 rounded border border-border w-fit">
-          <Mail className="size-4 text-primary" /> General & Legal Desk: hello@canvasmath.edu
+          <Mail className="size-4 text-primary" /> General & Legal Desk: hello@canvasmath.org
         </p>
         <p className="text-muted-foreground text-[11px]">Entity Operations: CanvasMath Academic Distribution Platform. Inquiries are generally audited and answered within 48 business hours.</p>
       </div>
