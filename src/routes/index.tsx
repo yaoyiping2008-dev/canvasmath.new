@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { SimulationGrid } from "@/components/SimulationGrid";
 import { LAB_CATEGORIES, labsData, type LabCategory } from "@/lib/labs-data";
+import logoGif from "@/assets/main-logo.gif";
 
 const SITE_TITLE = "CanvasMath - Interactive Mathematics Workspace & Simulations for K-12";
 const SITE_DESCRIPTION =
@@ -96,31 +97,13 @@ function Index() {
     <div className="min-h-screen bg-background text-foreground">
       <aside className="fixed inset-y-0 left-0 z-30 flex w-20 flex-col overflow-x-hidden overflow-y-auto border-r border-border bg-card px-2 py-3 md:w-48 md:px-3">
         
-        {/* 💡 终极绝杀：纯 SVG 现代动画 LOGO 容器（不依赖任何外部图片链接或损坏的 Base64） */}
         <div className="mb-4 flex items-center justify-center px-1 md:justify-start">
-          <a href="/" className="group flex items-center gap-2.5 transition-all duration-300">
-            <div className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 p-1.5 text-primary transition-transform duration-500 group-hover:rotate-180 group-hover:scale-105">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="h-full w-full animate-pulse"
-              >
-                {/* 科技感外几何环 */}
-                <path d="M4.5 16.5c-1.5-1.5-2.5-3.5-2.5-5.5s1-4 2.5-5.5" />
-                <path d="M19.5 7.5c1.5 1.5 2.5 3.5 2.5 5.5s-1 4-2.5 5.5" />
-                {/* 内部数学无限交叉核心线 */}
-                <line x1="7" y1="7" x2="17" y2="17" />
-                <line x1="17" y1="7" x2="7" y2="17" />
-              </svg>
-            </div>
-            <span className="hidden font-display text-lg font-black tracking-tight text-foreground transition-colors duration-300 group-hover:text-primary md:block">
-              Canvas<span className="text-primary group-hover:text-foreground transition-colors duration-300">Math</span>
-            </span>
+          <a href="/" className="group flex h-12 w-full items-center justify-center transition-opacity duration-200 hover:opacity-90 md:justify-start">
+            <img
+              src={logoGif}
+              alt="CanvasMath Logo"
+              className="h-10 w-10 object-contain md:h-12 md:w-auto"
+            />
           </a>
         </div>
 

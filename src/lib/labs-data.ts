@@ -1,3 +1,19 @@
+export const LAB_CATEGORIES = ["All", "Matrix", "Logic", "Applied", "Interactive"] as const;
+
+export type LabCategory = (typeof LAB_CATEGORIES)[number];
+export type LabModuleCategory = Exclude<LabCategory, "All">;
+
+export type LabModule = {
+  id: string;
+  title: string;
+  slug: string;
+  moduleEndpoint: string;
+  image: string;
+  category: LabModuleCategory;
+  seoTitle: string;
+  seoDescription: string;
+};
+
 export const labsData: LabModule[] = [
   {
     id: "1",
@@ -260,3 +276,7 @@ export const labsData: LabModule[] = [
     seoDescription: "Discover array coordinate outputs and force composition laws visually."
   }
 ];
+
+export function getLabBySlug(slug: string) {
+  return labsData.find((lab) => lab.slug === slug);
+}
