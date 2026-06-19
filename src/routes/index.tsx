@@ -98,7 +98,7 @@ function Index() {
       <aside className="fixed inset-y-0 left-0 z-30 flex w-20 flex-col overflow-x-hidden overflow-y-auto border-r border-border bg-card px-2 py-3 md:w-48 md:px-3">
         
         <div className="mb-4 flex items-center justify-center px-1 md:justify-start">
-          <a href="/" className="group flex h-12 w-full items-center justify-center transition-opacity duration-200 hover:opacity-90 md:justify-start">
+          <a href="/" className="group flex h-12 w-full items-center transition-opacity duration-200 hover:opacity-90 md:justify-start">
             <img
               src={logoGif}
               alt="CanvasMath Logo"
