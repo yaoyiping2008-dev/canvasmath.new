@@ -102,7 +102,7 @@ function Index() {
             <img
               src={logoGif}
               alt="CanvasMath Logo"
-              className="h-10 w-10 object-contain md:h-12 md:w-auto"
+              className="h-full w-full object-contain"
             />
           </a>
         </div>
