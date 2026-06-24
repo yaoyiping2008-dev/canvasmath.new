@@ -6,16 +6,16 @@ import { getLabBySlug } from "@/lib/labs-data";
 import { buildModuleHeadMeta } from "@/lib/moduleSeo";
 import { SITE_DESCRIPTION } from "@/lib/siteMeta";
 
-const SimulationWorkspace = lazy(() =>
-  import("@/components/lab/SimulationWorkspace").then((module) => ({
-    default: module.SimulationWorkspace,
+const LabDetailLayout = lazy(() =>
+  import("@/components/labs/LabDetailLayout").then((module) => ({
+    default: module.LabDetailLayout,
   })),
 );
 
 function LabPageFallback() {
   return (
     <div
-      className="flex min-h-screen items-center justify-center bg-background px-4"
+      className="homepage-shell flex min-h-screen items-center justify-center px-4"
       role="status"
       aria-live="polite"
     >
@@ -66,7 +66,7 @@ function LabDetailPage() {
 
   return (
     <Suspense fallback={<LabPageFallback />}>
-      <SimulationWorkspace lab={lab} />
+      <LabDetailLayout lab={lab} />
     </Suspense>
   );
 }

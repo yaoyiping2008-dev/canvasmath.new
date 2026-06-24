@@ -148,3 +148,38 @@
     grid-template-columns: repeat(8, minmax(0, 1fr));
   }
 }
+
+/* Lab page — right recommendation panel */
+.lab-related-sidebar-grid {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 640px) {
+  .lab-related-sidebar-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.625rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .lab-related-sidebar-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .lab-related-sidebar-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+}
+
+.lab-related-card .homepage-image-card {
+  box-shadow:
+    1px 1px 0 rgba(255, 255, 255, 0.85),
+    2px 3px 8px rgba(40, 30, 80, 0.05),
+    2px 6px 14px rgba(40, 30, 80, 0.04);
+}
+

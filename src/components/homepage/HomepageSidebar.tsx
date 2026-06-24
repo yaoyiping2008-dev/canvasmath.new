@@ -1,8 +1,8 @@
 import { Menu } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import logoGif from "@/assets/main-logo.gif";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import canvasMathLogo from "@/assets/CanvasMath-NEW.jpg";
 
 const NAV_ITEMS = [
   { id: "recently-added", label: "Recently Added" },
@@ -13,18 +13,29 @@ type HomepageSidebarProps = {
   onNavigate: (sectionId: string) => void;
 };
 
-function SidebarContent({ onNavigate }: HomepageSidebarProps) {
+function SidebarLogo({ compact = false }: { compact?: boolean }) {
+  return (
+    <img
+      src={canvasMathLogo}
+      alt="CanvasMath"
+      className={
+        compact ? "mb-4 max-h-14 w-full object-contain object-left" : "mb-5 w-full object-contain"
+      }
+    />
+  );
+}
+
+function SidebarContent({
+  onNavigate,
+  compactLogo = false,
+}: HomepageSidebarProps & { compactLogo?: boolean }) {
   return (
     <div className="flex h-full flex-col">
       <a
         href="/"
-        className="mb-5 flex items-center gap-3 px-1 outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg"
+        className="block rounded-lg px-1 outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
-        <img src={logoGif} alt="" className="size-10 object-contain" />
-        <div className="min-w-0">
-          <p className="font-display text-sm font-bold tracking-tight">CanvasMath</p>
-          <p className="text-xs text-muted-foreground">Interactive Math Labs</p>
-        </div>
+        <SidebarLogo compact={compactLogo} />
       </a>
 
       <nav aria-label="Page sections" className="space-y-0.5">
@@ -73,11 +84,12 @@ export function HomepageSidebar({ onNavigate }: HomepageSidebarProps) {
               <Menu className="size-5" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" className="w-[min(100vw-2rem,17rem)] p-4">
-            <SheetHeader className="mb-2">
-              <SheetTitle className="text-left font-display">CanvasMath</SheetTitle>
-            </SheetHeader>
-            <SidebarContent onNavigate={handleNavigate} />
+          <SheetContent
+            side="left"
+            className="w-[min(100vw-2rem,17rem)] p-4"
+            aria-label="Site navigation"
+          >
+            <SidebarContent onNavigate={handleNavigate} compactLogo />
           </SheetContent>
         </Sheet>
       </div>

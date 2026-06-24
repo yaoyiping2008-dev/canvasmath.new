@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -52,6 +52,13 @@ function Index() {
   );
 
   const hasSearch = searchQuery.trim().length > 0;
+
+  useEffect(() => {
+    const hash = window.location.hash.replace(/^#/, "");
+    if (hash) {
+      requestAnimationFrame(() => scrollToSection(hash));
+    }
+  }, []);
 
   return (
     <div className="homepage-shell min-h-screen overflow-x-hidden">
