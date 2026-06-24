@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,6 +13,7 @@ import { HomepageSearch } from "@/components/homepage/HomepageSearch";
 import { HomepageSidebar } from "@/components/homepage/HomepageSidebar";
 import { RecentlyAddedSection } from "@/components/homepage/RecentlyAddedSection";
 import { getRecentlyAddedLabs, matchesDiscoverySearch } from "@/components/homepage/homepage-utils";
+import { useHomepageScrollLock } from "@/hooks/useHomepageScrollLock";
 import { legalContent, type LegalContentKey } from "@/lib/legalContent";
 import { SimulationGrid } from "@/components/SimulationGrid";
 import { labsData } from "@/lib/labs-data";
@@ -31,13 +32,23 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-function scrollToSection(sectionId: string) {
-  document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth", block: "start" });
+function scrollToSection(container: HTMLElement, sectionId: string) {
+  const target = document.getElementById(sectionId);
+  if (!target) return;
+
+  const containerTop = container.getBoundingClientRect().top;
+  const targetTop = target.getBoundingClientRect().top;
+  const offset = container.scrollTop + targetTop - containerTop - 8;
+
+  container.scrollTo({ top: offset, behavior: "smooth" });
 }
 
 function Index() {
   const [searchQuery, setSearchQuery] = useState("");
   const [legal, setLegal] = useState<LegalContentKey | null>(null);
+  const mainScrollRef = useRef<HTMLDivElement>(null);
+
+  useHomepageScrollLock();
 
   const recentlyAddedPool = useMemo(() => getRecentlyAddedLabs(labsData, 5), []);
 
@@ -55,22 +66,25 @@ function Index() {
 
   useEffect(() => {
     const hash = window.location.hash.replace(/^#/, "");
-    if (hash) {
-      requestAnimationFrame(() => scrollToSection(hash));
-    }
+    if (!hash || !mainScrollRef.current) return;
+
+    requestAnimationFrame(() => {
+      if (mainScrollRef.current) scrollToSection(mainScrollRef.current, hash);
+    });
   }, []);
 
+  const handleSidebarNavigate = (sectionId: string) => {
+    if (mainScrollRef.current) scrollToSection(mainScrollRef.current, sectionId);
+  };
+
   return (
-    <div className="homepage-shell min-h-screen overflow-x-hidden">
-      <div
-        className="homepage-atmosphere pointer-events-none fixed inset-0 z-0"
-        aria-hidden="true"
-      />
+    <div className="homepage-shell">
+      <div className="homepage-atmosphere homepage-background-layer" aria-hidden="true" />
 
-      <HomepageSidebar onNavigate={scrollToSection} />
+      <HomepageSidebar onNavigate={handleSidebarNavigate} />
 
-      <div className="relative z-[1] flex min-w-0 flex-col md:ml-52">
-        <main className="mx-auto w-full max-w-[1600px] flex-1 px-3 pb-8 pt-14 md:px-5 md:pt-5">
+      <div ref={mainScrollRef} className="homepage-main-scroll">
+        <main className="mx-auto w-full max-w-[1600px] px-3 pt-14 md:px-5 md:pt-5">
           <div className="space-y-8 md:space-y-10">
             <HomepageSearch value={searchQuery} onChange={setSearchQuery} />
 
@@ -81,7 +95,7 @@ function Index() {
             <section
               id="all-simulations"
               aria-labelledby="all-simulations-heading"
-              className="scroll-mt-20"
+              className="scroll-mt-4"
             >
               <h2
                 id="all-simulations-heading"
@@ -101,7 +115,7 @@ function Index() {
           </div>
         </main>
 
-        <footer className="border-t border-border/50 px-4 py-5">
+        <footer className="homepage-footer border-t border-border/50 px-4 py-5">
           <div className="mx-auto flex max-w-[1600px] flex-col items-center gap-3">
             <EducationSafetyNotice compact />
             <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-muted-foreground">

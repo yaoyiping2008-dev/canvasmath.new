@@ -30,9 +30,31 @@
 
   color: var(--foreground);
   background: var(--background);
+
+  display: flex;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
+  position: relative;
 }
 
-.homepage-atmosphere {
+html.homepage-scroll-lock,
+body.homepage-scroll-lock {
+  height: 100%;
+  overflow: hidden;
+}
+
+body.homepage-scroll-lock #root {
+  height: 100%;
+  overflow: hidden;
+}
+
+.homepage-atmosphere,
+.homepage-background-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
   background:
     radial-gradient(circle at 78% 6%, rgba(88, 190, 255, 0.14), transparent 28%),
     radial-gradient(circle at 24% 2%, rgba(165, 116, 255, 0.12), transparent 26%),
@@ -41,9 +63,32 @@
 }
 
 .homepage-sidebar {
+  position: relative;
+  z-index: 20;
+  flex-shrink: 0;
+  height: 100%;
+  overflow: hidden;
   background: var(--card);
   border-right: 1px solid oklch(0.92 0.02 280);
   box-shadow: 2px 0 12px rgba(40, 30, 80, 0.04);
+}
+
+.homepage-main-scroll {
+  position: relative;
+  z-index: 10;
+  min-width: 0;
+  min-height: 0;
+  flex: 1 1 auto;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.homepage-footer {
+  margin-top: 3rem;
+  padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
 }
 
 .homepage-sidebar-logo-shell {

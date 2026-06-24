@@ -65,7 +65,7 @@ export function HomepageSidebar({ onNavigate }: HomepageSidebarProps) {
   return (
     <>
       <aside
-        className="homepage-sidebar fixed inset-y-0 left-0 z-30 hidden w-52 flex-col px-4 py-5 md:flex"
+        className="homepage-sidebar hidden h-full w-52 flex-col px-4 py-5 md:flex"
         aria-label="Site navigation"
       >
         <SidebarContent onNavigate={onNavigate} />

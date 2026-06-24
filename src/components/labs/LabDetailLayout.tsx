@@ -10,6 +10,7 @@ import {
 import { LabPageHeader } from "@/components/labs/LabPageHeader";
 import { RelatedSimulationGrid } from "@/components/labs/RelatedSimulationGrid";
 import { useIframeReliability } from "@/components/lab/useModuleState";
+import { useHomepageScrollLock } from "@/hooks/useHomepageScrollLock";
 
 type LabDetailLayoutProps = {
   lab: LabModule;
@@ -17,11 +18,13 @@ type LabDetailLayoutProps = {
 
 export function LabDetailLayout({ lab }: LabDetailLayoutProps) {
   const router = useRouter();
-  const mainRef = useRef<HTMLElement>(null);
+  const mainScrollRef = useRef<HTMLDivElement>(null);
   const { containerRef, handleFullscreen } = useLabSimulationContainer();
   const { reloadKey, handleLoad, retry, isLoading, hasError } = useIframeReliability(
     lab.moduleEndpoint,
   );
+
+  useHomepageScrollLock();
 
   const rightRecommendations = useMemo(() => getRightRecommendations(lab, 8), [lab]);
   const bottomRecommendations = useMemo(
@@ -30,7 +33,7 @@ export function LabDetailLayout({ lab }: LabDetailLayoutProps) {
   );
 
   useEffect(() => {
-    mainRef.current?.scrollTo({ top: 0, behavior: "instant" });
+    mainScrollRef.current?.scrollTo({ top: 0, behavior: "instant" });
   }, [lab.slug]);
 
   const handleSidebarNavigate = (sectionId: string) => {
@@ -38,19 +41,13 @@ export function LabDetailLayout({ lab }: LabDetailLayoutProps) {
   };
 
   return (
-    <div className="homepage-shell min-h-screen overflow-x-hidden">
-      <div
-        className="homepage-atmosphere pointer-events-none fixed inset-0 z-0"
-        aria-hidden="true"
-      />
+    <div className="homepage-shell">
+      <div className="homepage-atmosphere homepage-background-layer" aria-hidden="true" />
 
       <HomepageSidebar onNavigate={handleSidebarNavigate} />
 
-      <div className="relative z-[1] flex min-w-0 flex-col md:ml-52">
-        <main
-          ref={mainRef}
-          className="mx-auto w-full max-w-[1600px] flex-1 overflow-x-hidden px-3 pb-8 pt-14 md:px-5 md:pt-5"
-        >
+      <div ref={mainScrollRef} className="homepage-main-scroll">
+        <main className="mx-auto w-full max-w-[1600px] px-3 pt-14 md:px-5 md:pt-5">
           <LabPageHeader lab={lab} onReload={retry} onFullscreen={handleFullscreen} />
 
           <div className="grid gap-5 xl:grid-cols-[minmax(0,1.6fr)_minmax(320px,0.9fr)]">
