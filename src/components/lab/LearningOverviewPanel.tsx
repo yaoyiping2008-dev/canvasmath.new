@@ -15,10 +15,7 @@ import {
 import { useEffect, useRef, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import type { LabModule } from "@/lib/labs-data";
-import {
-  getTeachingSequenceForModule,
-  TEACHER_VIEW_RECOMMENDED_STEPS,
-} from "@/lib/teacherView";
+import { getTeachingSequenceForModule, TEACHER_VIEW_RECOMMENDED_STEPS } from "@/lib/teacherView";
 import { LearningContextEnrichment } from "@/components/LearningContextEnrichment";
 import { LearningWorkflowSteps } from "./LearningWorkflowSteps";
 import {

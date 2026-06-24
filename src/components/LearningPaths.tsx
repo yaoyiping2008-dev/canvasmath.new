@@ -33,10 +33,7 @@ export function LearningPaths() {
 
             <ol className="mb-4 space-y-1.5 border-t border-border/40 pt-3">
               {modules.slice(0, 5).map((lab, index) => (
-                <li
-                  key={lab!.slug}
-                  className={`${textMetadata} flex items-center gap-2`}
-                >
+                <li key={lab!.slug} className={`${textMetadata} flex items-center gap-2`}>
                   <span className="depth-surface flex size-5 shrink-0 items-center justify-center rounded-full bg-muted/50 text-[10px] font-medium text-foreground">
                     {index + 1}
                   </span>

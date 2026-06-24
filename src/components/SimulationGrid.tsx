@@ -1,19 +1,21 @@
 import { cn } from "@/lib/utils";
 import type { LabModule } from "@/lib/labs-data";
-import type { LearningStatus } from "@/lib/learningStorage";
 import { featuredHeroZone, featuredHeroZoneContent } from "@/lib/designSystem";
-import { LabTaskCard, type LabTaskCardVariant } from "@/components/LabTaskCard";
+import {
+  LabTaskCard,
+  type LabTaskCardMode,
+  type LabTaskCardVariant,
+} from "@/components/LabTaskCard";
 
-export type SimulationGridLayout = "grid" | "scroll" | "featured" | "split";
+export type SimulationGridLayout = "grid" | "scroll" | "featured" | "split" | "catalog";
 
 type SimulationGridProps = {
   labs: LabModule[];
   layout?: SimulationGridLayout;
   variant?: LabTaskCardVariant;
+  mode?: LabTaskCardMode;
   emptyMessage?: string;
   className?: string;
-  learningStatusMap?: Record<string, LearningStatus | undefined>;
-  continueSlug?: string;
 };
 
 const GRID_STANDARD =
@@ -25,18 +27,27 @@ export function SimulationGrid({
   labs,
   layout = "grid",
   variant = "standard",
+  mode = "default",
   emptyMessage,
   className,
-  learningStatusMap,
-  continueSlug,
 }: SimulationGridProps) {
   if (!labs.length) {
     return (
       <div
         role="status"
-        className="depth-surface grid min-h-40 place-items-center rounded-xl border border-dashed border-border/70 bg-muted/10 px-4 py-10 text-center text-sm text-muted-foreground"
+        className="grid min-h-40 place-items-center rounded-xl border border-dashed border-border/70 bg-muted/10 px-4 py-10 text-center text-sm text-muted-foreground"
       >
         {emptyMessage ?? "No simulations match your search."}
+      </div>
+    );
+  }
+
+  if (layout === "catalog") {
+    return (
+      <div className={cn("homepage-catalog-grid", className)}>
+        {labs.map((lab, index) => (
+          <LabTaskCard key={lab.slug} lab={lab} index={index} mode="catalog" />
+        ))}
       </div>
     );
   }
@@ -45,8 +56,7 @@ export function SimulationGrid({
     lab,
     index,
     variant: cardVariant,
-    learningStatus: learningStatusMap?.[lab.slug],
-    isContinueTarget: continueSlug === lab.slug,
+    mode,
   });
 
   if (layout === "featured") {
@@ -70,18 +80,10 @@ export function SimulationGrid({
         </div>
 
         {remainder.length > 0 && (
-          <div className="space-y-4 pt-2">
-            <p className="text-eyebrow text-[11px] tracking-[0.18em] text-muted-foreground">
-              More featured modules
-            </p>
-            <div className={GRID_STANDARD}>
-              {remainder.map((lab, index) => (
-                <LabTaskCard
-                  key={lab.slug}
-                  {...cardProps(lab, index + secondaryCards.length + 1)}
-                />
-              ))}
-            </div>
+          <div className={GRID_STANDARD}>
+            {remainder.map((lab, index) => (
+              <LabTaskCard key={lab.slug} {...cardProps(lab, index + secondaryCards.length + 1)} />
+            ))}
           </div>
         )}
       </div>

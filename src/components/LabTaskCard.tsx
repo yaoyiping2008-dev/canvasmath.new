@@ -2,76 +2,49 @@ import { Link } from "@tanstack/react-router";
 import { Clock3 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { LabModule } from "@/lib/labs-data";
-import {
-  depthCard,
-  depthCardHero,
-  depthCardSecondary,
-  textMetadata,
-} from "@/lib/designSystem";
+import { depthCard, depthCardHero, depthCardSecondary, textMetadata } from "@/lib/designSystem";
 import { ModuleThumbnail } from "@/components/ui/ModuleThumbnail";
-
-import type { LearningStatus } from "@/lib/learningStorage";
 
 /** Shared image ratio across card tiers for visual consistency. */
 const IMAGE_RATIO = "aspect-[4/3]";
 
 export type LabTaskCardVariant = "hero" | "secondary" | "standard" | "compact";
+export type LabTaskCardMode = "default" | "catalog";
 
 type LabTaskCardProps = {
   lab: LabModule;
   index: number;
   variant?: LabTaskCardVariant;
+  mode?: LabTaskCardMode;
   className?: string;
-  learningStatus?: LearningStatus;
-  isContinueTarget?: boolean;
+  showNewLabel?: boolean;
 };
 
-function CardMeta({ lab, variant }: { lab: LabModule; variant: LabTaskCardVariant }) {
-  const isCompact = variant === "compact";
-  const isHero = variant === "hero";
-
-  const detailParts = [
+function CatalogMeta({ lab }: { lab: LabModule }) {
+  const parts = [
+    lab.subject ?? lab.category,
     lab.gradeBand,
-    lab.difficulty,
     lab.estimatedMinutes != null ? `${lab.estimatedMinutes} min` : null,
   ].filter(Boolean);
 
+  if (!parts.length) return null;
+
   return (
-    <div className={cn("flex min-w-0 flex-col gap-1.5", isHero ? "mt-3" : "mt-2")}>
-      {lab.subject && (
-        <span
-          className={cn(
-            "w-fit rounded-md border border-border/50 bg-muted/40 font-medium",
-            textMetadata,
-            isHero ? "px-2 py-0.5 text-[11px]" : "px-1.5 py-0.5 text-[10px]",
+    <p className="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-[11px] text-muted-foreground">
+      {parts.map((part, i) => (
+        <span key={part} className="inline-flex items-center gap-1">
+          {i > 0 && <span aria-hidden="true">·</span>}
+          {typeof part === "string" && part.endsWith(" min") ? (
+            <>
+              <Clock3 className="size-3 shrink-0" aria-hidden="true" />
+              {part}
+            </>
+          ) : (
+            part
           )}
-        >
-          {lab.subject}
         </span>
-      )}
-
-      {!isCompact && detailParts.length > 0 && (
-        <p className={cn("flex flex-wrap items-center gap-x-2 gap-y-0.5 leading-relaxed", textMetadata)}>
-          {detailParts.map((part, index) => (
-            <span key={part} className="inline-flex items-center gap-1">
-              {index > 0 && <span aria-hidden="true">·</span>}
-              {typeof part === "string" && part.endsWith(" min") ? (
-                <>
-                  <Clock3 className="size-3 shrink-0" aria-hidden="true" />
-                  {part}
-                </>
-              ) : (
-                part
-              )}
-            </span>
-          ))}
-        </p>
-      )}
-
-      {!isCompact && lab.skills?.[0] && (
-        <p className={cn("truncate", textMetadata)}>{lab.skills[0]}</p>
-      )}
-    </div>
+      ))}
+    </p>
   );
 }
 
@@ -85,13 +58,46 @@ export function LabTaskCard({
   lab,
   index,
   variant = "standard",
+  mode = "default",
   className,
-  learningStatus,
-  isContinueTarget,
+  showNewLabel,
 }: LabTaskCardProps) {
   const isHero = variant === "hero";
   const isSecondary = variant === "secondary";
   const isCompact = variant === "compact";
+  const isCatalog = mode === "catalog";
+
+  if (isCatalog) {
+    return (
+      <article className={cn("min-w-0", className)}>
+        <Link
+          to="/labs/$slug"
+          params={{ slug: lab.slug }}
+          aria-label={`Open ${lab.title} module`}
+          className={cn(cardShell, "homepage-card flex flex-col overflow-hidden rounded-[14px]")}
+        >
+          <ModuleThumbnail
+            src={lab.image}
+            variant="standard"
+            eager={index < 8}
+            className="aspect-[4/3]"
+          >
+            {showNewLabel && lab.recentlyAdded && (
+              <span className="absolute left-2 top-2 z-20 rounded-md border border-primary/25 bg-white/95 px-1.5 py-0.5 text-[10px] font-medium text-primary">
+                New
+              </span>
+            )}
+          </ModuleThumbnail>
+          <div className="p-3">
+            <h3 className="line-clamp-2 text-sm font-semibold leading-snug tracking-tight">
+              {lab.title}
+            </h3>
+            <CatalogMeta lab={lab} />
+          </div>
+        </Link>
+      </article>
+    );
+  }
 
   return (
     <article className={cn("min-w-0", className)}>
@@ -131,23 +137,6 @@ export function LabTaskCard({
               isHero && "module-thumb__scrim--hero",
             )}
           />
-          {learningStatus && (
-            <span
-              className={cn(
-                "absolute right-2 top-2 z-20 size-2 rounded-full border border-background/80",
-                learningStatus === "completed" && "bg-primary",
-                learningStatus === "explored" && "bg-primary/60",
-                learningStatus === "visited" && "bg-muted-foreground/70",
-              )}
-              aria-label={`Module ${learningStatus}`}
-              title={`Module ${learningStatus}`}
-            />
-          )}
-          {isContinueTarget && (
-            <span className="absolute left-2 top-2 z-20 rounded-md border border-primary/30 bg-background/90 px-1.5 py-0.5 text-[10px] font-medium text-primary shadow-sm">
-              Continue
-            </span>
-          )}
           {isHero && (
             <span className="absolute left-3 top-3 z-20 rounded-md border border-primary/30 bg-background/85 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-primary shadow-sm">
               Featured
@@ -182,7 +171,17 @@ export function LabTaskCard({
             </p>
           )}
 
-          <CardMeta lab={lab} variant={variant} />
+          {!isCompact && lab.subject && (
+            <span
+              className={cn(
+                "mt-2 w-fit rounded-md border border-border/50 bg-muted/40 font-medium",
+                textMetadata,
+                "px-1.5 py-0.5",
+              )}
+            >
+              {lab.subject}
+            </span>
+          )}
         </div>
       </Link>
     </article>

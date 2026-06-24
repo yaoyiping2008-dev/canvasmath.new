@@ -56,11 +56,7 @@ export function DiscoveryBar({
           </div>
           <div className="flex flex-wrap items-center gap-2 sm:justify-end">
             {headerAction}
-            <p
-              className={`${textMetadata} sm:text-right`}
-              aria-live="polite"
-              aria-atomic="true"
-            >
+            <p className={`${textMetadata} sm:text-right`} aria-live="polite" aria-atomic="true">
               {active ? (
                 <>
                   Showing <span className="font-medium text-foreground">{resultCount}</span> of{" "}
