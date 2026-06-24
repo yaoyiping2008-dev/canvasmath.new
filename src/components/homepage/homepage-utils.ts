@@ -1,21 +1,17 @@
-import type { LabDifficulty, LabModule, LabModuleCategory } from "@/lib/labs-data";
-import { filterLabsByGroup, type CategoryGroupId } from "./homepage-subjects";
-
-export type DiscoveryFilters = {
-  query: string;
-  subject: string;
-  grade: string;
-  difficulty: string;
-  categoryGroup: string;
-};
-
-export const ALL_FILTER = "all";
+import type { LabModule } from "@/lib/labs-data";
 
 export function matchesDiscoverySearch(lab: LabModule, query: string): boolean {
   const normalized = query.trim().toLowerCase();
   if (!normalized) return true;
 
-  const haystack = [lab.title, lab.summary, lab.seoDescription, lab.subject, ...(lab.skills ?? [])]
+  const haystack = [
+    lab.title,
+    lab.summary,
+    lab.seoDescription,
+    lab.subject,
+    lab.category,
+    ...(lab.skills ?? []),
+  ]
     .filter(Boolean)
     .join(" ")
     .toLowerCase();
@@ -23,53 +19,24 @@ export function matchesDiscoverySearch(lab: LabModule, query: string): boolean {
   return haystack.includes(normalized);
 }
 
-export function matchesDiscoveryFilters(lab: LabModule, filters: DiscoveryFilters): boolean {
-  if (!matchesDiscoverySearch(lab, filters.query)) return false;
+export function getRecentlyAddedLabs(labs: LabModule[], limit = 5): LabModule[] {
+  const result: LabModule[] = [];
+  const seen = new Set<string>();
 
-  if (filters.categoryGroup !== ALL_FILTER) {
-    const inGroup = filterLabsByGroup([lab], filters.categoryGroup as CategoryGroupId).length > 0;
-    if (!inGroup) return false;
+  for (const lab of labs) {
+    if (lab.recentlyAdded && result.length < limit) {
+      result.push(lab);
+      seen.add(lab.slug);
+    }
   }
 
-  if (filters.subject !== ALL_FILTER) {
-    const subjectMatch = lab.subject === filters.subject || lab.category === filters.subject;
-    if (!subjectMatch) return false;
+  for (let i = labs.length - 1; i >= 0 && result.length < limit; i--) {
+    const lab = labs[i];
+    if (!seen.has(lab.slug)) {
+      result.push(lab);
+      seen.add(lab.slug);
+    }
   }
 
-  if (filters.grade !== ALL_FILTER && lab.gradeBand !== filters.grade) {
-    return false;
-  }
-
-  if (filters.difficulty !== ALL_FILTER && lab.difficulty !== filters.difficulty) {
-    return false;
-  }
-
-  return true;
-}
-
-export function hasActiveDiscoveryFilters(filters: DiscoveryFilters): boolean {
-  return (
-    filters.query.trim().length > 0 ||
-    filters.subject !== ALL_FILTER ||
-    filters.grade !== ALL_FILTER ||
-    filters.difficulty !== ALL_FILTER ||
-    filters.categoryGroup !== ALL_FILTER
-  );
-}
-
-export function getUniqueSubjects(labs: LabModule[]): string[] {
-  return [...new Set(labs.map((lab) => lab.subject ?? lab.category))].sort();
-}
-
-export function getUniqueGrades(labs: LabModule[]): string[] {
-  return [...new Set(labs.map((lab) => lab.gradeBand).filter(Boolean) as string[])].sort();
-}
-
-export const DIFFICULTY_OPTIONS: LabDifficulty[] = ["Introductory", "Intermediate", "Advanced"];
-
-export function filterLabsByCategory(
-  labs: LabModule[],
-  categories: LabModuleCategory[],
-): LabModule[] {
-  return labs.filter((lab) => categories.includes(lab.category));
+  return result;
 }

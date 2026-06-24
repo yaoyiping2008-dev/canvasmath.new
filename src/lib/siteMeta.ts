@@ -1,4 +1,4 @@
-export const SITE_ORIGIN = "https://canvasmath.edu";
+export const SITE_ORIGIN = "https://canvasmath.org";
 
 export const SITE_TITLE =
   "CanvasMath - Standards-Aligned Interactive Mathematics Workspace for K-12";

@@ -1,15 +1,13 @@
 import { Link } from "@tanstack/react-router";
-import { Clock3 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { LabModule } from "@/lib/labs-data";
 import { depthCard, depthCardHero, depthCardSecondary, textMetadata } from "@/lib/designSystem";
 import { ModuleThumbnail } from "@/components/ui/ModuleThumbnail";
 
-/** Shared image ratio across card tiers for visual consistency. */
 const IMAGE_RATIO = "aspect-[4/3]";
 
 export type LabTaskCardVariant = "hero" | "secondary" | "standard" | "compact";
-export type LabTaskCardMode = "default" | "catalog";
+export type LabTaskCardMode = "default" | "catalog" | "image";
 
 type LabTaskCardProps = {
   lab: LabModule;
@@ -17,42 +15,59 @@ type LabTaskCardProps = {
   variant?: LabTaskCardVariant;
   mode?: LabTaskCardMode;
   className?: string;
-  showNewLabel?: boolean;
 };
 
-function CatalogMeta({ lab }: { lab: LabModule }) {
-  const parts = [
-    lab.subject ?? lab.category,
-    lab.gradeBand,
-    lab.estimatedMinutes != null ? `${lab.estimatedMinutes} min` : null,
-  ].filter(Boolean);
-
-  if (!parts.length) return null;
-
-  return (
-    <p className="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-[11px] text-muted-foreground">
-      {parts.map((part, i) => (
-        <span key={part} className="inline-flex items-center gap-1">
-          {i > 0 && <span aria-hidden="true">·</span>}
-          {typeof part === "string" && part.endsWith(" min") ? (
-            <>
-              <Clock3 className="size-3 shrink-0" aria-hidden="true" />
-              {part}
-            </>
-          ) : (
-            part
-          )}
-        </span>
-      ))}
-    </p>
-  );
-}
-
 const cardShell = cn(
-  "group/card relative flex h-full w-full min-w-0 overflow-hidden text-left outline-none",
+  "group/card relative block h-full w-full min-w-0 overflow-hidden text-left outline-none",
   "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
   "motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:hover:scale-100",
 );
+
+function ImageOnlyCard({ lab, index, className }: LabTaskCardProps) {
+  const secondary = lab.subject ?? lab.category;
+
+  return (
+    <article className={cn("min-w-0", className)}>
+      <Link
+        to="/labs/$slug"
+        params={{ slug: lab.slug }}
+        aria-label={`Open ${lab.title}`}
+        className={cn(cardShell, "homepage-image-card rounded-[14px]")}
+      >
+        <div className="relative aspect-[4/3] overflow-hidden bg-muted/30">
+          <img
+            src={lab.image}
+            alt={lab.title}
+            width={640}
+            height={480}
+            loading={index < 12 ? "eager" : "lazy"}
+            decoding="async"
+            className="h-full w-full object-cover transition-transform duration-[240ms] ease-out motion-safe:group-hover/card:scale-[1.03] motion-safe:group-focus-visible/card:scale-[1.03]"
+            onError={(e) => {
+              (e.target as HTMLImageElement).style.opacity = "0.4";
+            }}
+          />
+          <div
+            className={cn(
+              "pointer-events-none absolute inset-x-0 bottom-0 px-2.5 pb-2.5 pt-10",
+              "bg-gradient-to-t from-black/70 via-black/35 to-transparent",
+              "translate-y-1 opacity-0 transition-all duration-[240ms] ease-out",
+              "motion-safe:group-hover/card:translate-y-0 motion-safe:group-hover/card:opacity-100",
+              "motion-safe:group-focus-visible/card:translate-y-0 motion-safe:group-focus-visible/card:opacity-100",
+            )}
+          >
+            <p className="line-clamp-2 text-xs font-semibold leading-snug text-white">
+              {lab.title}
+            </p>
+            {secondary && (
+              <p className="line-clamp-1 mt-0.5 text-[10px] text-white/85">{secondary}</p>
+            )}
+          </div>
+        </div>
+      </Link>
+    </article>
+  );
+}
 
 export function LabTaskCard({
   lab,
@@ -60,44 +75,14 @@ export function LabTaskCard({
   variant = "standard",
   mode = "default",
   className,
-  showNewLabel,
 }: LabTaskCardProps) {
+  if (mode === "image") {
+    return <ImageOnlyCard lab={lab} index={index} className={className} />;
+  }
+
   const isHero = variant === "hero";
   const isSecondary = variant === "secondary";
   const isCompact = variant === "compact";
-  const isCatalog = mode === "catalog";
-
-  if (isCatalog) {
-    return (
-      <article className={cn("min-w-0", className)}>
-        <Link
-          to="/labs/$slug"
-          params={{ slug: lab.slug }}
-          aria-label={`Open ${lab.title} module`}
-          className={cn(cardShell, "homepage-card flex flex-col overflow-hidden rounded-[14px]")}
-        >
-          <ModuleThumbnail
-            src={lab.image}
-            variant="standard"
-            eager={index < 8}
-            className="aspect-[4/3]"
-          >
-            {showNewLabel && lab.recentlyAdded && (
-              <span className="absolute left-2 top-2 z-20 rounded-md border border-primary/25 bg-white/95 px-1.5 py-0.5 text-[10px] font-medium text-primary">
-                New
-              </span>
-            )}
-          </ModuleThumbnail>
-          <div className="p-3">
-            <h3 className="line-clamp-2 text-sm font-semibold leading-snug tracking-tight">
-              {lab.title}
-            </h3>
-            <CatalogMeta lab={lab} />
-          </div>
-        </Link>
-      </article>
-    );
-  }
 
   return (
     <article className={cn("min-w-0", className)}>
@@ -110,14 +95,14 @@ export function LabTaskCard({
           isHero &&
             cn(
               depthCardHero,
-              "flex-col rounded-2xl border border-primary/25",
+              "flex flex-col rounded-2xl border border-primary/25",
               "md:min-h-[280px] md:flex-row md:items-stretch",
             ),
           isSecondary &&
-            cn(depthCardSecondary, "flex-col rounded-xl border border-border/70 bg-card/95"),
+            cn(depthCardSecondary, "flex flex-col rounded-xl border border-border/70 bg-card/95"),
           !isHero &&
             !isSecondary &&
-            cn(depthCard, "flex-col rounded-xl border border-border/60 bg-card"),
+            cn(depthCard, "flex flex-col rounded-xl border border-border/60 bg-card"),
         )}
       >
         <ModuleThumbnail

@@ -1,6 +1,5 @@
 /*
- * CanvasMath homepage — bright pastel educational shell
- * Scoped to .homepage-shell; does not change global dark defaults elsewhere.
+ * CanvasMath homepage — compact image-first catalog shell
  */
 
 .homepage-shell {
@@ -22,19 +21,8 @@
   --input: oklch(0.92 0.02 280);
   --ring: oklch(0.52 0.2 285);
 
-  --hp-hero-bg:
-    radial-gradient(circle at 78% 8%, rgba(88, 190, 255, 0.22), transparent 32%),
-    radial-gradient(circle at 30% 4%, rgba(165, 116, 255, 0.18), transparent 30%),
-    radial-gradient(circle at 10% 58%, rgba(255, 190, 120, 0.1), transparent 26%),
-    linear-gradient(180deg, #f8f7ff 0%, #f8fbff 48%, #f4f7ff 100%);
-
-  --hp-panel-shadow:
-    1px 1px 0 rgba(255, 255, 255, 0.9),
-    2px 3px 8px rgba(40, 30, 80, 0.06),
-    4px 10px 24px rgba(40, 30, 80, 0.08);
-
   --hp-card-shadow:
-    1px 1px 0 rgba(255, 255, 255, 0.85),
+    1px 1px 0 rgba(255, 255, 255, 0.88),
     2px 4px 10px rgba(40, 30, 80, 0.07),
     3px 8px 18px rgba(40, 30, 80, 0.06);
 
@@ -42,121 +30,121 @@
   background: var(--background);
 }
 
-.homepage-shell .canvas-bg-root,
-.homepage-shell .canvas-bg-layer {
-  display: none;
-}
-
-.homepage-hero-bg {
-  background: var(--hp-hero-bg);
-}
-
-.homepage-panel {
-  border-radius: 1.25rem;
-  border: 1px solid oklch(0.9 0.02 280);
-  background: var(--card);
-  box-shadow: var(--hp-panel-shadow);
-}
-
-.homepage-card {
-  border-radius: 0.875rem;
-  border: 1px solid oklch(0.91 0.02 280);
-  background: var(--card);
-  box-shadow: var(--hp-card-shadow);
-  transition:
-    transform 240ms cubic-bezier(0.2, 0.8, 0.2, 1),
-    box-shadow 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .homepage-card:hover {
-    transform: translateY(-3px);
-    box-shadow:
-      1px 1px 0 rgba(255, 255, 255, 0.9),
-      3px 6px 14px rgba(40, 30, 80, 0.09),
-      5px 14px 28px rgba(40, 30, 80, 0.08);
-  }
+.homepage-atmosphere {
+  background:
+    radial-gradient(circle at 78% 6%, rgba(88, 190, 255, 0.14), transparent 28%),
+    radial-gradient(circle at 24% 2%, rgba(165, 116, 255, 0.12), transparent 26%),
+    radial-gradient(circle at 8% 72%, rgba(255, 190, 120, 0.07), transparent 22%),
+    linear-gradient(180deg, #f8f7ff 0%, #f8fbff 55%, #f4f7ff 100%);
 }
 
 .homepage-sidebar {
   background: var(--card);
   border-right: 1px solid oklch(0.92 0.02 280);
-  box-shadow: 2px 0 16px rgba(40, 30, 80, 0.04);
+  box-shadow: 2px 0 12px rgba(40, 30, 80, 0.04);
 }
 
-.homepage-discovery-input {
-  border-radius: 0.875rem;
-  border: 1px solid oklch(0.9 0.02 280);
-  background: var(--card);
+.homepage-search-wrap {
+  max-width: min(720px, calc(100vw - 13rem));
+}
+
+@media (max-width: 767px) {
+  .homepage-search-wrap {
+    max-width: min(720px, calc(100vw - 1.5rem));
+  }
+}
+
+.homepage-search-bar {
   box-shadow: var(--hp-card-shadow);
 }
 
 .homepage-section-title {
   font-weight: 600;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.012em;
   color: var(--foreground);
 }
 
-.homepage-section-subtitle {
-  color: var(--muted-foreground);
-  line-height: 1.6;
+.homepage-image-card {
+  border: 1px solid oklch(0.91 0.02 280);
+  background: var(--card);
+  box-shadow: var(--hp-card-shadow);
+  transition:
+    transform 240ms ease-out,
+    box-shadow 240ms ease-out;
 }
 
-.homepage-catalog-grid {
+@media (prefers-reduced-motion: no-preference) {
+  .homepage-image-card:hover,
+  .homepage-image-card:focus-visible {
+    transform: translateY(-3px) scale(1.015);
+    box-shadow:
+      1px 1px 0 rgba(255, 255, 255, 0.9),
+      3px 6px 14px rgba(40, 30, 80, 0.09),
+      5px 12px 24px rgba(40, 30, 80, 0.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .homepage-image-card:hover,
+  .homepage-image-card:focus-visible {
+    transform: none;
+  }
+}
+
+/* Recently Added: 5 columns on desktop */
+.homepage-recent-grid {
   display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 0.75rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-@media (min-width: 480px) {
-  .homepage-catalog-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+@media (min-width: 640px) {
+  .homepage-recent-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
 @media (min-width: 768px) {
+  .homepage-recent-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.875rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .homepage-recent-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+/* All Simulations: up to 8 columns on large desktop */
+.homepage-catalog-grid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 640px) {
   .homepage-catalog-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
   .homepage-catalog-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.875rem;
   }
 }
 
-@media (min-width: 1280px) {
-  .homepage-catalog-grid {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 1536px) {
+@media (min-width: 1024px) {
   .homepage-catalog-grid {
     grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 }
 
-.homepage-decor {
-  pointer-events: none;
-  position: absolute;
-  z-index: 0;
-}
-
-@media (max-width: 767px) {
-  .homepage-decor {
-    opacity: 0.45;
-    transform: scale(0.75);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .homepage-decor {
-    display: none;
-  }
-
-  .homepage-card:hover {
-    transform: none;
+@media (min-width: 1536px) {
+  .homepage-catalog-grid {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
   }
 }

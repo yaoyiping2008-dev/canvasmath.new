@@ -6,7 +6,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const labsData = readFileSync(join(root, "src/lib/labs-data.ts"), "utf8");
 const slugs = [...labsData.matchAll(/slug:\s*"([^"]+)"/g)].map((match) => match[1]);
 
-const origin = "https://canvasmath.edu";
+const origin = "https://canvasmath.org";
 const lastmod = new Date().toISOString().slice(0, 10);
 
 const urls = [

@@ -7,7 +7,7 @@ import {
   type LabTaskCardVariant,
 } from "@/components/LabTaskCard";
 
-export type SimulationGridLayout = "grid" | "scroll" | "featured" | "split" | "catalog";
+export type SimulationGridLayout = "grid" | "scroll" | "featured" | "split" | "catalog" | "recent";
 
 type SimulationGridProps = {
   labs: LabModule[];
@@ -35,7 +35,7 @@ export function SimulationGrid({
     return (
       <div
         role="status"
-        className="grid min-h-40 place-items-center rounded-xl border border-dashed border-border/70 bg-muted/10 px-4 py-10 text-center text-sm text-muted-foreground"
+        className="grid min-h-32 place-items-center rounded-xl border border-dashed border-border/70 bg-muted/10 px-4 py-8 text-center text-sm text-muted-foreground"
       >
         {emptyMessage ?? "No simulations match your search."}
       </div>
@@ -46,7 +46,17 @@ export function SimulationGrid({
     return (
       <div className={cn("homepage-catalog-grid", className)}>
         {labs.map((lab, index) => (
-          <LabTaskCard key={lab.slug} lab={lab} index={index} mode="catalog" />
+          <LabTaskCard key={lab.slug} lab={lab} index={index} mode={mode} />
+        ))}
+      </div>
+    );
+  }
+
+  if (layout === "recent") {
+    return (
+      <div className={cn("homepage-recent-grid", className)}>
+        {labs.map((lab, index) => (
+          <LabTaskCard key={lab.slug} lab={lab} index={index} mode={mode} />
         ))}
       </div>
     );
