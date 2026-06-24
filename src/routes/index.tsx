@@ -84,55 +84,53 @@ function Index() {
       <HomepageSidebar onNavigate={handleSidebarNavigate} />
 
       <div ref={mainScrollRef} className="homepage-main-scroll">
-        <main className="mx-auto w-full max-w-[1600px] px-3 pt-14 md:px-5 md:pt-5">
-          <div className="space-y-8 md:space-y-10">
-            <HomepageSearch value={searchQuery} onChange={setSearchQuery} />
+        <div className="homepage-floating-stack">
+          <HomepageSearch value={searchQuery} onChange={setSearchQuery} />
 
-            {filteredRecentlyAdded.length > 0 && (
-              <RecentlyAddedSection labs={filteredRecentlyAdded} />
-            )}
+          {filteredRecentlyAdded.length > 0 && (
+            <RecentlyAddedSection labs={filteredRecentlyAdded} />
+          )}
 
-            <section
-              id="all-simulations"
-              aria-labelledby="all-simulations-heading"
-              className="scroll-mt-4"
+          <section
+            id="all-simulations"
+            aria-labelledby="all-simulations-heading"
+            className="homepage-floating-section scroll-mt-4"
+          >
+            <h2
+              id="all-simulations-heading"
+              className="homepage-section-title mb-3 text-base font-semibold md:text-lg"
             >
-              <h2
-                id="all-simulations-heading"
-                className="homepage-section-title mb-3 text-base font-semibold md:text-lg"
-              >
-                All Simulations
-              </h2>
-              <SimulationGrid
-                labs={filteredLabs}
-                layout="catalog"
-                mode="image"
-                emptyMessage={
-                  hasSearch ? "No simulations match your search." : "No simulations available."
-                }
-              />
-            </section>
-          </div>
-        </main>
+              All Simulations
+            </h2>
+            <SimulationGrid
+              labs={filteredLabs}
+              layout="catalog"
+              mode="image"
+              emptyMessage={
+                hasSearch ? "No simulations match your search." : "No simulations available."
+              }
+            />
+          </section>
 
-        <footer className="homepage-footer border-t border-border/50 px-4 py-5">
-          <div className="mx-auto flex max-w-[1600px] flex-col items-center gap-3">
-            <EducationSafetyNotice compact />
-            <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-muted-foreground">
-              {(["privacy", "terms", "about"] as const).map((key) => (
-                <Button
-                  key={key}
-                  variant="link"
-                  className="h-auto p-0 text-muted-foreground"
-                  onClick={() => setLegal(key)}
-                >
-                  {legalContent[key].title}
-                </Button>
-              ))}
-              <span>© 2026 CanvasMath</span>
+          <footer className="homepage-footer-surface">
+            <div className="flex flex-col items-center gap-3">
+              <EducationSafetyNotice compact />
+              <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-muted-foreground">
+                {(["privacy", "terms", "about"] as const).map((key) => (
+                  <Button
+                    key={key}
+                    variant="link"
+                    className="h-auto p-0 text-muted-foreground"
+                    onClick={() => setLegal(key)}
+                  >
+                    {legalContent[key].title}
+                  </Button>
+                ))}
+                <span>© 2026 CanvasMath</span>
+              </div>
             </div>
-          </div>
-        </footer>
+          </footer>
+        </div>
       </div>
 
       <Dialog open={Boolean(legal)} onOpenChange={(open) => !open && setLegal(null)}>

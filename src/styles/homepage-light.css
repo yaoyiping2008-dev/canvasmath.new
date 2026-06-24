@@ -29,13 +29,21 @@
   --hp-card-radius: 14px;
 
   color: var(--foreground);
-  background: var(--background);
-
-  display: flex;
+  position: fixed;
+  inset: 0;
+  width: 100%;
   height: 100dvh;
   max-height: 100dvh;
+  display: flex;
   overflow: hidden;
-  position: relative;
+  background: transparent;
+}
+
+@supports not (height: 100dvh) {
+  .homepage-shell {
+    height: 100vh;
+    max-height: 100vh;
+  }
 }
 
 html.homepage-scroll-lock,
@@ -51,21 +59,47 @@ body.homepage-scroll-lock #root {
 
 .homepage-atmosphere,
 .homepage-background-layer {
-  position: fixed;
+  position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(circle at 78% 6%, rgba(88, 190, 255, 0.14), transparent 28%),
-    radial-gradient(circle at 24% 2%, rgba(165, 116, 255, 0.12), transparent 26%),
+    radial-gradient(circle at 12% 10%, rgba(165, 116, 255, 0.14), transparent 32%),
+    radial-gradient(circle at 88% 8%, rgba(88, 190, 255, 0.13), transparent 30%),
+    radial-gradient(circle at 78% 6%, rgba(88, 190, 255, 0.1), transparent 28%),
+    radial-gradient(circle at 24% 2%, rgba(165, 116, 255, 0.1), transparent 26%),
     radial-gradient(circle at 8% 72%, rgba(255, 190, 120, 0.07), transparent 22%),
     linear-gradient(180deg, #f8f7ff 0%, #f8fbff 55%, #f4f7ff 100%);
 }
 
+.homepage-background-layer::before {
+  content: "";
+  position: absolute;
+  top: 6%;
+  left: 18%;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  border: 1px solid rgba(165, 116, 255, 0.14);
+  background: radial-gradient(circle, rgba(165, 116, 255, 0.06), transparent 68%);
+}
+
+.homepage-background-layer::after {
+  content: "";
+  position: absolute;
+  top: 14%;
+  right: 10%;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 1px solid rgba(88, 190, 255, 0.12);
+  background: radial-gradient(circle, rgba(88, 190, 255, 0.05), transparent 70%);
+}
+
 .homepage-sidebar {
   position: relative;
-  z-index: 20;
-  flex-shrink: 0;
+  z-index: 30;
+  flex: 0 0 auto;
   height: 100%;
   overflow: hidden;
   background: var(--card);
@@ -76,19 +110,87 @@ body.homepage-scroll-lock #root {
 .homepage-main-scroll {
   position: relative;
   z-index: 10;
+  flex: 1 1 auto;
   min-width: 0;
   min-height: 0;
-  flex: 1 1 auto;
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
+  background: transparent;
   overscroll-behavior-y: contain;
+  scrollbar-gutter: stable;
   -webkit-overflow-scrolling: touch;
 }
 
-.homepage-footer {
-  margin-top: 3rem;
-  padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+.homepage-floating-stack {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 1600px);
+  margin-inline: auto;
+  padding: 3.5rem 0.75rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .homepage-floating-stack {
+    padding: 1.25rem 1.25rem 0;
+    gap: 1.75rem;
+  }
+}
+
+.homepage-floating-stack--lab {
+  padding-top: 3.5rem;
+}
+
+@media (min-width: 768px) {
+  .homepage-floating-stack--lab {
+    padding-top: 1.25rem;
+  }
+}
+
+.homepage-search-surface {
+  position: relative;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.95) inset,
+    0 8px 22px rgba(55, 45, 100, 0.1),
+    0 20px 50px rgba(55, 45, 100, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.homepage-floating-section {
+  overflow: visible;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.76);
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.92) inset,
+    0 10px 28px rgba(52, 42, 95, 0.09),
+    0 28px 64px rgba(52, 42, 95, 0.07);
+  padding: 1rem;
+}
+
+@media (min-width: 768px) {
+  .homepage-floating-section {
+    padding: 1.25rem 1.5rem;
+  }
+}
+
+.homepage-footer-surface {
+  margin-top: 0.5rem;
+  margin-bottom: max(1.5rem, env(safe-area-inset-bottom));
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow:
+    0 8px 24px rgba(52, 42, 95, 0.08),
+    0 22px 52px rgba(52, 42, 95, 0.06);
+  padding: 1.25rem;
 }
 
 .homepage-sidebar-logo-shell {
@@ -150,7 +252,9 @@ body.homepage-scroll-lock #root {
 }
 
 .homepage-search-bar {
-  box-shadow: var(--hp-card-shadow);
+  border: none;
+  background: transparent;
+  box-shadow: none;
 }
 
 .homepage-section-title {

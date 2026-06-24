@@ -47,39 +47,41 @@ export function LabDetailLayout({ lab }: LabDetailLayoutProps) {
       <HomepageSidebar onNavigate={handleSidebarNavigate} />
 
       <div ref={mainScrollRef} className="homepage-main-scroll">
-        <main className="mx-auto w-full max-w-[1600px] px-3 pt-14 md:px-5 md:pt-5">
-          <LabPageHeader lab={lab} onReload={retry} onFullscreen={handleFullscreen} />
+        <div className="homepage-floating-stack homepage-floating-stack--lab">
+          <section className="homepage-floating-section overflow-visible">
+            <LabPageHeader lab={lab} onReload={retry} onFullscreen={handleFullscreen} />
 
-          <div className="grid gap-5 xl:grid-cols-[minmax(0,1.6fr)_minmax(320px,0.9fr)]">
-            <EmbeddedSimulationWorkspace
-              lab={lab}
-              containerRef={containerRef}
-              reloadKey={reloadKey}
-              handleLoad={handleLoad}
-              retry={retry}
-              isLoading={isLoading}
-              hasError={hasError}
-            />
+            <div className="mt-4 grid gap-5 xl:grid-cols-[minmax(0,1.6fr)_minmax(320px,0.9fr)]">
+              <EmbeddedSimulationWorkspace
+                lab={lab}
+                containerRef={containerRef}
+                reloadKey={reloadKey}
+                handleLoad={handleLoad}
+                retry={retry}
+                isLoading={isLoading}
+                hasError={hasError}
+              />
 
-            {rightRecommendations.length > 0 && (
+              {rightRecommendations.length > 0 && (
+                <RelatedSimulationGrid
+                  title="Related Simulations"
+                  labs={rightRecommendations}
+                  layout="sidebar"
+                  className="xl:min-w-0"
+                />
+              )}
+            </div>
+
+            {bottomRecommendations.length > 0 && (
               <RelatedSimulationGrid
-                title="Related Simulations"
-                labs={rightRecommendations}
-                layout="sidebar"
-                className="xl:min-w-0"
+                title="More Simulations"
+                labs={bottomRecommendations}
+                layout="bottom"
+                className="mt-8"
               />
             )}
-          </div>
-
-          {bottomRecommendations.length > 0 && (
-            <RelatedSimulationGrid
-              title="More Simulations"
-              labs={bottomRecommendations}
-              layout="bottom"
-              className="mt-8"
-            />
-          )}
-        </main>
+          </section>
+        </div>
       </div>
     </div>
   );
