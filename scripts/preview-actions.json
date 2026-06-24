@@ -1,0 +1,34 @@
+{
+  "powers-of-two-2048": [
+    { "type": "wait", "milliseconds": 800 },
+    { "type": "clickCenter" },
+    {
+      "type": "keys",
+      "value": ["ArrowLeft", "ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"],
+      "interval": 300
+    },
+    { "type": "wait", "milliseconds": 600 }
+  ],
+  "sudoku-deduction": [
+    { "type": "wait", "milliseconds": 1000 },
+    { "type": "click", "xPercent": 45, "yPercent": 42 },
+    { "type": "wait", "milliseconds": 400 },
+    { "type": "click", "xPercent": 55, "yPercent": 52 },
+    { "type": "wait", "milliseconds": 600 }
+  ],
+  "graphing-lines": [
+    { "type": "wait", "milliseconds": 1000 },
+    {
+      "type": "drag",
+      "fromPercent": [30, 65],
+      "toPercent": [72, 38],
+      "duration": 700
+    },
+    { "type": "wait", "milliseconds": 600 }
+  ],
+  "hextris-spatial-rotation": [
+    { "type": "wait", "milliseconds": 800 },
+    { "type": "keys", "value": ["ArrowLeft", "ArrowRight", "ArrowLeft"], "interval": 250 },
+    { "type": "wait", "milliseconds": 600 }
+  ]
+}

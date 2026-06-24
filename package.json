@@ -10,7 +10,10 @@
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "previews:test": "node scripts/generate-lab-previews.mjs --limit 3",
+    "previews:all": "node scripts/generate-lab-previews.mjs --all",
+    "previews:single": "node scripts/generate-lab-previews.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -77,6 +80,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^15.15.0",
+    "playwright": "^1.61.1",
     "prettier": "^3.7.3",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.56.1",

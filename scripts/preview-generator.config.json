@@ -1,0 +1,30 @@
+{
+  "baseUrl": "http://localhost:5173",
+  "viewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "capture": {
+    "durationSeconds": 5,
+    "fps": 12,
+    "width": 640,
+    "height": 360,
+    "jpegQuality": 80
+  },
+  "timeouts": {
+    "navigationMs": 30000,
+    "iframeLoadMs": 25000,
+    "workspaceVisibleMs": 25000,
+    "captureMs": 90000
+  },
+  "sizeWarningBytes": 1048576,
+  "startViteIfMissing": false,
+  "viteCommand": "npm",
+  "viteArgs": ["run", "dev"],
+  "genericActions": {
+    "initialWaitMs": 1200,
+    "betweenActionsMs": 350,
+    "finalWaitMs": 800,
+    "keys": ["Space", "ArrowRight", "ArrowDown", "ArrowLeft", "ArrowUp"]
+  }
+}

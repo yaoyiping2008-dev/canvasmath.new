@@ -30,6 +30,7 @@ export function EmbeddedSimulationWorkspace({
   return (
     <div
       ref={containerRef}
+      data-simulation-workspace
       className={cn(
         depthCard,
         "relative aspect-video w-full min-h-[280px] max-h-[55vh] overflow-hidden rounded-2xl border border-border/60 bg-card sm:min-h-[360px] sm:max-h-[62vh]",
@@ -82,6 +83,7 @@ export function EmbeddedSimulationWorkspace({
 
       <iframe
         key={`${lab.slug}-${reloadKey}`}
+        data-simulation-iframe
         src={lab.moduleEndpoint}
         title={`${lab.title} simulation`}
         allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"

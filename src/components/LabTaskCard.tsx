@@ -1,10 +1,13 @@
 import { Link } from "@tanstack/react-router";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import type { LabModule } from "@/lib/labs-data";
+import { getLabPreviewUrl } from "@/lib/lab-previews";
 import { depthCard, depthCardHero, depthCardSecondary, textMetadata } from "@/lib/designSystem";
 import { ModuleThumbnail } from "@/components/ui/ModuleThumbnail";
 
 const IMAGE_RATIO = "aspect-[4/3]";
+const HOVER_PREVIEW_DELAY_MS = 250;
 
 export type LabTaskCardVariant = "hero" | "secondary" | "standard" | "compact";
 export type LabTaskCardMode = "default" | "catalog" | "image";
@@ -23,8 +26,84 @@ const cardShell = cn(
   "motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:hover:scale-100",
 );
 
+function prefersReducedMotion(): boolean {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
 function ImageOnlyCard({ lab, index, className }: LabTaskCardProps) {
   const secondary = lab.subject ?? lab.category;
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [previewActive, setPreviewActive] = useState(false);
+  const [previewFailed, setPreviewFailed] = useState(false);
+
+  const previewUrl = getLabPreviewUrl(lab.slug);
+  const canAttemptPreview = Boolean(previewUrl) && !previewFailed;
+
+  const stopPreview = useCallback(() => {
+    if (hoverTimerRef.current) {
+      clearTimeout(hoverTimerRef.current);
+      hoverTimerRef.current = null;
+    }
+    setPreviewActive(false);
+    const video = videoRef.current;
+    if (video) {
+      video.pause();
+      video.currentTime = 0;
+    }
+  }, []);
+
+  const failPreview = useCallback(() => {
+    setPreviewFailed(true);
+    setPreviewActive(false);
+    const video = videoRef.current;
+    if (video) {
+      video.pause();
+      video.currentTime = 0;
+    }
+  }, []);
+
+  const startPreview = useCallback(() => {
+    if (!previewUrl || previewFailed || prefersReducedMotion()) return;
+
+    const video = videoRef.current;
+    if (!video) return;
+
+    video
+      .play()
+      .then(() => setPreviewActive(true))
+      .catch(() => {
+        failPreview();
+      });
+  }, [previewUrl, previewFailed, failPreview]);
+
+  const handlePointerEnter = useCallback(() => {
+    if (!canAttemptPreview || prefersReducedMotion()) return;
+
+    hoverTimerRef.current = setTimeout(() => {
+      hoverTimerRef.current = null;
+      startPreview();
+    }, HOVER_PREVIEW_DELAY_MS);
+  }, [canAttemptPreview, startPreview]);
+
+  const handlePointerLeave = useCallback(() => {
+    stopPreview();
+  }, [stopPreview]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    return () => {
+      if (hoverTimerRef.current) {
+        clearTimeout(hoverTimerRef.current);
+      }
+      if (video) {
+        video.pause();
+        video.currentTime = 0;
+      }
+    };
+  }, []);
+
+  const showOverlay = previewActive;
 
   return (
     <article className={cn("min-w-0", className)}>
@@ -33,8 +112,10 @@ function ImageOnlyCard({ lab, index, className }: LabTaskCardProps) {
         params={{ slug: lab.slug }}
         aria-label={`Open ${lab.title}`}
         className={cn(cardShell, "homepage-image-card rounded-[14px]")}
+        onPointerEnter={handlePointerEnter}
+        onPointerLeave={handlePointerLeave}
       >
-        <div className="relative aspect-[4/3] overflow-hidden bg-muted/30">
+        <div className="relative aspect-[4/3] overflow-hidden bg-slate-900">
           <img
             src={lab.image}
             alt={lab.title}
@@ -42,16 +123,43 @@ function ImageOnlyCard({ lab, index, className }: LabTaskCardProps) {
             height={480}
             loading={index < 12 ? "eager" : "lazy"}
             decoding="async"
-            className="h-full w-full object-cover transition-transform duration-[240ms] ease-out motion-safe:group-hover/card:scale-[1.03] motion-safe:group-focus-visible/card:scale-[1.03]"
+            className={cn(
+              "h-full w-full object-cover transition-[opacity,transform,filter] duration-[240ms] ease-out",
+              previewActive
+                ? "scale-110 blur-md opacity-30"
+                : cn(
+                    "scale-100 blur-0 opacity-100",
+                    "motion-safe:group-hover/card:scale-[1.03] motion-safe:group-focus-visible/card:scale-[1.03]",
+                  ),
+            )}
             onError={(e) => {
               (e.target as HTMLImageElement).style.opacity = "0.4";
             }}
           />
+
+          {canAttemptPreview && (
+            <video
+              ref={videoRef}
+              src={previewUrl}
+              muted
+              loop
+              playsInline
+              preload="none"
+              aria-hidden="true"
+              className={cn(
+                "pointer-events-none absolute inset-0 h-full w-full object-contain transition-opacity duration-[240ms] ease-out",
+                previewActive ? "opacity-100" : "opacity-0",
+              )}
+              onError={failPreview}
+            />
+          )}
+
           <div
             className={cn(
               "pointer-events-none absolute inset-x-0 bottom-0 px-2.5 pb-2.5 pt-10",
               "bg-gradient-to-t from-black/70 via-black/35 to-transparent",
               "translate-y-1 opacity-0 transition-all duration-[240ms] ease-out",
+              showOverlay && "translate-y-0 opacity-100",
               "motion-safe:group-hover/card:translate-y-0 motion-safe:group-hover/card:opacity-100",
               "motion-safe:group-focus-visible/card:translate-y-0 motion-safe:group-focus-visible/card:opacity-100",
             )}

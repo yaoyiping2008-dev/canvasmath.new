@@ -7,7 +7,14 @@ import tseslint from "typescript-eslint";
 
 export default tseslint.config(
   {
-    ignores: ["dist/**", ".output/**", ".vinxi/**", "public/games/**", "download-thumbnails.cjs"],
+    ignores: [
+      "dist/**",
+      ".output/**",
+      ".vinxi/**",
+      "public/games/**",
+      "download-thumbnails.cjs",
+      "scripts/generate-lab-previews.mjs",
+    ],
   },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
