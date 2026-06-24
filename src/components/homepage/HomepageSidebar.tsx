@@ -24,17 +24,18 @@ function SidebarContent({
         href="/"
         aria-label="CanvasMath home"
         className={cn(
-          "homepage-sidebar-logo rounded-2xl px-1 outline-none focus-visible:ring-2 focus-visible:ring-ring",
+          "homepage-sidebar-logo-shell rounded-[14px] px-1 outline-none focus-visible:ring-2 focus-visible:ring-ring",
           compactLogo ? "mb-4" : "mb-5",
         )}
       >
-        <div className="homepage-sidebar-logo__wrap">
-          <img
-            src={canvasMathLogo}
-            alt=""
-            className={cn("homepage-sidebar-logo__img", compactLogo && "max-h-14 object-left")}
-          />
-        </div>
+        <span
+          className={cn(
+            "homepage-sidebar-logo-frame",
+            compactLogo && "homepage-sidebar-logo-frame--compact",
+          )}
+        >
+          <img src={canvasMathLogo} alt="" className="homepage-sidebar-logo-image" />
+        </span>
       </a>
 
       <nav aria-label="Page sections" className="space-y-0.5">
