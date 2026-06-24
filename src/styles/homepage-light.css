@@ -28,6 +28,16 @@
 
   --hp-card-radius: 14px;
 
+  --hp-glass-strong: rgba(255, 255, 255, 0.58);
+  --hp-glass-medium: rgba(255, 255, 255, 0.44);
+  --hp-glass-soft: rgba(255, 255, 255, 0.34);
+
+  --hp-glass-border: rgba(255, 255, 255, 0.62);
+  --hp-glass-inner-highlight: rgba(255, 255, 255, 0.72);
+
+  --hp-glass-blur: 14px;
+  --hp-glass-saturate: 115%;
+
   color: var(--foreground);
   position: fixed;
   inset: 0;
@@ -64,11 +74,11 @@ body.homepage-scroll-lock #root {
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(circle at 12% 10%, rgba(165, 116, 255, 0.14), transparent 32%),
-    radial-gradient(circle at 88% 8%, rgba(88, 190, 255, 0.13), transparent 30%),
-    radial-gradient(circle at 78% 6%, rgba(88, 190, 255, 0.1), transparent 28%),
-    radial-gradient(circle at 24% 2%, rgba(165, 116, 255, 0.1), transparent 26%),
-    radial-gradient(circle at 8% 72%, rgba(255, 190, 120, 0.07), transparent 22%),
+    radial-gradient(circle at 12% 10%, rgba(165, 116, 255, 0.17), transparent 34%),
+    radial-gradient(circle at 88% 8%, rgba(88, 190, 255, 0.16), transparent 32%),
+    radial-gradient(circle at 78% 6%, rgba(88, 190, 255, 0.11), transparent 28%),
+    radial-gradient(circle at 24% 2%, rgba(165, 116, 255, 0.12), transparent 26%),
+    radial-gradient(circle at 8% 72%, rgba(255, 190, 120, 0.08), transparent 22%),
     linear-gradient(180deg, #f8f7ff 0%, #f8fbff 55%, #f4f7ff 100%);
 }
 
@@ -80,8 +90,8 @@ body.homepage-scroll-lock #root {
   width: 220px;
   height: 220px;
   border-radius: 50%;
-  border: 1px solid rgba(165, 116, 255, 0.14);
-  background: radial-gradient(circle, rgba(165, 116, 255, 0.06), transparent 68%);
+  border: 1px solid rgba(165, 116, 255, 0.18);
+  background: radial-gradient(circle, rgba(165, 116, 255, 0.09), transparent 68%);
 }
 
 .homepage-background-layer::after {
@@ -92,8 +102,8 @@ body.homepage-scroll-lock #root {
   width: 160px;
   height: 160px;
   border-radius: 50%;
-  border: 1px solid rgba(88, 190, 255, 0.12);
-  background: radial-gradient(circle, rgba(88, 190, 255, 0.05), transparent 70%);
+  border: 1px solid rgba(88, 190, 255, 0.16);
+  background: radial-gradient(circle, rgba(88, 190, 255, 0.08), transparent 70%);
 }
 
 .homepage-sidebar {
@@ -153,26 +163,59 @@ body.homepage-scroll-lock #root {
 .homepage-search-surface {
   position: relative;
   border-radius: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.82);
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--hp-glass-strong);
+  border: 1px solid var(--hp-glass-border);
+  backdrop-filter: blur(var(--hp-glass-blur)) saturate(var(--hp-glass-saturate));
+  -webkit-backdrop-filter: blur(var(--hp-glass-blur)) saturate(var(--hp-glass-saturate));
   box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.95) inset,
-    0 8px 22px rgba(55, 45, 100, 0.1),
-    0 20px 50px rgba(55, 45, 100, 0.08);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+    0 1px 0 var(--hp-glass-inner-highlight) inset,
+    0 10px 28px rgba(50, 42, 95, 0.1),
+    0 26px 60px rgba(50, 42, 95, 0.08);
+}
+
+.homepage-search-surface > * {
+  position: relative;
+  z-index: 1;
+}
+
+.homepage-search-surface::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.24), transparent 38%);
 }
 
 .homepage-floating-section {
+  position: relative;
   overflow: visible;
   border-radius: 22px;
-  border: 1px solid rgba(255, 255, 255, 0.76);
-  background: rgba(255, 255, 255, 0.82);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.48), rgba(255, 255, 255, 0.3));
+  border: 1px solid rgba(255, 255, 255, 0.56);
+  backdrop-filter: blur(12px) saturate(112%);
+  -webkit-backdrop-filter: blur(12px) saturate(112%);
   box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.92) inset,
-    0 10px 28px rgba(52, 42, 95, 0.09),
+    0 1px 0 rgba(255, 255, 255, 0.68) inset,
+    0 12px 30px rgba(52, 42, 95, 0.09),
     0 28px 64px rgba(52, 42, 95, 0.07);
   padding: 1rem;
+}
+
+.homepage-floating-section > * {
+  position: relative;
+  z-index: 1;
+}
+
+.homepage-floating-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.24), transparent 38%);
 }
 
 @media (min-width: 768px) {
@@ -182,15 +225,51 @@ body.homepage-scroll-lock #root {
 }
 
 .homepage-footer-surface {
+  position: relative;
   margin-top: 0.5rem;
   margin-bottom: max(1.5rem, env(safe-area-inset-bottom));
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.75);
-  background: rgba(255, 255, 255, 0.86);
+  background: rgba(255, 255, 255, 0.52);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(13px) saturate(110%);
+  -webkit-backdrop-filter: blur(13px) saturate(110%);
   box-shadow:
-    0 8px 24px rgba(52, 42, 95, 0.08),
-    0 22px 52px rgba(52, 42, 95, 0.06);
+    0 1px 0 rgba(255, 255, 255, 0.72) inset,
+    0 10px 26px rgba(52, 42, 95, 0.08),
+    0 24px 54px rgba(52, 42, 95, 0.06);
   padding: 1.25rem;
+}
+
+.homepage-footer-surface > * {
+  position: relative;
+  z-index: 1;
+}
+
+.homepage-footer-surface::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.24), transparent 38%);
+}
+
+@media (max-width: 767px) {
+  .homepage-search-surface,
+  .homepage-floating-section,
+  .homepage-footer-surface {
+    backdrop-filter: blur(8px) saturate(108%);
+    -webkit-backdrop-filter: blur(8px) saturate(108%);
+  }
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .homepage-search-surface,
+  .homepage-floating-section,
+  .homepage-footer-surface {
+    background: rgba(255, 255, 255, 0.86);
+  }
 }
 
 .homepage-sidebar-logo-shell {
@@ -253,7 +332,7 @@ body.homepage-scroll-lock #root {
 
 .homepage-search-bar {
   border: none;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.42);
   box-shadow: none;
 }
 
