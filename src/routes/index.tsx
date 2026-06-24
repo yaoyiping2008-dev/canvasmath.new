@@ -1,12 +1,25 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import {
-  Grid2X2, Search, Sigma, Puzzle, Sparkles,
-  Layers, X, Mail, UserRound,
+  Grid2X2,
+  Search,
+  Sigma,
+  Puzzle,
+  Shapes,
+  Calculator,
+  BarChart3,
+  Atom,
+  X,
+  Mail,
+  UserRound,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
-  Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { SimulationGrid } from "@/components/SimulationGrid";
 import { LAB_CATEGORIES, labsData, type LabCategory } from "@/lib/labs-data";
@@ -18,10 +31,12 @@ const SITE_DESCRIPTION =
 
 const categoryIcons = {
   All: Grid2X2,
-  Matrix: Sigma,
-  Logic: Puzzle,
-  Applied: Layers,
-  Interactive: Sparkles,
+  "Number & Operations": Calculator,
+  Algebra: Sigma,
+  Geometry: Shapes,
+  "Probability & Data": BarChart3,
+  "Physics & Motion": Atom,
+  "Logic & Reasoning": Puzzle,
 };
 
 const legalContent = {
@@ -29,11 +44,52 @@ const legalContent = {
     title: "Privacy Policy",
     body: (
       <div className="space-y-4 text-xs leading-relaxed">
-        <p><strong>Last updated: June 14, 2026.</strong> CanvasMath ("we", "our") is fully committed to protecting the privacy of pupils, educators, and users.</p>
-        <p><strong>1. Data Collection & Analytics:</strong> We do not require user registration. We use industry-standard, privacy-compliant essential and analytics cookies (such as Google Analytics) solely to measure site performance. These tools collect non-personally identifiable technical telemetry (browser type, anonymous usage vectors).</p>
-        <p><strong>2. Google Ads & Third-Party Vendors:</strong> Google and third-party vendors use cookies to serve ads based on prior visits. Users may completely opt out of personalized advertising by visiting the <a href="https://tools.google.com/dlpage/gaoptout/" target="_blank" rel="noreferrer" className="text-primary underline">Google Analytics Opt-out Browser Add-on</a> and managing settings via <a href="https://adssettings.google.com" target="_blank" rel="noreferrer" className="text-primary underline">Google Ads Settings</a>.</p>
-        <p><strong>3. K-12 Student Protection (COPPA & GDPR):</strong> We strictly adhere to COPPA and GDPR frameworks. CanvasMath does NOT knowingly or intentionally collect, track, or harvest personal identifiable information (PII) from children under the age of 13. Interactive modules are safely sandbox-embedded from verified independent educational publishers. If you believe any child data has been inadvertently processed, contact us immediately for permanent deletion.</p>
-        <p><strong>4. Data Rights:</strong> GDPR/CCPA users retain absolute rights to access, restrict, or delete telemetry caches. For inquiries, email: <span className="text-primary font-semibold">privacy@canvasmath.org</span>.</p>
+        <p>
+          <strong>Last updated: June 14, 2026.</strong> CanvasMath ("we", "our") is fully committed
+          to protecting the privacy of pupils, educators, and users.
+        </p>
+        <p>
+          <strong>1. Data Collection & Analytics:</strong> We do not require user registration. We
+          use industry-standard, privacy-compliant essential and analytics cookies (such as Google
+          Analytics) solely to measure site performance. These tools collect non-personally
+          identifiable technical telemetry (browser type, anonymous usage vectors).
+        </p>
+        <p>
+          <strong>2. Google Ads & Third-Party Vendors:</strong> Google and third-party vendors use
+          cookies to serve ads based on prior visits. Users may completely opt out of personalized
+          advertising by visiting the{" "}
+          <a
+            href="https://tools.google.com/dlpage/gaoptout/"
+            target="_blank"
+            rel="noreferrer"
+            className="text-primary underline"
+          >
+            Google Analytics Opt-out Browser Add-on
+          </a>{" "}
+          and managing settings via{" "}
+          <a
+            href="https://adssettings.google.com"
+            target="_blank"
+            rel="noreferrer"
+            className="text-primary underline"
+          >
+            Google Ads Settings
+          </a>
+          .
+        </p>
+        <p>
+          <strong>3. K-12 Student Protection (COPPA & GDPR):</strong> We strictly adhere to COPPA
+          and GDPR frameworks. CanvasMath does NOT knowingly or intentionally collect, track, or
+          harvest personal identifiable information (PII) from children under the age of 13.
+          Interactive modules are safely sandbox-embedded from verified independent educational
+          publishers. If you believe any child data has been inadvertently processed, contact us
+          immediately for permanent deletion.
+        </p>
+        <p>
+          <strong>4. Data Rights:</strong> GDPR/CCPA users retain absolute rights to access,
+          restrict, or delete telemetry caches. For inquiries, email:{" "}
+          <span className="text-primary font-semibold">privacy@canvasmath.org</span>.
+        </p>
       </div>
     ),
   },
@@ -41,10 +97,30 @@ const legalContent = {
     title: "Terms of Service",
     body: (
       <div className="space-y-4 text-xs leading-relaxed">
-        <p><strong>1. Acceptable Educational Use:</strong> CanvasMath grants a limited, non-commercial, revocable license to schools, teachers, and individual students to utilize our workspace. Web-scraping, automated scraping, denial-of-service attempts, or any malicious interference with network infrastructure are strictly prohibited.</p>
-        <p><strong>2. Intellectual Property & Embedded Modules:</strong> All interactive mathematical simulations, engines, and codebeds are the exclusive property of their respective third-party publishers or licensors. CanvasMath hosts these under operational sandbox agreements and claims no ownership over external educational assets.</p>
-        <p><strong>3. LIMITATION OF LIABILITY:</strong> TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, CANVASMATH AND ITS PARTNERS PROVIDE THESE SERVICES "AS IS" WITHOUT ANY WARRANTY. WE SHALL NOT BE HELD LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES, INCLUDING BUT NOT LIMITED TO OPERATIONAL INTERRUPTIONS, DATA LOSS, DEVICE MALFUNCTIONS, OR EXTERNAL EMBED DISRUPTIONS RELEVANT TO SCHOOL NETWORKS.</p>
-        <p><strong>4. Governing Law:</strong> These terms shall be governed by and construed in accordance with standard international internet statutes, without regard to conflict of law principles.</p>
+        <p>
+          <strong>1. Acceptable Educational Use:</strong> CanvasMath grants a limited,
+          non-commercial, revocable license to schools, teachers, and individual students to utilize
+          our workspace. Web-scraping, automated scraping, denial-of-service attempts, or any
+          malicious interference with network infrastructure are strictly prohibited.
+        </p>
+        <p>
+          <strong>2. Intellectual Property & Embedded Modules:</strong> All interactive mathematical
+          simulations, engines, and codebeds are the exclusive property of their respective
+          third-party publishers or licensors. CanvasMath hosts these under operational sandbox
+          agreements and claims no ownership over external educational assets.
+        </p>
+        <p>
+          <strong>3. LIMITATION OF LIABILITY:</strong> TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE
+          LAW, CANVASMATH AND ITS PARTNERS PROVIDE THESE SERVICES "AS IS" WITHOUT ANY WARRANTY. WE
+          SHALL NOT BE HELD LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES,
+          INCLUDING BUT NOT LIMITED TO OPERATIONAL INTERRUPTIONS, DATA LOSS, DEVICE MALFUNCTIONS, OR
+          EXTERNAL EMBED DISRUPTIONS RELEVANT TO SCHOOL NETWORKS.
+        </p>
+        <p>
+          <strong>4. Governing Law:</strong> These terms shall be governed by and construed in
+          accordance with standard international internet statutes, without regard to conflict of
+          law principles.
+        </p>
       </div>
     ),
   },
@@ -52,12 +128,24 @@ const legalContent = {
     title: "About & Contact",
     body: (
       <div className="space-y-4 text-xs leading-relaxed">
-        <p><strong>About CanvasMath:</strong> CanvasMath is an open, premium curated interactive mathematics workspace dedicated to K-12 learners and STEM curriculum enhancement. We focus on visual execution, geometric processing, and zero-download accessibility for Chromebooks and classroom infrastructure.</p>
-        <p><strong>Publisher & Content Partnership:</strong> We highly respect intellectual property. If you are a publisher looking to integrate or audit the license of any simulation module showcased in our catalog, please contact our curriculum clearing desk.</p>
+        <p>
+          <strong>About CanvasMath:</strong> CanvasMath is an open, premium curated interactive
+          mathematics workspace dedicated to K-12 learners and STEM curriculum enhancement. We focus
+          on visual execution, geometric processing, and zero-download accessibility for Chromebooks
+          and classroom infrastructure.
+        </p>
+        <p>
+          <strong>Publisher & Content Partnership:</strong> We highly respect intellectual property.
+          If you are a publisher looking to integrate or audit the license of any simulation module
+          showcased in our catalog, please contact our curriculum clearing desk.
+        </p>
         <p className="flex items-center gap-2 font-medium bg-muted p-2 rounded border border-border w-fit">
           <Mail className="size-4 text-primary" /> General & Legal Desk: hello@canvasmath.org
         </p>
-        <p className="text-muted-foreground text-[11px]">Entity Operations: CanvasMath Academic Distribution Platform. Inquiries are generally audited and answered within 48 business hours.</p>
+        <p className="text-muted-foreground text-[11px]">
+          Entity Operations: CanvasMath Academic Distribution Platform. Inquiries are generally
+          audited and answered within 48 business hours.
+        </p>
       </div>
     ),
   },
@@ -90,20 +178,17 @@ function Index() {
     [category, query],
   );
 
-  const sectionHeading =
-    category === "All" ? "Interactive Math Labs" : `${category} Simulations`;
+  const sectionHeading = category === "All" ? "Interactive Math Labs" : `${category} Simulations`;
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       <aside className="fixed inset-y-0 left-0 z-30 flex w-20 flex-col overflow-x-hidden overflow-y-auto border-r border-border bg-card px-2 py-3 md:w-48 md:px-3">
-        
         <div className="mb-4 flex items-center justify-center px-1 md:justify-start">
-          <a href="/" className="group flex h-12 w-full items-stretch transition-opacity duration-200 hover:opacity-90 md:justify-start">
-            <img
-              src={logoGif}
-              alt="CanvasMath Logo"
-              className="h-full w-full object-fill"
-            />
+          <a
+            href="/"
+            className="group flex h-12 w-full items-stretch transition-opacity duration-200 hover:opacity-90 md:justify-start"
+          >
+            <img src={logoGif} alt="CanvasMath Logo" className="h-full w-full object-fill" />
           </a>
         </div>
 
@@ -131,7 +216,9 @@ function Index() {
                 onClick={() => setCategory(item)}
               >
                 <Icon className="shrink-0" />
-                <span className="hidden md:inline">{item === "All" ? "All Simulations" : item}</span>
+                <span className="hidden md:inline">
+                  {item === "All" ? "All Simulations" : item}
+                </span>
               </Button>
             );
           })}
@@ -147,7 +234,7 @@ function Index() {
                 autoFocus
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
-                placeholder="Search 24 simulations..."
+                placeholder={`Search ${labsData.length} simulations...`}
                 className="h-9 min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
               />
               {query && (
@@ -171,13 +258,19 @@ function Index() {
               <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-primary">
                 Instant Learning Collection
               </p>
-              <h1 className="truncate font-display text-xl font-bold md:text-2xl">{sectionHeading}</h1>
+              <h1 className="truncate font-display text-xl font-bold md:text-2xl">
+                {sectionHeading}
+              </h1>
             </div>
-            <span className="shrink-0 text-xs text-muted-foreground">{filteredLabs.length} modules</span>
+            <span className="shrink-0 text-xs text-muted-foreground">
+              {filteredLabs.length} modules
+            </span>
           </div>
           <SimulationGrid
             labs={filteredLabs}
-            emptyMessage={query ? `No simulations match “${query}”.` : "No simulations in this category."}
+            emptyMessage={
+              query ? `No simulations match “${query}”.` : "No simulations in this category."
+            }
           />
         </section>
 
