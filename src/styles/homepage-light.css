@@ -44,6 +44,40 @@
   box-shadow: 2px 0 12px rgba(40, 30, 80, 0.04);
 }
 
+.homepage-sidebar-logo {
+  display: block;
+  overflow: visible;
+  border-radius: 1rem;
+}
+
+.homepage-sidebar-logo__wrap {
+  overflow: visible;
+}
+
+.homepage-sidebar-logo__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  transition:
+    transform 240ms ease-out,
+    filter 240ms ease-out;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .homepage-sidebar-logo:hover .homepage-sidebar-logo__img,
+  .homepage-sidebar-logo:focus-visible .homepage-sidebar-logo__img {
+    transform: translateY(-3px) scale(1.04);
+    filter: drop-shadow(0 12px 18px rgba(65, 45, 120, 0.18));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .homepage-sidebar-logo__img {
+    transition: none;
+  }
+}
+
 .homepage-search-wrap {
   max-width: min(720px, calc(100vw - 13rem));
 }

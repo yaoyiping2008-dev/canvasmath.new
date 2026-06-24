@@ -1,5 +1,6 @@
 import { Menu } from "lucide-react";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import canvasMathLogo from "@/assets/CanvasMath-NEW.jpg";
@@ -13,18 +14,6 @@ type HomepageSidebarProps = {
   onNavigate: (sectionId: string) => void;
 };
 
-function SidebarLogo({ compact = false }: { compact?: boolean }) {
-  return (
-    <img
-      src={canvasMathLogo}
-      alt="CanvasMath"
-      className={
-        compact ? "mb-4 max-h-14 w-full object-contain object-left" : "mb-5 w-full object-contain"
-      }
-    />
-  );
-}
-
 function SidebarContent({
   onNavigate,
   compactLogo = false,
@@ -33,9 +22,19 @@ function SidebarContent({
     <div className="flex h-full flex-col">
       <a
         href="/"
-        className="block rounded-lg px-1 outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        aria-label="CanvasMath home"
+        className={cn(
+          "homepage-sidebar-logo rounded-2xl px-1 outline-none focus-visible:ring-2 focus-visible:ring-ring",
+          compactLogo ? "mb-4" : "mb-5",
+        )}
       >
-        <SidebarLogo compact={compactLogo} />
+        <div className="homepage-sidebar-logo__wrap">
+          <img
+            src={canvasMathLogo}
+            alt=""
+            className={cn("homepage-sidebar-logo__img", compactLogo && "max-h-14 object-left")}
+          />
+        </div>
       </a>
 
       <nav aria-label="Page sections" className="space-y-0.5">
