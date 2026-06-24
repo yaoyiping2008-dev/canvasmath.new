@@ -1,47 +1,190 @@
-import { useNavigate } from "@tanstack/react-router";
-import type { MouseEvent } from "react";
-import { Button } from "@/components/ui/button";
+import { Link } from "@tanstack/react-router";
+import { Clock3 } from "lucide-react";
+import { cn } from "@/lib/utils";
 import type { LabModule } from "@/lib/labs-data";
+import {
+  depthCard,
+  depthCardHero,
+  depthCardSecondary,
+  textMetadata,
+} from "@/lib/designSystem";
+import { ModuleThumbnail } from "@/components/ui/ModuleThumbnail";
+
+import type { LearningStatus } from "@/lib/learningStorage";
+
+/** Shared image ratio across card tiers for visual consistency. */
+const IMAGE_RATIO = "aspect-[4/3]";
+
+export type LabTaskCardVariant = "hero" | "secondary" | "standard" | "compact";
 
 type LabTaskCardProps = {
   lab: LabModule;
   index: number;
+  variant?: LabTaskCardVariant;
+  className?: string;
+  learningStatus?: LearningStatus;
+  isContinueTarget?: boolean;
 };
 
-export function LabTaskCard({ lab, index }: LabTaskCardProps) {
-  const navigate = useNavigate();
+function CardMeta({ lab, variant }: { lab: LabModule; variant: LabTaskCardVariant }) {
+  const isCompact = variant === "compact";
+  const isHero = variant === "hero";
 
-  const handleOpen = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    void navigate({ to: "/labs/$slug", params: { slug: lab.slug } });
-  };
+  const detailParts = [
+    lab.gradeBand,
+    lab.difficulty,
+    lab.estimatedMinutes != null ? `${lab.estimatedMinutes} min` : null,
+  ].filter(Boolean);
 
   return (
-    // 💡 核心修复：用一个标准的块级 div 充当外壳，雷打不动地锁死 w-full 和正方形比例！
-    <div className="relative w-full aspect-square block">
-      <Button
-        key={lab.title}
-        variant="ghost"
-        onClick={handleOpen}
-        // 💡 按钮不再负责比例，直接使用 w-full h-full 绝对定位（absolute inset-0）铺满外壳 div
-        className="lab-glow group absolute inset-0 h-full w-full cursor-pointer overflow-hidden rounded-md bg-card p-0 text-left transition duration-200 hover:scale-[1.02] hover:bg-card focus-visible:ring-2"
-      >
-        <img
-          src={lab.image}
-          alt={`${lab.title} simulation preview`}
-          width={600}
-          height={600}
-          loading={index < 6 ? "eager" : "lazy"}
-          // 💡 图片同样无条件铺满按钮
-          className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:brightness-110"
-          onError={(e) => {
-            (e.target as HTMLImageElement).style.opacity = "0.3";
-          }}
-        />
-        <span className="absolute inset-x-0 bottom-0 truncate bg-background/80 px-2.5 py-2 text-xs font-semibold backdrop-blur-sm z-10">
-          {lab.title}
+    <div className={cn("flex min-w-0 flex-col gap-1.5", isHero ? "mt-3" : "mt-2")}>
+      {lab.subject && (
+        <span
+          className={cn(
+            "w-fit rounded-md border border-border/50 bg-muted/40 font-medium",
+            textMetadata,
+            isHero ? "px-2 py-0.5 text-[11px]" : "px-1.5 py-0.5 text-[10px]",
+          )}
+        >
+          {lab.subject}
         </span>
-      </Button>
+      )}
+
+      {!isCompact && detailParts.length > 0 && (
+        <p className={cn("flex flex-wrap items-center gap-x-2 gap-y-0.5 leading-relaxed", textMetadata)}>
+          {detailParts.map((part, index) => (
+            <span key={part} className="inline-flex items-center gap-1">
+              {index > 0 && <span aria-hidden="true">·</span>}
+              {typeof part === "string" && part.endsWith(" min") ? (
+                <>
+                  <Clock3 className="size-3 shrink-0" aria-hidden="true" />
+                  {part}
+                </>
+              ) : (
+                part
+              )}
+            </span>
+          ))}
+        </p>
+      )}
+
+      {!isCompact && lab.skills?.[0] && (
+        <p className={cn("truncate", textMetadata)}>{lab.skills[0]}</p>
+      )}
     </div>
+  );
+}
+
+const cardShell = cn(
+  "group/card relative flex h-full w-full min-w-0 overflow-hidden text-left outline-none",
+  "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+  "motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:hover:scale-100",
+);
+
+export function LabTaskCard({
+  lab,
+  index,
+  variant = "standard",
+  className,
+  learningStatus,
+  isContinueTarget,
+}: LabTaskCardProps) {
+  const isHero = variant === "hero";
+  const isSecondary = variant === "secondary";
+  const isCompact = variant === "compact";
+
+  return (
+    <article className={cn("min-w-0", className)}>
+      <Link
+        to="/labs/$slug"
+        params={{ slug: lab.slug }}
+        aria-label={`Open ${lab.title} simulation module`}
+        className={cn(
+          cardShell,
+          isHero &&
+            cn(
+              depthCardHero,
+              "flex-col rounded-2xl border border-primary/25",
+              "md:min-h-[280px] md:flex-row md:items-stretch",
+            ),
+          isSecondary &&
+            cn(depthCardSecondary, "flex-col rounded-xl border border-border/70 bg-card/95"),
+          !isHero &&
+            !isSecondary &&
+            cn(depthCard, "flex-col rounded-xl border border-border/60 bg-card"),
+        )}
+      >
+        <ModuleThumbnail
+          src={lab.image}
+          variant={variant}
+          eager={index < 6}
+          className={cn(
+            "relative shrink-0",
+            isHero
+              ? cn(IMAGE_RATIO, "w-full md:aspect-auto md:w-[54%] md:min-h-[280px]")
+              : IMAGE_RATIO,
+          )}
+        >
+          <div
+            className={cn(
+              "module-thumb__scrim pointer-events-none absolute inset-0 z-10",
+              isHero && "module-thumb__scrim--hero",
+            )}
+          />
+          {learningStatus && (
+            <span
+              className={cn(
+                "absolute right-2 top-2 z-20 size-2 rounded-full border border-background/80",
+                learningStatus === "completed" && "bg-primary",
+                learningStatus === "explored" && "bg-primary/60",
+                learningStatus === "visited" && "bg-muted-foreground/70",
+              )}
+              aria-label={`Module ${learningStatus}`}
+              title={`Module ${learningStatus}`}
+            />
+          )}
+          {isContinueTarget && (
+            <span className="absolute left-2 top-2 z-20 rounded-md border border-primary/30 bg-background/90 px-1.5 py-0.5 text-[10px] font-medium text-primary shadow-sm">
+              Continue
+            </span>
+          )}
+          {isHero && (
+            <span className="absolute left-3 top-3 z-20 rounded-md border border-primary/30 bg-background/85 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-primary shadow-sm">
+              Featured
+            </span>
+          )}
+        </ModuleThumbnail>
+
+        <div
+          className={cn(
+            "relative z-10 flex min-w-0 flex-1 flex-col justify-end bg-card/80",
+            isHero && "p-4 md:justify-center md:p-6 lg:p-7",
+            isSecondary && "p-3.5",
+            isCompact && "p-2.5",
+            !isHero && !isSecondary && !isCompact && "p-3",
+          )}
+        >
+          <h3
+            className={cn(
+              "line-clamp-2 font-display font-semibold leading-snug tracking-tight text-foreground",
+              isHero && "text-lg md:text-xl lg:text-2xl",
+              isSecondary && "text-sm md:text-base",
+              isCompact && "text-xs",
+              !isHero && !isSecondary && !isCompact && "text-sm",
+            )}
+          >
+            {lab.title}
+          </h3>
+
+          {isHero && lab.summary && (
+            <p className="text-subtitle mt-2 line-clamp-3 text-sm md:line-clamp-2 md:text-[15px]">
+              {lab.summary}
+            </p>
+          )}
+
+          <CardMeta lab={lab} variant={variant} />
+        </div>
+      </Link>
+    </article>
   );
 }

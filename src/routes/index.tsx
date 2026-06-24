@@ -1,19 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import {
-  Grid2X2,
-  Search,
-  Sigma,
-  Puzzle,
-  Shapes,
-  Calculator,
-  BarChart3,
-  Atom,
-  X,
-  Mail,
-  UserRound,
-} from "lucide-react";
+import { Mail } from "lucide-react";
+import { AcademicHero } from "@/components/AcademicHero";
 import { Button } from "@/components/ui/button";
+import { CanvasBackground } from "@/components/ui/CanvasBackground";
 import {
   Dialog,
   DialogContent,
@@ -21,22 +11,35 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { EducationSafetyNotice } from "@/components/EducationSafetyNotice";
+import { TeacherViewToggle } from "@/components/TeacherViewToggle";
+import { DiscoveryBar } from "@/components/homepage/DiscoveryBar";
+import { HomepageSection } from "@/components/homepage/HomepageSection";
+import {
+  ALL_FILTER,
+  filterLabsByCategory,
+  getUniqueGrades,
+  getUniqueSubjects,
+  hasActiveDiscoveryFilters,
+  matchesDiscoveryFilters,
+  type DiscoveryFilters,
+} from "@/components/homepage/homepage-utils";
 import { SimulationGrid } from "@/components/SimulationGrid";
-import { LAB_CATEGORIES, labsData, type LabCategory } from "@/lib/labs-data";
+import { ContinueLearning } from "@/components/ContinueLearning";
+import { LearningPaths } from "@/components/LearningPaths";
+import { useLearningHistory } from "@/hooks/useLearningHistory";
+import { useTeacherView } from "@/hooks/useTeacherView";
+import type { LearningStatus } from "@/lib/learningStorage";
+import { labsData } from "@/lib/labs-data";
+import { EDUCATION_SAFETY_POLICY, SITE_DESCRIPTION, SITE_TITLE } from "@/lib/siteMeta";
+import { canvasBgRoot, canvasContentLayer, homepageSections, surfaceGlass } from "@/lib/designSystem";
 import logoGif from "@/assets/main-logo.gif";
 
-const SITE_TITLE = "CanvasMath - Interactive Mathematics Workspace & Simulations for K-12";
-const SITE_DESCRIPTION =
-  "An advanced interactive mathematical workspace and visual simulation platform designed for K-12 student engagement and STEM training.";
-
-const categoryIcons = {
-  All: Grid2X2,
-  "Number & Operations": Calculator,
-  Algebra: Sigma,
-  Geometry: Shapes,
-  "Probability & Data": BarChart3,
-  "Physics & Motion": Atom,
-  "Logic & Reasoning": Puzzle,
+const INITIAL_FILTERS: DiscoveryFilters = {
+  query: "",
+  subject: ALL_FILTER,
+  grade: ALL_FILTER,
+  difficulty: ALL_FILTER,
 };
 
 const legalContent = {
@@ -49,34 +52,19 @@ const legalContent = {
           to protecting the privacy of pupils, educators, and users.
         </p>
         <p>
-          <strong>1. Data Collection & Analytics:</strong> We do not require user registration. We
-          use industry-standard, privacy-compliant essential and analytics cookies (such as Google
-          Analytics) solely to measure site performance. These tools collect non-personally
-          identifiable technical telemetry (browser type, anonymous usage vectors).
+          <strong>1. Data Collection:</strong> CanvasMath does not require user registration. The
+          platform does not load third-party advertising, analytics, or social media tracking
+          scripts. Learning continuity data is stored locally on the device only.
         </p>
         <p>
-          <strong>2. Google Ads & Third-Party Vendors:</strong> Google and third-party vendors use
-          cookies to serve ads based on prior visits. Users may completely opt out of personalized
-          advertising by visiting the{" "}
-          <a
-            href="https://tools.google.com/dlpage/gaoptout/"
-            target="_blank"
-            rel="noreferrer"
-            className="text-primary underline"
-          >
-            Google Analytics Opt-out Browser Add-on
-          </a>{" "}
-          and managing settings via{" "}
-          <a
-            href="https://adssettings.google.com"
-            target="_blank"
-            rel="noreferrer"
-            className="text-primary underline"
-          >
-            Google Ads Settings
-          </a>
-          .
+          <strong>2. Education Safety Policy:</strong> CanvasMath is designed for K-12 classroom
+          use without external tracking, ads, social embeds, or user-generated content uploads.
         </p>
+        <ul className="list-disc space-y-1 pl-5">
+          {EDUCATION_SAFETY_POLICY.points.map((point) => (
+            <li key={point}>{point}</li>
+          ))}
+        </ul>
         <p>
           <strong>3. K-12 Student Protection (COPPA & GDPR):</strong> We strictly adhere to COPPA
           and GDPR frameworks. CanvasMath does NOT knowingly or intentionally collect, track, or
@@ -129,10 +117,10 @@ const legalContent = {
     body: (
       <div className="space-y-4 text-xs leading-relaxed">
         <p>
-          <strong>About CanvasMath:</strong> CanvasMath is an open, premium curated interactive
-          mathematics workspace dedicated to K-12 learners and STEM curriculum enhancement. We focus
-          on visual execution, geometric processing, and zero-download accessibility for Chromebooks
-          and classroom infrastructure.
+          <strong>About CanvasMath:</strong> CanvasMath is a curated visual mathematics learning
+          workspace dedicated to K-12 learners and standards-aligned STEM curriculum support. We
+          focus on conceptual understanding, geometric reasoning, and classroom-ready accessibility
+          for Chromebooks and school network environments.
         </p>
         <p>
           <strong>Publisher & Content Partnership:</strong> We highly respect intellectual property.
@@ -158,136 +146,281 @@ export const Route = createFileRoute("/")({
       { name: "description", content: SITE_DESCRIPTION },
       { property: "og:title", content: SITE_TITLE },
       { property: "og:description", content: SITE_DESCRIPTION },
+      { property: "og:type", content: "website" },
     ],
   }),
   component: Index,
 });
 
 function Index() {
-  const [category, setCategory] = useState<LabCategory>("All");
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [query, setQuery] = useState("");
+  const [filters, setFilters] = useState<DiscoveryFilters>(INITIAL_FILTERS);
   const [legal, setLegal] = useState<keyof typeof legalContent | null>(null);
+  const { recentModules, getBadge, mostRecentSlug, records } = useLearningHistory();
+  const { teacherView, toggleTeacherView } = useTeacherView();
+
+  const learningStatusMap = useMemo(() => {
+    const map: Record<string, LearningStatus | undefined> = {};
+    for (const record of records) {
+      map[record.slug] = record.status;
+    }
+    return map;
+  }, [records]);
+
+  const gridHistoryProps = {
+    learningStatusMap,
+    continueSlug: mostRecentSlug,
+  };
+
+  const subjects = useMemo(() => getUniqueSubjects(labsData), []);
+  const grades = useMemo(() => getUniqueGrades(labsData), []);
 
   const filteredLabs = useMemo(
-    () =>
-      labsData.filter((lab) => {
-        const matchesCategory = category === "All" || lab.category === category;
-        return matchesCategory && lab.title.toLowerCase().includes(query.toLowerCase());
-      }),
-    [category, query],
+    () => labsData.filter((lab) => matchesDiscoveryFilters(lab, filters)),
+    [filters],
   );
 
-  const sectionHeading = category === "All" ? "Interactive Math Labs" : `${category} Simulations`;
+  const isFiltered = hasActiveDiscoveryFilters(filters);
+
+  const featuredLabs = useMemo(() => labsData.filter((lab) => lab.featured), []);
+  const recentlyAddedLabs = useMemo(() => labsData.filter((lab) => lab.recentlyAdded), []);
+  const numberAlgebraLabs = useMemo(
+    () => filterLabsByCategory(labsData, ["Number & Operations", "Algebra"]),
+    [],
+  );
+  const geometryLabs = useMemo(() => filterLabsByCategory(labsData, ["Geometry"]), []);
+  const probabilityLabs = useMemo(() => filterLabsByCategory(labsData, ["Probability & Data"]), []);
+  const logicLabs = useMemo(() => filterLabsByCategory(labsData, ["Logic & Reasoning"]), []);
+  const physicsLabs = useMemo(() => filterLabsByCategory(labsData, ["Physics & Motion"]), []);
+
+  const clearAllFilters = () => setFilters(INITIAL_FILTERS);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <aside className="fixed inset-y-0 left-0 z-30 flex w-20 flex-col overflow-x-hidden overflow-y-auto border-r border-border bg-card px-2 py-3 md:w-48 md:px-3">
-        <div className="mb-4 flex items-center justify-center px-1 md:justify-start">
+    <div className={`${canvasBgRoot} min-h-screen overflow-x-hidden text-foreground`}>
+      <CanvasBackground />
+
+      <aside
+        aria-label="Site navigation"
+        className={`${surfaceGlass} fixed inset-y-0 left-0 z-30 flex w-[4.75rem] flex-col border-r border-border/60 px-2 py-3 md:w-44 md:px-3`}
+      >
+        <div className="mb-4 flex items-center justify-center md:justify-start">
           <a
             href="/"
-            className="group flex h-12 w-full items-stretch transition-opacity duration-200 hover:opacity-90 md:justify-start"
+            className="group flex h-11 w-full items-center justify-center motion-safe:transition-opacity motion-safe:duration-200 motion-safe:hover:opacity-90 motion-reduce:transition-none md:justify-start"
           >
-            <img src={logoGif} alt="CanvasMath Logo" className="h-full w-full object-fill" />
+            <img
+              src={logoGif}
+              alt="CanvasMath home"
+              className="h-11 w-11 object-contain md:h-12 md:w-full md:object-contain"
+            />
           </a>
         </div>
-
-        <div className="grid grid-cols-2 gap-2 border-b border-border pb-3">
-          <Button
-            aria-label="Search simulations"
-            variant={searchOpen ? "default" : "secondary"}
-            size="icon"
-            onClick={() => setSearchOpen((open) => !open)}
-          >
-            <Search />
-          </Button>
-          <Button aria-label="Profile and settings" variant="secondary" size="icon">
-            <UserRound />
-          </Button>
-        </div>
-        <nav aria-label="Simulation categories" className="flex flex-1 flex-col gap-1 pt-3">
-          {LAB_CATEGORIES.map((item) => {
-            const Icon = categoryIcons[item];
-            return (
-              <Button
-                key={item}
-                variant={category === item ? "default" : "ghost"}
-                className="h-9 justify-center px-2 md:justify-start"
-                onClick={() => setCategory(item)}
-              >
-                <Icon className="shrink-0" />
-                <span className="hidden md:inline">
-                  {item === "All" ? "All Simulations" : item}
-                </span>
-              </Button>
-            );
-          })}
+        <nav
+          aria-label="Quick section links"
+          className="hidden flex-1 flex-col gap-1 text-xs md:flex"
+        >
+          {[
+            ["featured", "Featured"],
+            ["continue", "Continue"],
+            ["paths", "Paths"],
+            ["number-algebra", "Number & Algebra"],
+            ["geometry", "Geometry"],
+            ["probability", "Probability"],
+            ["logic", "Logic"],
+            ["physics", "Physics & STEM"],
+            ["recent", "Recently Added"],
+          ].map(([id, label]) => (
+            <a
+              key={id}
+              href={`#${id}`}
+              className="rounded-lg px-2 py-1.5 text-muted-foreground outline-none transition-colors hover:bg-muted/60 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              {label}
+            </a>
+          ))}
         </nav>
       </aside>
 
-      <main className="ml-20 min-w-0 md:ml-48">
-        {searchOpen && (
-          <div className="sticky top-0 z-20 border-b border-border bg-background/95 p-3 backdrop-blur">
-            <label className="mx-auto flex max-w-xl items-center gap-2 rounded-md border border-primary/50 bg-card px-3 focus-within:ring-2 focus-within:ring-ring">
-              <Search className="size-4 text-primary" />
-              <input
-                autoFocus
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder={`Search ${labsData.length} simulations...`}
-                className="h-9 min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
-              />
-              {query && (
-                <Button
-                  aria-label="Clear search"
-                  variant="ghost"
-                  size="icon"
-                  className="size-7"
-                  onClick={() => setQuery("")}
-                >
-                  <X />
-                </Button>
-              )}
-            </label>
-          </div>
-        )}
+      <div className={`${canvasContentLayer} ml-[4.75rem] flex min-w-0 flex-col md:ml-44`}>
+        <DiscoveryBar
+          filters={filters}
+          resultCount={filteredLabs.length}
+          totalCount={labsData.length}
+          subjects={subjects}
+          grades={grades}
+          onFiltersChange={setFilters}
+          onClearAll={clearAllFilters}
+          headerAction={
+            <TeacherViewToggle enabled={teacherView} onToggle={toggleTeacherView} />
+          }
+        />
 
-        <section aria-label="Interactive Math Labs" className="p-3 md:p-4">
-          <div className="mb-3 grid grid-cols-[minmax(0,1fr)_auto] items-end gap-3">
-            <div className="min-w-0">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-primary">
-                Instant Learning Collection
-              </p>
-              <h1 className="truncate font-display text-xl font-bold md:text-2xl">
-                {sectionHeading}
-              </h1>
-            </div>
-            <span className="shrink-0 text-xs text-muted-foreground">
-              {filteredLabs.length} modules
-            </span>
-          </div>
-          <SimulationGrid
-            labs={filteredLabs}
-            emptyMessage={
-              query ? `No simulations match “${query}”.` : "No simulations in this category."
-            }
-          />
-        </section>
-
-        <footer className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 border-t border-border px-4 py-6 text-xs text-muted-foreground">
-          {(["privacy", "terms", "about"] as const).map((key) => (
-            <Button
-              key={key}
-              variant="link"
-              className="h-auto p-0 text-muted-foreground"
-              onClick={() => setLegal(key)}
+        <main className="mx-auto w-full max-w-7xl flex-1 px-3 py-4 md:px-5 md:py-6">
+          {isFiltered ? (
+            <HomepageSection
+              id="search-results"
+              title="Search Results"
+              description="Modules matching your current discovery filters."
             >
-              {legalContent[key].title}
-            </Button>
-          ))}
-          <span>© 2026 CanvasMath</span>
+              <SimulationGrid
+                labs={filteredLabs}
+                {...gridHistoryProps}
+                emptyMessage="No simulations match your current filters. Adjust search terms or clear all filters."
+              />
+            </HomepageSection>
+          ) : (
+            <div className={homepageSections}>
+              <AcademicHero moduleCount={labsData.length} />
+
+              {featuredLabs.length > 0 && (
+                <HomepageSection
+                  id="featured"
+                  title="Featured Learning Labs"
+                  description="Standards-aligned simulations selected for classroom introduction and guided study."
+                  tone="featured"
+                >
+                  <SimulationGrid labs={featuredLabs} layout="featured" {...gridHistoryProps} />
+                </HomepageSection>
+              )}
+
+              {recentModules.length > 0 && (
+                <HomepageSection
+                  id="continue"
+                  title="Continue Learning"
+                  description="Pick up where you left off with recently visited modules."
+                  tone="subtle"
+                >
+                  <ContinueLearning
+                    modules={recentModules}
+                    getBadge={getBadge}
+                    continueSlug={mostRecentSlug}
+                  />
+                </HomepageSection>
+              )}
+
+              <HomepageSection
+                id="paths"
+                title="Learning Paths"
+                description="Soft-ordered module sequences to guide structured visual mathematics learning. No locking or prerequisites."
+              >
+                <LearningPaths />
+              </HomepageSection>
+
+              {numberAlgebraLabs.length > 0 && (
+                <HomepageSection
+                  id="number-algebra"
+                  title="Number & Algebra"
+                  description="Foundational numeracy, operations, expressions, and algebraic reasoning modules."
+                  tone="subtle"
+                >
+                  <SimulationGrid
+                    labs={numberAlgebraLabs}
+                    layout="scroll"
+                    variant="compact"
+                    {...gridHistoryProps}
+                  />
+                </HomepageSection>
+              )}
+
+              {geometryLabs.length > 0 && (
+                <HomepageSection
+                  id="geometry"
+                  title="Geometry & Spatial Reasoning"
+                  description="Area, shape construction, and spatial visualization activities."
+                >
+                  <SimulationGrid
+                    labs={geometryLabs}
+                    layout="split"
+                    variant="standard"
+                    {...gridHistoryProps}
+                  />
+                </HomepageSection>
+              )}
+
+              {probabilityLabs.length > 0 && (
+                <HomepageSection
+                  id="probability"
+                  title="Probability & Data"
+                  description="Data distributions, probability models, and statistical reasoning."
+                  tone="subtle"
+                >
+                  <SimulationGrid
+                    labs={probabilityLabs}
+                    layout="scroll"
+                    variant="standard"
+                    {...gridHistoryProps}
+                  />
+                </HomepageSection>
+              )}
+
+              {logicLabs.length > 0 && (
+                <HomepageSection
+                  id="logic"
+                  title="Logic & Reasoning"
+                  description="Deductive reasoning, constraints, and structured problem solving."
+                >
+                  <SimulationGrid
+                    labs={logicLabs}
+                    layout="grid"
+                    variant="compact"
+                    {...gridHistoryProps}
+                  />
+                </HomepageSection>
+              )}
+
+              {physicsLabs.length > 0 && (
+                <HomepageSection
+                  id="physics"
+                  title="Physics & Applied STEM"
+                  description="Motion, forces, and applied science simulations for STEM pathways."
+                  tone="muted"
+                >
+                  <SimulationGrid
+                    labs={physicsLabs}
+                    layout="split"
+                    variant="standard"
+                    {...gridHistoryProps}
+                  />
+                </HomepageSection>
+              )}
+
+              {recentlyAddedLabs.length > 0 && (
+                <HomepageSection
+                  id="recent"
+                  title="Recently Added Modules"
+                  description="Newly catalogued activities for your learning workspace."
+                  tone="subtle"
+                >
+                  <SimulationGrid
+                    labs={recentlyAddedLabs}
+                    layout="scroll"
+                    variant="standard"
+                    {...gridHistoryProps}
+                  />
+                </HomepageSection>
+              )}
+            </div>
+          )}
+        </main>
+
+        <footer className="relative z-10 border-t border-border/40 px-4 py-6">
+          <div className="mx-auto flex max-w-7xl flex-col items-center gap-3">
+            <EducationSafetyNotice compact />
+            <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-muted-foreground">
+              {(["privacy", "terms", "about"] as const).map((key) => (
+                <Button
+                  key={key}
+                  variant="link"
+                  className="h-auto p-0 text-muted-foreground"
+                  onClick={() => setLegal(key)}
+                >
+                  {legalContent[key].title}
+                </Button>
+              ))}
+              <span>© 2026 CanvasMath</span>
+            </div>
+          </div>
         </footer>
-      </main>
+      </div>
 
       <Dialog open={Boolean(legal)} onOpenChange={(open) => !open && setLegal(null)}>
         <DialogContent className="max-h-[82vh] overflow-y-auto border-border bg-popover">

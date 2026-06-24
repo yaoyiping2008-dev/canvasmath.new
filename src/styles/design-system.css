@@ -1,0 +1,737 @@
+/*
+ * CanvasMath design system — Phase 5.1 Ultra
+ * Single top-left light · 8px spatial grid · elevation 0–4 · calm SaaS polish
+ */
+
+:root {
+  /* ── Light source (top-left @ 315°) ── */
+  --light-angle: 315deg;
+  --light-origin-x: 0%;
+  --light-origin-y: 0%;
+  --light-highlight: oklch(1 0 0 / 0.055);
+  --light-shadow-key: oklch(0 0 0 / 0.13);
+  --light-shadow-ambient: oklch(0 0 0 / 0.055);
+  --shadow-ox: 2px;
+  --shadow-oy: 3px;
+
+  /* Shadow blur scale (8px grid) */
+  --shadow-blur-xs: 4px;
+  --shadow-blur-sm: 8px;
+  --shadow-blur-md: 16px;
+  --shadow-blur-lg: 24px;
+  --shadow-blur-xl: 32px;
+
+  /* Elevation shadows — highlight + ambient + key (casts bottom-right) */
+  --elev-0: none;
+  --elev-1:
+    1px 1px 0 var(--light-highlight),
+    var(--shadow-ox) var(--shadow-oy) var(--shadow-blur-sm) var(--light-shadow-ambient),
+    calc(var(--shadow-ox) * 2) calc(var(--shadow-oy) * 2) var(--shadow-blur-md) var(--light-shadow-key);
+  --elev-2:
+    1px 1px 0 var(--light-highlight),
+    var(--shadow-ox) var(--shadow-oy) var(--shadow-blur-sm) var(--light-shadow-ambient),
+    calc(var(--shadow-ox) * 2.5) calc(var(--shadow-oy) * 2.5) var(--shadow-blur-lg) oklch(0 0 0 / 0.14);
+  --elev-3:
+    1px 1px 0 oklch(1 0 0 / 0.07),
+    calc(var(--shadow-ox) * 1.5) calc(var(--shadow-oy) * 1.5) var(--shadow-blur-md) var(--light-shadow-ambient),
+    calc(var(--shadow-ox) * 3) calc(var(--shadow-oy) * 3) var(--shadow-blur-xl) oklch(0 0 0 / 0.16);
+  --elev-4:
+    1px 1px 0 oklch(1 0 0 / 0.08),
+    calc(var(--shadow-ox) * 2) calc(var(--shadow-oy) * 2) var(--shadow-blur-lg) var(--light-shadow-ambient),
+    calc(var(--shadow-ox) * 3.5) calc(var(--shadow-oy) * 3.5) calc(var(--shadow-blur-xl) + 8px) oklch(0 0 0 / 0.18);
+
+  --elev-hover-card: var(--elev-3);
+  --elev-hover-featured: var(--elev-4);
+
+  /* ── Material surfaces ── */
+  --surface-base: var(--background);
+  --surface-elevated: color-mix(in oklab, var(--card) 97%, var(--foreground) 3%);
+  --surface-floating: color-mix(in oklab, var(--card) 92%, transparent);
+  --surface-object: color-mix(in oklab, var(--card) 88%, var(--primary) 4%);
+
+  /* ── Border opacity scale ── */
+  --border-subtle: oklch(1 0 0 / 0.035);
+  --border-soft: oklch(1 0 0 / 0.05);
+  --border-elevated: oklch(1 0 0 / 0.07);
+  --border-accent: color-mix(in oklab, var(--primary) 10%, var(--border));
+
+  /* ── Blur scale (strict) ── */
+  --blur-sm: 8px;
+  --blur-md: 12px;
+  --blur-lg: 16px;
+
+  /* ── Gradient intensity (strict cap) ── */
+  --gradient-primary-mix: 4%;
+  --gradient-muted-mix: 22%;
+  --gradient-glow-mix: 5%;
+
+  /* ── Motion (soft SaaS) ── */
+  --motion-duration: 240ms;
+  --motion-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --motion-lift: -2px;
+  --motion-scale: 1.008;
+
+  /* ── 8px spatial grid ── */
+  --space-1: 0.5rem; /* 8px */
+  --space-2: 1rem; /* 16px */
+  --space-3: 1.5rem; /* 24px */
+  --space-4: 2rem; /* 32px */
+  --space-5: 2.5rem; /* 40px */
+  --space-6: 3rem; /* 48px */
+  --space-7: 4rem; /* 64px */
+  --space-8: 5rem; /* 80px */
+
+  --rhythm-section: var(--space-8);
+  --rhythm-section-lg: calc(var(--space-8) + var(--space-2)); /* 88px → use 80+16 rhythm */
+  --rhythm-header: var(--space-3);
+  --rhythm-header-lg: var(--space-4);
+  --rhythm-group: var(--space-2);
+  --rhythm-inline: var(--space-2);
+
+  /* ── Background atmosphere (subtle) ── */
+  --canvas-radial-center: oklch(0.19 0.027 260);
+  --canvas-radial-edge: oklch(0.14 0.025 261);
+  --canvas-blob-primary: oklch(0.73 0.19 149 / 0.035);
+  --canvas-blob-secondary: oklch(0.55 0.12 280 / 0.028);
+  --canvas-blob-tertiary: oklch(0.65 0.08 220 / 0.02);
+
+  /* ── Thumbnail object layer ── */
+  --thumb-tilt-x: 1.5deg;
+  --thumb-tilt-y: -2deg;
+  --thumb-tilt-x-compact: 2deg;
+  --thumb-tilt-y-compact: -2deg;
+}
+
+.dark {
+  --light-highlight: oklch(1 0 0 / 0.035);
+  --light-shadow-key: oklch(0 0 0 / 0.2);
+  --light-shadow-ambient: oklch(0 0 0 / 0.09);
+  --surface-elevated: color-mix(in oklab, var(--card) 95%, var(--foreground) 5%);
+  --surface-floating: color-mix(in oklab, var(--card) 88%, transparent);
+  --surface-object: color-mix(in oklab, var(--card) 86%, var(--primary) 3%);
+  --border-subtle: oklch(1 0 0 / 0.04);
+  --border-soft: oklch(1 0 0 / 0.06);
+  --border-elevated: oklch(1 0 0 / 0.08);
+  --canvas-radial-center: oklch(0.16 0.03 264);
+  --canvas-radial-edge: oklch(0.11 0.036 265);
+  --canvas-blob-primary: oklch(0.73 0.19 149 / 0.03);
+  --canvas-blob-secondary: oklch(0.55 0.12 280 / 0.025);
+  --canvas-blob-tertiary: oklch(0.65 0.08 220 / 0.018);
+}
+
+/* ── Material gradient recipe ── */
+
+.surface-material {
+  background: linear-gradient(
+    var(--light-angle),
+    color-mix(in oklab, var(--surface-elevated) 100%, var(--primary) var(--gradient-primary-mix)) 0%,
+    var(--surface-elevated) 45%,
+    color-mix(in oklab, var(--surface-elevated) 100%, var(--muted) var(--gradient-muted-mix)) 100%
+  );
+}
+
+.surface-card-material {
+  background: linear-gradient(
+    var(--light-angle),
+    color-mix(in oklab, var(--surface-elevated) 100%, var(--primary) var(--gradient-primary-mix)) 0%,
+    var(--surface-elevated) 55%,
+    color-mix(in oklab, var(--surface-elevated) 100%, var(--muted) 18%) 100%
+  );
+}
+
+.surface-floating-material {
+  background: linear-gradient(
+    var(--light-angle),
+    color-mix(in oklab, var(--surface-floating) 100%, var(--primary) 5%) 0%,
+    var(--surface-floating) 50%,
+    color-mix(in oklab, var(--surface-floating) 100%, var(--muted) 16%) 100%
+  );
+}
+
+/* ── Depth level utilities (elevation + z-index) ── */
+
+.depth-l-0 {
+  z-index: 0;
+  box-shadow: var(--elev-0);
+}
+
+.depth-l-1 {
+  position: relative;
+  z-index: 1;
+  box-shadow: var(--elev-1);
+}
+
+.depth-l-2 {
+  position: relative;
+  z-index: 2;
+  box-shadow: var(--elev-2);
+}
+
+.depth-l-3 {
+  position: relative;
+  z-index: 3;
+  box-shadow: var(--elev-3);
+}
+
+.depth-l-4 {
+  position: relative;
+  z-index: 4;
+  box-shadow: var(--elev-4);
+}
+
+/* ── Section padding (8px grid) ── */
+
+.section-padding {
+  padding: var(--space-3) var(--space-3);
+}
+
+.section-padding-lg {
+  padding: var(--space-4) var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .section-padding {
+    padding: var(--space-4) var(--space-4);
+  }
+
+  .section-padding-lg {
+    padding: var(--space-5) var(--space-5);
+  }
+}
+
+/* ── Background (level 0) ── */
+
+.canvas-bg-root {
+  position: relative;
+  isolation: isolate;
+  background-color: var(--surface-base);
+}
+
+.canvas-bg-layer {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.canvas-bg-radial {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 82% 62% at 32% -6%,
+    var(--canvas-radial-center) 0%,
+    var(--canvas-radial-edge) 80%
+  );
+}
+
+.canvas-bg-noise {
+  position: absolute;
+  inset: 0;
+  opacity: 0.018;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px 128px;
+}
+
+.canvas-bg-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(var(--blur-lg));
+}
+
+.canvas-bg-blob--primary {
+  top: -5%;
+  left: 5%;
+  width: 36vw;
+  height: 36vw;
+  max-width: 460px;
+  max-height: 460px;
+  background: var(--canvas-blob-primary);
+}
+
+.canvas-bg-blob--secondary {
+  top: 10%;
+  right: 4%;
+  width: 30vw;
+  height: 30vw;
+  max-width: 380px;
+  max-height: 380px;
+  background: var(--canvas-blob-secondary);
+}
+
+.canvas-bg-blob--tertiary {
+  top: 52%;
+  left: 16%;
+  width: 24vw;
+  height: 24vw;
+  max-width: 300px;
+  max-height: 300px;
+  background: var(--canvas-blob-tertiary);
+}
+
+.canvas-bg-shape {
+  position: absolute;
+  border: 1px solid var(--border-subtle);
+  opacity: 0.16;
+}
+
+.canvas-bg-shape--ring {
+  top: 18%;
+  right: 12%;
+  width: 80px;
+  height: 80px;
+  border-radius: 9999px;
+  transform: rotate(6deg);
+}
+
+.canvas-bg-shape--square {
+  top: 40%;
+  left: 5%;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  transform: rotate(-10deg);
+}
+
+.canvas-bg-shape--triangle {
+  top: 30%;
+  left: 2%;
+  width: 0;
+  height: 0;
+  border: none;
+  border-left: 18px solid transparent;
+  border-right: 18px solid transparent;
+  border-bottom: 32px solid oklch(1 0 0 / 0.02);
+  opacity: 0.14;
+}
+
+.canvas-content-layer {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Glass surface (level 1) ── */
+
+.surface-glass {
+  background: color-mix(in oklab, var(--surface-floating) 86%, transparent);
+  backdrop-filter: blur(var(--blur-md));
+  -webkit-backdrop-filter: blur(var(--blur-md));
+  border-color: var(--border-soft);
+  box-shadow: var(--elev-1);
+}
+
+/* ── Interactive cards (levels 2–4) ── */
+
+.depth-card,
+.depth-card-secondary,
+.depth-card-hero {
+  transition:
+    transform var(--motion-duration) var(--motion-ease),
+    box-shadow var(--motion-duration) var(--motion-ease),
+    border-color var(--motion-duration) var(--motion-ease);
+}
+
+.depth-card,
+.depth-card-secondary {
+  box-shadow: var(--elev-2);
+  background: var(--surface-elevated);
+}
+
+.depth-card-hero {
+  box-shadow: var(--elev-3);
+  background: linear-gradient(
+    var(--light-angle),
+    color-mix(in oklab, var(--surface-floating) 100%, var(--primary) var(--gradient-primary-mix)) 0%,
+    var(--surface-floating) 52%,
+    color-mix(in oklab, var(--surface-floating) 100%, var(--muted) 18%) 100%
+  );
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .depth-card:hover,
+  .depth-card-secondary:hover,
+  .depth-card-hero:hover {
+    transform: translateY(var(--motion-lift)) scale(var(--motion-scale));
+    box-shadow: var(--elev-hover-card);
+    border-color: var(--border-accent);
+  }
+
+  .depth-card-hero:hover {
+    box-shadow: var(--elev-hover-featured);
+  }
+}
+
+.depth-surface {
+  box-shadow: var(--elev-1);
+}
+
+.depth-surface-raised {
+  box-shadow: var(--elev-2);
+}
+
+/* ── Featured hero zone (level 1 container, cards 3–4 inside) ── */
+
+.featured-hero-zone {
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid var(--border-soft);
+  background: linear-gradient(
+    var(--light-angle),
+    color-mix(in oklab, var(--muted) 32%, var(--primary) 3%) 0%,
+    color-mix(in oklab, var(--card) 82%, transparent) 58%,
+    color-mix(in oklab, var(--muted) 24%, transparent) 100%
+  );
+  box-shadow: var(--elev-1);
+}
+
+.featured-hero-zone::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 65% 50% at var(--light-origin-x) var(--light-origin-y),
+    oklch(0.73 0.19 149 / var(--gradient-glow-mix)) 0%,
+    transparent 60%
+  );
+}
+
+.featured-hero-zone__content {
+  position: relative;
+  z-index: 1;
+}
+
+.featured-hero-zone .depth-card-hero {
+  z-index: 4;
+  box-shadow: var(--elev-4);
+}
+
+.featured-hero-zone .depth-card-secondary {
+  z-index: 3;
+  box-shadow: var(--elev-3);
+}
+
+/* ── Module thumbnail (floating object layer) ── */
+
+.module-thumb {
+  position: relative;
+  overflow: hidden;
+  background: color-mix(in oklab, var(--muted) 58%, var(--background));
+}
+
+.module-thumb--hero::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  top: 6%;
+  left: 5%;
+  z-index: 0;
+  width: 50%;
+  height: 40%;
+  border-radius: 9999px;
+  background: oklch(0.73 0.19 149 / 0.07);
+  filter: blur(var(--blur-md));
+}
+
+.module-thumb__glow {
+  display: none;
+}
+
+.module-thumb__stage {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  perspective: 960px;
+}
+
+.module-thumb__float {
+  position: relative;
+  height: 100%;
+  transform: rotateX(var(--thumb-tilt-x)) rotateY(var(--thumb-tilt-y));
+  transform-origin: center bottom;
+  transition: transform var(--motion-duration) var(--motion-ease);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .group\/card:hover .module-thumb__float {
+    transform: rotateX(1deg) rotateY(-1.5deg) scale(var(--motion-scale));
+  }
+}
+
+.module-thumb__image {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  transition: filter var(--motion-duration) var(--motion-ease);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .group\/card:hover .module-thumb__image {
+    filter: brightness(1.02);
+  }
+}
+
+.module-thumb__highlight {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    var(--light-angle),
+    oklch(1 0 0 / 0.08) 0%,
+    oklch(1 0 0 / 0.025) 20%,
+    transparent 48%
+  );
+}
+
+.module-thumb__floor-shadow {
+  pointer-events: none;
+  position: absolute;
+  z-index: 1;
+  bottom: 4%;
+  left: 16%;
+  right: 10%;
+  height: 8%;
+  border-radius: 9999px;
+  background: oklch(0 0 0 / 0.16);
+  filter: blur(var(--blur-sm));
+  transform: scaleY(0.38) translateX(2px);
+}
+
+.module-thumb--hero .module-thumb__float {
+  transform: rotateX(1.25deg) rotateY(-1.75deg);
+}
+
+.module-thumb--hero .module-thumb__floor-shadow {
+  bottom: 5%;
+  left: 14%;
+  right: 8%;
+  height: 9%;
+  background: oklch(0 0 0 / 0.18);
+  filter: blur(var(--blur-sm));
+}
+
+.module-thumb--compact .module-thumb__float {
+  transform: rotateX(var(--thumb-tilt-x-compact)) rotateY(var(--thumb-tilt-y-compact));
+}
+
+/* Card thumbnail scrim (top-left light) */
+.module-thumb__scrim {
+  background: linear-gradient(
+    var(--light-angle),
+    transparent 42%,
+    color-mix(in oklab, var(--background) 55%, transparent) 100%
+  );
+}
+
+.module-thumb__scrim--hero {
+  background: linear-gradient(
+    var(--light-angle),
+    transparent 38%,
+    color-mix(in oklab, var(--background) 62%, transparent) 100%
+  );
+}
+
+@media (min-width: 768px) {
+  .module-thumb__scrim--hero {
+    background: linear-gradient(
+      var(--light-angle),
+      transparent 55%,
+      color-mix(in oklab, var(--background) 48%, transparent) 100%
+    );
+  }
+}
+
+/* ── Homepage sections (8px rhythm) ── */
+
+.homepage-sections {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rhythm-section);
+}
+
+@media (min-width: 768px) {
+  .homepage-sections {
+    gap: calc(var(--rhythm-section) + var(--space-2));
+  }
+}
+
+.homepage-sections > section + section::before {
+  content: "";
+  display: block;
+  height: 1px;
+  margin: 0 auto var(--rhythm-group);
+  max-width: min(82%, 48rem);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in oklab, var(--border) 92%, var(--primary) 8%) 50%,
+    transparent 100%
+  );
+  opacity: 0.38;
+}
+
+@media (min-width: 768px) {
+  .homepage-sections > section + section::before {
+    margin-bottom: var(--rhythm-header);
+  }
+}
+
+.section-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rhythm-inline);
+  margin-bottom: var(--rhythm-header);
+}
+
+@media (min-width: 768px) {
+  .section-header {
+    margin-bottom: var(--rhythm-header-lg);
+  }
+}
+
+/* ── Section surfaces (level 1) ── */
+
+.section-surface-muted {
+  position: relative;
+  z-index: 1;
+  border-radius: var(--space-3);
+  border: 1px solid var(--border-subtle);
+  background: linear-gradient(
+    var(--light-angle),
+    color-mix(in oklab, var(--muted) 18%, transparent) 0%,
+    color-mix(in oklab, var(--card) 34%, transparent) 100%
+  );
+  box-shadow: var(--elev-1);
+}
+
+.section-surface-subtle {
+  position: relative;
+  z-index: 1;
+  border-radius: var(--space-3);
+  border: 1px solid var(--border-subtle);
+  background: linear-gradient(
+    var(--light-angle),
+    color-mix(in oklab, var(--card) 28%, transparent) 0%,
+    color-mix(in oklab, var(--background) 44%, transparent) 100%
+  );
+  box-shadow: var(--elev-1);
+}
+
+.section-surface-featured {
+  position: relative;
+  z-index: 1;
+  border-radius: calc(var(--space-3) + 4px);
+  border: 1px solid var(--border-accent);
+  background: linear-gradient(
+    var(--light-angle),
+    color-mix(in oklab, var(--muted) 28%, var(--primary) 3%) 0%,
+    color-mix(in oklab, var(--card) 50%, transparent) 100%
+  );
+  box-shadow: var(--elev-2);
+}
+
+/* ── Academic hero (level 3 hero element) ── */
+
+.academic-hero {
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  border-radius: var(--space-3);
+  border: 1px solid var(--border-soft);
+  background: linear-gradient(
+    var(--light-angle),
+    color-mix(in oklab, var(--surface-elevated) 100%, var(--primary) var(--gradient-primary-mix)) 0%,
+    color-mix(in oklab, var(--card) 78%, var(--muted) 18%) 100%
+  );
+  box-shadow: var(--elev-3);
+  padding: var(--space-4) var(--space-3);
+}
+
+@media (min-width: 768px) {
+  .academic-hero {
+    padding: var(--space-5) var(--space-4);
+  }
+}
+
+.academic-hero::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  top: -16%;
+  left: -6%;
+  width: 40%;
+  height: 65%;
+  border-radius: 9999px;
+  background: oklch(0.73 0.19 149 / 0.04);
+  filter: blur(var(--blur-lg));
+}
+
+.academic-hero__content {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Typography ── */
+
+.heading-display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.016em;
+  color: var(--foreground);
+}
+
+.heading-section {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--foreground);
+}
+
+.text-subtitle {
+  color: color-mix(in oklab, var(--muted-foreground) 92%, var(--foreground) 8%);
+  line-height: 1.65;
+}
+
+.text-metadata {
+  color: color-mix(in oklab, var(--muted-foreground) 80%, transparent);
+  font-size: 0.6875rem;
+  line-height: 1.5;
+}
+
+.text-eyebrow {
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--primary) 82%, var(--muted-foreground) 18%);
+}
+
+/* ── Reduced motion ── */
+
+@media (prefers-reduced-motion: reduce) {
+  .depth-card:hover,
+  .depth-card-secondary:hover,
+  .depth-card-hero:hover {
+    transform: none;
+  }
+
+  .group\/card:hover .module-thumb__float {
+    transform: rotateX(var(--thumb-tilt-x)) rotateY(var(--thumb-tilt-y));
+  }
+
+  .module-thumb--hero .group\/card:hover .module-thumb__float {
+    transform: rotateX(1.25deg) rotateY(-1.75deg);
+  }
+
+  .module-thumb--compact .group\/card:hover .module-thumb__float {
+    transform: rotateX(var(--thumb-tilt-x-compact)) rotateY(var(--thumb-tilt-y-compact));
+  }
+}
