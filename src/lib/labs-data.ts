@@ -1,3 +1,4 @@
+import { generatedLessonLabs } from "./generated-lessons";
 import { runLabsDataValidation } from "./validate-labs-data";
 
 export const LAB_CATEGORIES = [
@@ -8,6 +9,7 @@ export const LAB_CATEGORIES = [
   "Probability & Data",
   "Physics & Motion",
   "Logic & Reasoning",
+  "Interactive Learning",
 ] as const;
 
 export type LabCategory = (typeof LAB_CATEGORIES)[number];
@@ -42,7 +44,7 @@ export type LabModule = {
   recentlyAdded?: boolean;
 };
 
-export const labsData: LabModule[] = [
+const coreLabsData: LabModule[] = [
   {
     id: "1",
     title: "Equality Explorer",
@@ -545,6 +547,8 @@ export const labsData: LabModule[] = [
     featured: true,
   },
 ];
+
+export const labsData: LabModule[] = [...coreLabsData, ...generatedLessonLabs];
 
 export function getLabBySlug(slug: string) {
   return labsData.find((lab) => lab.slug === slug);

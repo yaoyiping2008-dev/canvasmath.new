@@ -34,3 +34,7 @@ dist-ssr
 # Local preview generator artifacts
 .tmp/
 preview-generation-report.json
+
+# Local lesson import source (temporary)
+import-source/
+lesson-import-report.json

@@ -13,7 +13,10 @@
     "format": "prettier --write .",
     "previews:test": "node scripts/generate-lab-previews.mjs --limit 3",
     "previews:all": "node scripts/generate-lab-previews.mjs --all",
-    "previews:single": "node scripts/generate-lab-previews.mjs"
+    "previews:single": "node scripts/generate-lab-previews.mjs",
+    "lessons:validate": "node scripts/import-local-lessons.mjs --dry-run",
+    "lessons:import": "node scripts/import-local-lessons.mjs --import",
+    "lessons:overwrite": "node scripts/import-local-lessons.mjs --import --overwrite"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
