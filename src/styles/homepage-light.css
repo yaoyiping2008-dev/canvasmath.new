@@ -292,7 +292,17 @@ body.homepage-scroll-lock #root {
 }
 
 .homepage-sidebar-logo-frame--compact {
-  max-height: 3.5rem;
+  width: 100%;
+  height: 4.75rem;
+  max-height: none;
+  padding: 0.25rem;
+}
+
+.homepage-sidebar-logo-frame--compact .homepage-sidebar-logo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
 }
 
 .homepage-sidebar-logo-image {
