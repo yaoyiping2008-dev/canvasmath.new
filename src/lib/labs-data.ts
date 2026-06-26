@@ -46,6 +46,22 @@ export type LabModule = {
 
 const coreLabsData: LabModule[] = [
   {
+    id: "fruit-ninja",
+    title: "Fruit Ninja",
+    slug: "fruit-ninja",
+    moduleEndpoint: "/games/fruitninja/index.html",
+    image: "/thumbnails/fruit-ninja.png",
+    category: "Interactive Learning",
+    seoTitle: "Fruit Ninja - Interactive Module | CanvasMath",
+    seoDescription:
+      "Open the Fruit Ninja interactive module in the CanvasMath workspace.",
+    subject: "Interactive Learning",
+    summary:
+      "A locally hosted touch-based interactive module available through CanvasMath.",
+    embedMode: "local",
+    fallbackUrl: "/games/fruitninja/index.html",
+  },
+  {
     id: "1",
     title: "Equality Explorer",
     slug: "equality-explorer",

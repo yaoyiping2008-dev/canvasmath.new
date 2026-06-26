@@ -55,6 +55,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://canvasmath.org/labs/fruit-ninja</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://canvasmath.org/labs/graphing-lines</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
