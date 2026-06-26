@@ -45,7 +45,7 @@ function LegalDocument({ children }: { children: ReactNode }) {
 const privacyBody = (
   <LegalDocument>
     <LegalParagraph>
-      <strong>Last updated: June 14, 2026.</strong>
+      <strong>Last updated: June 26, 2026.</strong>
     </LegalParagraph>
 
     <LegalHeading>1. Scope</LegalHeading>
@@ -63,95 +63,122 @@ const privacyBody = (
       educators and learners can open modules without creating a CanvasMath account.
     </LegalParagraph>
 
-    <LegalHeading>3. Local Learning History</LegalHeading>
+    <LegalHeading>3. Technical and Essential Data</LegalHeading>
     <LegalParagraph>
-      When the learning-history feature is active in your browser, CanvasMath stores progress
-      indicators locally on your device using the browser&apos;s <code>localStorage</code> API under
-      the key <code>canvasmath-learning-history</code>. This may include module slugs visited,
-      exploration status, visit counts, and time spent in a session.
-    </LegalParagraph>
-    <LegalParagraph>
-      This information stays on your device and is not transmitted to CanvasMath servers as part of
-      the current application implementation. You can remove locally stored learning history by
-      clearing site data or browser storage for canvasmath.org in your browser settings.
-    </LegalParagraph>
-
-    <LegalHeading>4. Technical and Essential Data</LegalHeading>
-    <LegalParagraph>
-      Like most websites, CanvasMath may involve routine technical processing when you request pages
-      and assets. Depending on your network path and hosting configuration, this can include
-      standard web-server logs, connection metadata, and content delivery necessary to serve the
+      Like most websites, CanvasMath involves routine technical processing when you request pages
+      and assets. Depending on your network path and hosting configuration, this may include
+      standard web-server logs, IP addresses, browser and device information, connection metadata,
+      requested URLs, timestamps, and content-delivery information necessary to serve the
       application shell, thumbnails, and static files.
     </LegalParagraph>
     <LegalParagraph>
-      CanvasMath does not claim that no technical information is processed. Rather, the application
-      shell is built without intentional third-party advertising, social-media embeds, or analytics
-      scripts in the codebase reviewed for this policy.
+      CanvasMath does not currently provide public user accounts or a server-side learning-history
+      dashboard.
     </LegalParagraph>
 
-    <LegalHeading>5. Embedded Third-Party Simulations</LegalHeading>
+    <LegalHeading>4. Third-Party Advertising and Cookies</LegalHeading>
     <LegalParagraph>
-      Interactive modules are loaded from external sources identified in each module&apos;s
-      configuration, including educational publishers, open repositories, and locally hosted
-      simulation files. When a module workspace opens, the external resource runs inside a sandboxed
-      iframe and may request additional network connections according to its own design.
+      CanvasMath may use third-party advertising services, including Google AdSense, to help support
+      free access to the platform.
     </LegalParagraph>
     <LegalParagraph>
-      Those providers may collect or process information under their own privacy policies and
-      technical controls. CanvasMath provides a curated access layer and fallback handling, but does
-      not control and is not responsible for the data practices of external simulation systems.
-    </LegalParagraph>
-
-    <LegalHeading>6. Advertising, Analytics, and Social Media</LegalHeading>
-    <LegalParagraph>
-      The CanvasMath application shell does not intentionally load third-party advertising networks,
-      social-media widgets, or third-party analytics scripts in the current codebase. Embedded
-      simulations remain separate resources and may include their own interfaces, links, or network
-      activity governed by their providers.
-    </LegalParagraph>
-
-    <LegalHeading>7. Children and School Use</LegalHeading>
-    <LegalParagraph>
-      CanvasMath is intended for educational use in K-12 and classroom settings. Because public
-      modules do not require CanvasMath account registration, schools and families should review
-      module sources, network policies, and device settings before classroom deployment. Parents,
-      educators, and administrators may contact CanvasMath with questions about how the platform
-      presents embedded resources.
+      If advertising is enabled, third-party vendors, including Google, may use cookies, device
+      information, IP addresses, or similar technologies to deliver, measure, limit the frequency
+      of, and protect advertisements from invalid activity. Depending on the user&apos;s location,
+      consent choices, and applicable age-related treatment, advertisements may be personalized,
+      non-personalized, or limited.
     </LegalParagraph>
     <LegalParagraph>
-      This section describes design intent and observable implementation. It does not assert full
-      regulatory certification or guaranteed compliance with specific privacy laws.
+      Google and its advertising partners may use advertising cookies to serve advertisements based
+      on a user&apos;s previous visits to CanvasMath or other websites. Users may manage
+      personalized advertising through Google Ads Settings and may also use applicable industry
+      advertising opt-out tools.
+    </LegalParagraph>
+    <LegalParagraph>
+      Where consent is required, CanvasMath will use an appropriate consent-management mechanism
+      before requesting personalized advertising. For users in the European Economic Area, the
+      United Kingdom, and Switzerland, CanvasMath intends to use a Google-certified consent
+      management platform where required.
+    </LegalParagraph>
+    <LegalParagraph>
+      If advertising providers other than Google are enabled, CanvasMath may update this Policy to
+      identify those providers and provide appropriate privacy and opt-out information.
     </LegalParagraph>
 
-    <LegalHeading>8. Data Retention and Device Controls</LegalHeading>
+    <LegalHeading>5. Embedded and Locally Hosted Modules</LegalHeading>
     <LegalParagraph>
-      Locally stored learning history persists until you clear browser storage or until the browser
-      removes it according to its own retention rules. CanvasMath does not provide a server-side
-      account dashboard for deleting learning history because that history is stored on the device.
+      Interactive modules may be loaded from educational publishers, open-source projects, external
+      repositories, and locally hosted files.
     </LegalParagraph>
     <LegalParagraph>
-      Schools and families can use standard browser, device, and network controls to limit storage,
-      block external domains, or supervise module access where appropriate.
+      A locally hosted module may still connect to third-party content-delivery networks, media
+      hosts, analytics providers, advertising services, game services, or other external endpoints
+      included in the original module code.
+    </LegalParagraph>
+    <LegalParagraph>
+      External and embedded services may process technical information according to their own
+      privacy policies and technical controls. CanvasMath reviews module behavior where practical
+      but does not control every external request initiated by third-party module code.
+    </LegalParagraph>
+    <LegalParagraph>
+      Users, parents, educators, and school administrators should review module sources and network
+      activity before broad classroom deployment.
     </LegalParagraph>
 
-    <LegalHeading>9. External Links</LegalHeading>
+    <LegalHeading>6. Children and School Use</LegalHeading>
+    <LegalParagraph>
+      CanvasMath is designed for students, educators, families, and general educational audiences.
+      Some parts of the platform may be used by or directed toward children under the age of 13.
+    </LegalParagraph>
+    <LegalParagraph>
+      CanvasMath does not require a public user account and does not knowingly ask children to
+      submit their name, email address, school name, physical address, telephone number, or other
+      direct personal identifiers to access public modules.
+    </LegalParagraph>
+    <LegalParagraph>
+      On pages or advertising requests treated as child-directed, CanvasMath requests appropriate
+      child-directed advertising treatment and does not request interest-based advertising or
+      remarketing for those requests.
+    </LegalParagraph>
+    <LegalParagraph>
+      Parents, educators, and school administrators should review individual module sources,
+      external network connections, device settings, and school policies before assigning modules to
+      students.
+    </LegalParagraph>
+    <LegalParagraph>
+      Third-party modules may have their own data practices. Questions or concerns about a module
+      may be sent to <MailtoLink email={PRIVACY_CONTACT_EMAIL} />.
+    </LegalParagraph>
+
+    <LegalHeading>7. Cookie and Device Controls</LegalHeading>
+    <LegalParagraph>
+      Users may restrict, block, or delete cookies through their browser or device settings.
+      Blocking cookies or external resources may affect the availability of advertisements, embedded
+      modules, media files, or other website functionality.
+    </LegalParagraph>
+    <LegalParagraph>
+      Schools and families may also use browser, device, content-filtering, and network controls to
+      limit storage, block external domains, or supervise module access where appropriate.
+    </LegalParagraph>
+
+    <LegalHeading>8. External Links</LegalHeading>
     <LegalParagraph>
       Module workspaces and informational pages may link to external websites, including original
       simulation sources opened in a new browser tab. CanvasMath does not control the content,
       security, or privacy practices of those external sites.
     </LegalParagraph>
 
-    <LegalHeading>10. Policy Updates</LegalHeading>
+    <LegalHeading>9. Policy Updates</LegalHeading>
     <LegalParagraph>
       CanvasMath may update this Privacy Policy to reflect platform changes, module sources, or
-      legal requirements. The &ldquo;Last updated&rdquo; date at the top of this policy will change
-      when revisions are published.
+      legal and advertising compliance requirements. The &ldquo;Last updated&rdquo; date at the top
+      of this policy will change when revisions are published.
     </LegalParagraph>
 
-    <LegalHeading>11. Privacy Contact</LegalHeading>
+    <LegalHeading>10. Privacy Contact</LegalHeading>
     <LegalParagraph>
       Parents, educators, and users may contact CanvasMath about privacy questions, embedded module
-      sources, or local storage behavior:
+      sources, cookies, or technical data processing:
     </LegalParagraph>
     <p className="text-sm leading-relaxed">
       <MailtoLink email={PRIVACY_CONTACT_EMAIL} />
@@ -269,8 +296,8 @@ const aboutBody = (
       items={[
         "A searchable catalog of interactive simulation modules.",
         "Direct module workspaces with reload, fullscreen, and external-source fallback controls.",
-        "Locally stored learning-history indicators on the device when that feature is used.",
-        "Education-oriented presentation designed for classroom and home study contexts.",
+        "An education-oriented presentation designed for classroom and home study contexts.",
+        "Free public access that may be supported by advertising after appropriate privacy controls are enabled.",
       ]}
     />
 
@@ -306,7 +333,7 @@ export const legalContent = {
   privacy: {
     title: "Privacy Policy",
     description:
-      "How CanvasMath handles local learning data, embedded resources, and privacy-related inquiries.",
+      "How CanvasMath handles cookies, embedded resources, technical data, and privacy-related inquiries.",
     body: privacyBody,
   },
   terms: {
