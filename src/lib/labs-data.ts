@@ -60,6 +60,7 @@ const coreLabsData: LabModule[] = [
       "A locally hosted touch-based interactive module available through CanvasMath.",
     embedMode: "local",
     fallbackUrl: "/games/fruitninja/index.html",
+    recentlyAdded: true,
   },
   {
     id: "1",
