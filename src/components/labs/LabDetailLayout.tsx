@@ -22,7 +22,8 @@ export function LabDetailLayout({ lab }: LabDetailLayoutProps) {
   const {
     containerRef,
     handleFullscreen,
-    isFullscreen,
+    isLandscapeActive,
+    isPseudoFullscreen,
     isLandscapeLocked,
     orientationMessage,
     enterLandscape,
@@ -68,7 +69,8 @@ export function LabDetailLayout({ lab }: LabDetailLayoutProps) {
                 retry={retry}
                 isLoading={isLoading}
                 hasError={hasError}
-                isFullscreen={isFullscreen}
+                isLandscapeActive={isLandscapeActive}
+                isPseudoFullscreen={isPseudoFullscreen}
                 isLandscapeLocked={isLandscapeLocked}
                 orientationMessage={orientationMessage}
                 onEnterLandscape={enterLandscape}
