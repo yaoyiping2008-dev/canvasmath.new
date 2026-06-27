@@ -159,3 +159,41 @@
 @utility ad-pattern {
   background-image: repeating-linear-gradient(-45deg, transparent 0 8px, color-mix(in oklab, var(--foreground) 4%, transparent) 8px 9px);
 }
+
+[data-simulation-workspace]:fullscreen {
+  width: 100vw !important;
+  height: 100dvh !important;
+  min-height: 100dvh !important;
+  max-height: none !important;
+  aspect-ratio: auto !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #000;
+}
+
+[data-simulation-workspace]:fullscreen iframe {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+[data-simulation-workspace]:-webkit-full-screen {
+  width: 100vw !important;
+  height: 100dvh !important;
+  min-height: 100dvh !important;
+  max-height: none !important;
+  aspect-ratio: auto !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #000;
+}
+
+/* Show landscape controls on touch devices only */
+.mobile-landscape-control {
+  display: none;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .mobile-landscape-control {
+    display: flex;
+  }
+}

@@ -19,7 +19,15 @@ type LabDetailLayoutProps = {
 export function LabDetailLayout({ lab }: LabDetailLayoutProps) {
   const router = useRouter();
   const mainScrollRef = useRef<HTMLDivElement>(null);
-  const { containerRef, handleFullscreen } = useLabSimulationContainer();
+  const {
+    containerRef,
+    handleFullscreen,
+    isFullscreen,
+    isLandscapeLocked,
+    orientationMessage,
+    enterLandscape,
+    exitLandscape,
+  } = useLabSimulationContainer();
   const { reloadKey, handleLoad, retry, isLoading, hasError } = useIframeReliability(
     lab.moduleEndpoint,
   );
@@ -60,6 +68,11 @@ export function LabDetailLayout({ lab }: LabDetailLayoutProps) {
                 retry={retry}
                 isLoading={isLoading}
                 hasError={hasError}
+                isFullscreen={isFullscreen}
+                isLandscapeLocked={isLandscapeLocked}
+                orientationMessage={orientationMessage}
+                onEnterLandscape={enterLandscape}
+                onExitLandscape={exitLandscape}
               />
 
               {rightRecommendations.length > 0 && (

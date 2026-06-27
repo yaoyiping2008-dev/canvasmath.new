@@ -1,10 +1,15 @@
-import { useCallback, useEffect, useRef, type RefObject } from "react";
+import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
 import { Link } from "@tanstack/react-router";
-import { AlertCircle, ExternalLink, Loader2, RefreshCw } from "lucide-react";
+import { AlertCircle, ExternalLink, Loader2, Minimize2, RefreshCw, RotateCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { LabModule } from "@/lib/labs-data";
 import { depthCard } from "@/lib/designSystem";
 import { cn } from "@/lib/utils";
+
+type LockableScreenOrientation = ScreenOrientation & {
+  lock?: (orientation: "landscape") => Promise<void>;
+  unlock?: () => void;
+};
 
 type EmbeddedSimulationWorkspaceProps = {
   lab: LabModule;
@@ -14,6 +19,11 @@ type EmbeddedSimulationWorkspaceProps = {
   retry: () => void;
   isLoading: boolean;
   hasError: boolean;
+  isFullscreen: boolean;
+  isLandscapeLocked: boolean;
+  orientationMessage: string | null;
+  onEnterLandscape: () => void | Promise<void>;
+  onExitLandscape: () => void | Promise<void>;
 };
 
 export function EmbeddedSimulationWorkspace({
@@ -24,8 +34,25 @@ export function EmbeddedSimulationWorkspace({
   retry,
   isLoading,
   hasError,
+  isFullscreen,
+  orientationMessage,
+  onEnterLandscape,
+  onExitLandscape,
 }: EmbeddedSimulationWorkspaceProps) {
+  const iframeRef = useRef<HTMLIFrameElement>(null);
   const externalUrl = lab.sourceUrl ?? lab.fallbackUrl;
+
+  useEffect(() => {
+    if (isFullscreen) {
+      requestAnimationFrame(() => {
+        iframeRef.current?.focus();
+      });
+    }
+  }, [isFullscreen]);
+
+  const handleIframePointerDown = () => {
+    iframeRef.current?.focus();
+  };
 
   return (
     <div
@@ -37,6 +64,33 @@ export function EmbeddedSimulationWorkspace({
       )}
       aria-busy={isLoading}
     >
+      <div className="absolute right-2 top-2 z-30 flex items-center gap-2 md:hidden">
+        {orientationMessage && (
+          <p
+            role="status"
+            aria-live="polite"
+            className="max-w-[10rem] rounded-md bg-background/90 px-2 py-1 text-xs text-foreground shadow-md backdrop-blur"
+          >
+            {orientationMessage}
+          </p>
+        )}
+        <Button
+          type="button"
+          size="sm"
+          variant="secondary"
+          className="min-h-11 gap-1.5 bg-background/90 px-3 shadow-md backdrop-blur"
+          onClick={() => void (isFullscreen ? onExitLandscape() : onEnterLandscape())}
+          aria-label={isFullscreen ? "Exit landscape mode" : "Enter landscape mode"}
+        >
+          {isFullscreen ? (
+            <Minimize2 className="size-4" aria-hidden="true" />
+          ) : (
+            <RotateCw className="size-4" aria-hidden="true" />
+          )}
+          <span>{isFullscreen ? "Exit Landscape" : "Landscape"}</span>
+        </Button>
+      </div>
+
       {isLoading && (
         <div
           role="status"
@@ -82,22 +136,88 @@ export function EmbeddedSimulationWorkspace({
       )}
 
       <iframe
+        ref={iframeRef}
         key={`${lab.slug}-${reloadKey}`}
         data-simulation-iframe
         src={lab.moduleEndpoint}
         title={`${lab.title} simulation`}
-        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+        tabIndex={0}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; fullscreen; gamepad; gyroscope; picture-in-picture"
         referrerPolicy="strict-origin-when-cross-origin"
-        sandbox="allow-scripts allow-forms allow-popups allow-modals allow-presentation allow-fullscreen allow-same-origin"
+        sandbox="allow-scripts allow-forms allow-popups allow-modals allow-presentation allow-pointer-lock allow-orientation-lock allow-same-origin"
         onLoad={handleLoad}
+        onPointerDown={handleIframePointerDown}
         className="absolute inset-0 h-full w-full border-0"
       />
     </div>
   );
 }
 
+const ORIENTATION_MESSAGE_DURATION_MS = 5000;
+
 export function useLabSimulationContainer() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isLandscapeLocked, setIsLandscapeLocked] = useState(false);
+  const [orientationMessage, setOrientationMessage] = useState<string | null>(null);
+  const orientationMessageTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const clearOrientationMessage = useCallback(() => {
+    if (orientationMessageTimeoutRef.current) {
+      clearTimeout(orientationMessageTimeoutRef.current);
+      orientationMessageTimeoutRef.current = null;
+    }
+    setOrientationMessage(null);
+  }, []);
+
+  const showOrientationMessage = useCallback((message: string) => {
+    setOrientationMessage(message);
+    if (orientationMessageTimeoutRef.current) {
+      clearTimeout(orientationMessageTimeoutRef.current);
+    }
+    orientationMessageTimeoutRef.current = setTimeout(() => {
+      setOrientationMessage(null);
+      orientationMessageTimeoutRef.current = null;
+    }, ORIENTATION_MESSAGE_DURATION_MS);
+  }, []);
+
+  const unlockOrientationSafely = useCallback(() => {
+    try {
+      const orientation = screen.orientation as LockableScreenOrientation;
+      orientation.unlock?.();
+    } catch {
+      // Ignore unsupported unlock behavior.
+    }
+  }, []);
+
+  useEffect(() => {
+    const onFullscreenChange = () => {
+      const target = containerRef.current;
+
+      if (!document.fullscreenElement) {
+        setIsFullscreen(false);
+        setIsLandscapeLocked(false);
+        unlockOrientationSafely();
+        clearOrientationMessage();
+        return;
+      }
+
+      if (target && document.fullscreenElement === target) {
+        setIsFullscreen(true);
+      }
+    };
+
+    document.addEventListener("fullscreenchange", onFullscreenChange);
+    return () => document.removeEventListener("fullscreenchange", onFullscreenChange);
+  }, [clearOrientationMessage, unlockOrientationSafely]);
+
+  useEffect(() => {
+    return () => {
+      if (orientationMessageTimeoutRef.current) {
+        clearTimeout(orientationMessageTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const handleFullscreen = useCallback(async () => {
     const target = containerRef.current;
@@ -109,5 +229,60 @@ export function useLabSimulationContainer() {
     await target.requestFullscreen?.();
   }, []);
 
-  return { containerRef, handleFullscreen };
+  const enterLandscape = useCallback(async () => {
+    const target = containerRef.current;
+    if (!target) return;
+
+    try {
+      if (!document.fullscreenElement) {
+        await target.requestFullscreen();
+      }
+    } catch {
+      showOrientationMessage("Rotate your device to landscape.");
+      return;
+    }
+
+    try {
+      const orientation = screen.orientation as LockableScreenOrientation;
+      if (typeof orientation.lock === "function") {
+        await orientation.lock("landscape");
+        setIsLandscapeLocked(true);
+        clearOrientationMessage();
+      }
+    } catch {
+      setIsLandscapeLocked(false);
+      showOrientationMessage("Rotate your device to landscape.");
+    }
+  }, [clearOrientationMessage, showOrientationMessage]);
+
+  const exitLandscape = useCallback(async () => {
+    const orientation = screen.orientation as LockableScreenOrientation;
+
+    try {
+      orientation.unlock?.();
+    } catch {
+      // Ignore unsupported unlock behavior.
+    }
+
+    setIsLandscapeLocked(false);
+    clearOrientationMessage();
+
+    if (document.fullscreenElement) {
+      try {
+        await document.exitFullscreen();
+      } catch {
+        // Ignore unsupported exit behavior.
+      }
+    }
+  }, [clearOrientationMessage]);
+
+  return {
+    containerRef,
+    handleFullscreen,
+    isFullscreen,
+    isLandscapeLocked,
+    orientationMessage,
+    enterLandscape,
+    exitLandscape,
+  };
 }

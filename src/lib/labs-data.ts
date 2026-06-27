@@ -53,11 +53,9 @@ const coreLabsData: LabModule[] = [
     image: "/thumbnails/fruit-ninja.png",
     category: "Interactive Learning",
     seoTitle: "Fruit Ninja - Interactive Module | CanvasMath",
-    seoDescription:
-      "Open the Fruit Ninja interactive module in the CanvasMath workspace.",
+    seoDescription: "Open the Fruit Ninja interactive module in the CanvasMath workspace.",
     subject: "Interactive Learning",
-    summary:
-      "A locally hosted touch-based interactive module available through CanvasMath.",
+    summary: "A locally hosted touch-based interactive module available through CanvasMath.",
     embedMode: "local",
     fallbackUrl: "/games/fruitninja/index.html",
     recentlyAdded: true,
